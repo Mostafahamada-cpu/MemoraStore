@@ -44,7 +44,7 @@
               <span id="total" style="color: var(--accent-gold);">$0</span>
             </div>
 
-            <button class="btn btn-primary btn-full" style="margin-top: 24px;" onclick="processPayment()">
+            <button class="btn btn-primary btn-full" id="pay-button" style="margin-top: 24px;" onclick="processPayment()">
               <span class="btn-icon">💳</span>
               Proceed to Payment
             </button>
@@ -80,26 +80,26 @@
             <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
               <h3 style="margin-bottom: 24px;">Payment Method</h3>
 
-         <div class="form-radio-group">
-  <label class="form-radio">
-    <input type="radio" name="payment-method" value="instapay" checked>
-    <span>
-      <strong>InstaPay</strong>
-      <br>
-      <span style="font-size:12px;color:var(--text-light)">
-        Send your payment via InstaPay, then press Proceed to Payment to send us the payment screenshot on WhatsApp.
-      </span>
-    </span>
-  </label>
-</div>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="payment-method" value="instapay" checked>
+                  <span>
+                    <strong>InstaPay</strong>
+                    <br>
+                    <span style="font-size:12px;color:var(--text-light)">
+                      Send your payment via InstaPay, then press Proceed to Payment to send us the payment screenshot on WhatsApp.
+                    </span>
+                  </span>
+                </label>
+              </div>
 
-         
+
             <!-- Terms -->
             <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px;">
               <label class="form-radio">
                 <input type="checkbox" name="terms" required>
                 <span>
-                  I agree to the <strong>Terms of Service</strong>, <strong>Privacy Policy</strong>, and <strong>I agree to the Terms of Service and Privacy Policy. </strong>
+                  I agree to the <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.
                 </span>
               </label>
             </div>
@@ -121,10 +121,8 @@
 
         <div style="text-align: center;">
           <div style="font-size: 28px; margin-bottom: 12px;">✓</div>
-          <h5>Instant Delivery
-            Receive your invitation after payment confirmation.
-          </h5>
-          <p style="font-size: 14px; color: var(--text-secondary);">Not satisfied? Get a full refund within 30 days</p>
+          <h5>Instant Delivery</h5>
+          <p style="font-size: 14px; color: var(--text-secondary);">Receive your invitation after payment confirmation.</p>
         </div>
 
         <div style="text-align: center;">
@@ -135,18 +133,20 @@
       </div>
     </div>
   </section>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="admin/assets/supabase-config.js"></script>
-<script src="assets/js/premium.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin/assets/supabase-config.js"></script>
   <script src="assets/js/premium.js"></script>
   <script>
+    // Supabase client
+    const supabaseClient = window.supabase.createClient(
+      window.MEMORA_SUPABASE.url,
+      window.MEMORA_SUPABASE.anonKey
+    );
+
     // Load order data
-    const supabase = window.supabase.createClient(
-    window.MEMORA_SUPABASE.url,
-    window.MEMORA_SUPABASE.anonKey
-);
     const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
-    
+
     document.getElementById('fullName').value = orderData.fullName || '';
     document.getElementById('email').value = orderData.email || '';
     document.getElementById('phone').value = orderData.phone || '';
@@ -194,40 +194,44 @@
     document.getElementById('discount').textContent = `-EGP ${discount.toFixed(2)}`;
     document.getElementById('total').textContent = `EGP ${total.toFixed(2)}`;
 
-    // Payment method toggle
-    const paymentRadios = document.querySelectorAll('input[name="payment-method"]');
-    const cardDetails = document.getElementById('card-details');
+    async function processPayment() {
+      const form = document.getElementById('checkout-form');
 
-   async function processPayment() {
-
-    const form = document.getElementById('checkout-form');
-
-    if (!form.checkValidity()) {
-        alert("Please complete the form.");
+      if (!form.checkValidity()) {
+        form.reportValidity();
         return;
-    }
+      }
 
-    const productName = cartItems[0]?.name || "Unknown Product";
+      if (!orderData.fullName || !orderData.phone || !orderData.email) {
+        alert('Your order details are missing. Please go back and fill the order form first.');
+        return;
+      }
 
-    const { error } = await supabase
-        .from("orders")
+      const payButton = document.getElementById('pay-button');
+      payButton.disabled = true;
+
+      const productName = cartItems[0]?.name || 'Unknown Product';
+
+      const { error } = await supabaseClient
+        .from('orders')
         .insert([{
-            customer_name: orderData.fullName,
-            whatsapp_number: orderData.phone,
-            email: orderData.email,
-            purchased_product: productName,
-            total_amount: total,
-            payment_status: "Pending",
-            order_status: "Pending"
+          customer_name: orderData.fullName,
+          whatsapp_number: orderData.phone,
+          email: orderData.email,
+          purchased_product: productName,
+          total_amount: total,
+          payment_status: 'Pending',
+          order_status: 'Pending'
         }]);
 
-    if (error) {
+      if (error) {
+        payButton.disabled = false;
         console.error(error);
-        alert(error.message);
+        alert(`Order could not be saved: ${error.message}`);
         return;
-    }
+      }
 
-    const message =
+      const message =
 `Hello Memora 👋
 
 I would like to purchase:
@@ -244,31 +248,14 @@ Email: ${orderData.email}
 
 I have completed the InstaPay transfer and will send the payment screenshot now.`;
 
-    localStorage.removeItem("memora-order");
-    localStorage.removeItem("memora-cart");
+      localStorage.removeItem('memora-order');
+      localStorage.removeItem('memora-cart');
 
-    window.open(
+      window.open(
         `https://wa.me/201099885633?text=${encodeURIComponent(message)}`,
-        "_blank"
-    );
-}
-
-      // Show success animation
-      UI.showNotification('Processing payment...', 'info');
-
-      setTimeout(() => {
-        UI.showNotification('Payment successful! 🎉', 'success');
-        
-        setTimeout(() => {
-          // Clear localStorage
-          localStorage.removeItem('memora-order');
-          localStorage.removeItem('memora-cart');
-          
-          // Redirect to thank you page
-          window.location.href = 'thank-you.html';
-        }, 1500);
-      }, 2000);
-    
+        '_blank'
+      );
+    }
   </script>
 </body>
 </html>

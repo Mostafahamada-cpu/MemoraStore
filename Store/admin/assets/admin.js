@@ -30,9 +30,7 @@ const MemoraAdmin = (() => {
       { id: 'memora-essential', bundle_name: 'Memora Essential', description: 'Modern Minimal plus Love Card.', included_products: ['Modern Minimal', 'Love Card'], bundle_price: 950, thumbnail_url: '../images/demo_modern_minimal.png', featured: true },
       { id: 'memora-signature', bundle_name: 'Memora Signature', description: 'Luxury Bloom plus Love Card.', included_products: ['Luxury Bloom', 'Love Card'], bundle_price: 1250, thumbnail_url: '../images/demo_luxury_bloom.png', featured: true }
     ],
-    orders: [
-      { id: 'sample-1', customer_name: 'Sample Bride', whatsapp_number: '+201099885633', email: 'customer@example.com', purchased_product: 'Modern Minimal', purchased_bundle: '', order_date: new Date().toISOString(), payment_status: 'Pending', order_status: 'Pending', total_amount: 500 }
-    ],
+    orders: [],
     coupons: [
       { id: 'welcome10', coupon_code: 'WELCOME10', discount_percent: 10, expiration_date: '', maximum_uses: 100, current_uses: 0, status: 'Active' }
     ],
@@ -173,7 +171,7 @@ const MemoraAdmin = (() => {
 
   async function loadTable(table) {
     const { data, error } = await client.from(table).select('*').order('created_at', { ascending: false });
-    state.data[table] = error ? defaults[table] : (data || []);
+    state.data[table] = error ? (table === 'orders' ? [] : defaults[table]) : (data || []);
     if (error) toast(`Could not load ${table}: ${error.message}`, 'error');
   }
 
@@ -290,7 +288,7 @@ const MemoraAdmin = (() => {
     const columns = {
       products: ['title', 'price', 'category', 'live_demo_url', 'featured', 'in_stock'],
       bundles: ['bundle_name', 'bundle_price', 'included_products', 'featured'],
-      orders: ['customer_name', 'whatsapp_number', 'email', 'purchased_product', 'purchased_bundle', 'payment_status', 'order_status', 'total_amount'],
+      orders: ['customer_name', 'whatsapp_number', 'email', 'purchased_product', 'total_amount', 'payment_status', 'order_status', 'created_at'],
       coupons: ['coupon_code', 'discount_percent', 'expiration_date', 'maximum_uses', 'current_uses', 'status']
     }[table];
     return `<table><thead><tr>${columns.map((c) => `<th data-sort="${c}">${label(c)}</th>`).join('')}<th>Actions</th></tr></thead><tbody>${rows.map((row) => `<tr>${columns.map((c) => `<td>${cell(row, c)}</td>`).join('')}<td><div class="row-actions"><button class="btn ghost" data-edit="${row.id}">Edit</button><button class="btn danger" data-delete="${row.id}">Delete</button></div></td></tr>`).join('')}</tbody></table>`;
@@ -302,11 +300,13 @@ const MemoraAdmin = (() => {
     if (typeof value === 'boolean') return value ? '<span class="pill ok">Yes</span>' : '<span class="pill bad">No</span>';
     if (key.includes('status')) return `<span class="pill ${value === 'Completed' || value === 'Paid' || value === 'Active' ? 'ok' : value === 'Cancelled' || value === 'Expired' ? 'bad' : 'warn'}">${value || 'Pending'}</span>`;
     if (key.includes('price') || key === 'total_amount') return money(value);
+    if (key === 'created_at' || key === 'order_date') return value ? new Date(value).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
     if (String(value || '').startsWith('http')) return `<a class="muted" href="${value}" target="_blank" rel="noopener noreferrer">Open</a>`;
     return value || '';
   }
 
   function label(key) {
+    if (key === 'created_at') return 'date';
     return key.replaceAll('_', ' ');
   }
 
