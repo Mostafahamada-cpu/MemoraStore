@@ -11,6 +11,8 @@ const MemoraAdmin = (() => {
     search: '',
     sort: {},
     page: {},
+    orderUI: { query: '', payment: 'all', status: 'all', sort: 'newest' },
+    drawerOrderId: null,
     data: {
       products: [],
       bundles: [],
@@ -58,8 +60,14 @@ const MemoraAdmin = (() => {
     ],
     orders: [
       ['customer_name', 'Customer Name', 'text', true], ['whatsapp_number', 'WhatsApp Number', 'text'], ['email', 'Email', 'email'],
-      ['purchased_product', 'Purchased Product', 'text'], ['purchased_bundle', 'Purchased Bundle', 'text'], ['total_amount', 'Total Amount', 'number'],
-      ['payment_status', 'Payment Status', 'select:Pending|Paid'], ['order_status', 'Order Status', 'select:Pending|Paid|Completed|Cancelled']
+      ['preferred_language', 'Preferred Language', 'select:English|Spanish|French|Arabic|Other'],
+      ['bride_name', 'Bride Name', 'text'], ['groom_name', 'Groom Name', 'text'],
+      ['wedding_date', 'Wedding Date', 'date'], ['venue', 'Venue', 'text'],
+      ['color_preference', 'Color Preference', 'text'], ['music_link', 'Music Link', 'url'],
+      ['special_requests', 'Special Requests', 'textarea'],
+      ['purchased_product', 'Purchased Product', 'text'], ['product_category', 'Product Category', 'select:Standard|Premium|Bundle'],
+      ['total_amount', 'Total Amount', 'number'],
+      ['payment_status', 'Payment Status', 'select:Pending|Paid'], ['order_status', 'Order Status', 'select:Pending|In Progress|Completed|Cancelled']
     ],
     coupons: [
       ['coupon_code', 'Coupon Code', 'text', true], ['discount_percent', 'Discount %', 'number', true],
@@ -182,7 +190,8 @@ const MemoraAdmin = (() => {
     root.innerHTML = '';
     if (state.view === 'dashboard') root.appendChild(dashboardView());
     if (state.view === 'analytics') root.appendChild(analyticsView());
-    if (['products', 'bundles', 'orders', 'coupons'].includes(state.view)) root.appendChild(tableView(state.view));
+    if (state.view === 'orders') root.appendChild(ordersView());
+    if (['products', 'bundles', 'coupons'].includes(state.view)) root.appendChild(tableView(state.view));
     if (state.view === 'settings') root.appendChild(settingsView());
   }
 
@@ -298,8 +307,9 @@ const MemoraAdmin = (() => {
     const value = row[key];
     if (Array.isArray(value)) return value.join(', ');
     if (typeof value === 'boolean') return value ? '<span class="pill ok">Yes</span>' : '<span class="pill bad">No</span>';
-    if (key.includes('status')) return `<span class="pill ${value === 'Completed' || value === 'Paid' || value === 'Active' ? 'ok' : value === 'Cancelled' || value === 'Expired' ? 'bad' : 'warn'}">${value || 'Pending'}</span>`;
+    if (key.includes('status')) return statusPill(value);
     if (key.includes('price') || key === 'total_amount') return money(value);
+    if (key === 'wedding_date') return value ? new Date(value).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
     if (key === 'created_at' || key === 'order_date') return value ? new Date(value).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
     if (String(value || '').startsWith('http')) return `<a class="muted" href="${value}" target="_blank" rel="noopener noreferrer">Open</a>`;
     return value || '';
@@ -338,6 +348,236 @@ const MemoraAdmin = (() => {
     const page = state.page[table] || 1;
     const pages = Math.max(1, Math.ceil(total / pageSize));
     return `<div class="pager"><button class="btn ghost" data-page="-1" ${page <= 1 ? 'disabled' : ''}>Prev</button><span>Page ${page} of ${pages}</span><button class="btn ghost" data-page="1" ${page >= pages ? 'disabled' : ''}>Next</button></div>`;
+  }
+
+  // ── Orders CRM ── //
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function fmtDate(value, withTime) {
+    if (!value) return '—';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return esc(value);
+    const opts = { day: '2-digit', month: 'short', year: 'numeric' };
+    if (withTime) Object.assign(opts, { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleString('en-GB', opts);
+  }
+
+  function waHref(order) {
+    const digits = String(order.whatsapp_number || '').replace(/\D/g, '');
+    return digits ? `https://wa.me/${digits}` : '';
+  }
+
+  function statusPill(value) {
+    const v = value || 'Pending';
+    const cls = ['Completed', 'Paid', 'Active'].includes(v) ? 'ok' : ['Cancelled', 'Expired'].includes(v) ? 'bad' : v === 'In Progress' ? 'info' : 'warn';
+    return `<span class="pill ${cls}">${esc(v)}</span>`;
+  }
+
+  function filteredOrders() {
+    const ui = state.orderUI;
+    let rows = matchSearch(state.data.orders);
+    const q = ui.query.trim().toLowerCase();
+    if (q) rows = rows.filter((o) => getText(o).includes(q));
+    if (ui.payment !== 'all') rows = rows.filter((o) => (o.payment_status || 'Pending') === ui.payment);
+    if (ui.status !== 'all') rows = rows.filter((o) => (o.order_status || 'Pending') === ui.status);
+    const sorters = {
+      newest: (a, b) => new Date(b.order_date || b.created_at || 0) - new Date(a.order_date || a.created_at || 0),
+      oldest: (a, b) => new Date(a.order_date || a.created_at || 0) - new Date(b.order_date || b.created_at || 0),
+      wedding: (a, b) => new Date(a.wedding_date || '2100-01-01') - new Date(b.wedding_date || '2100-01-01'),
+      amount_desc: (a, b) => Number(b.total_amount || 0) - Number(a.total_amount || 0),
+      amount_asc: (a, b) => Number(a.total_amount || 0) - Number(b.total_amount || 0),
+      name: (a, b) => String(a.customer_name || '').localeCompare(String(b.customer_name || '')),
+    };
+    return [...rows].sort(sorters[ui.sort] || sorters.newest);
+  }
+
+  function orderRowMarkup(o) {
+    const couple = [o.bride_name, o.groom_name].filter(Boolean).join(' & ');
+    const wa = waHref(o);
+    return `<tr>
+      <td><span class="cell-main">${esc(o.customer_name || 'Customer')}</span><span class="cell-sub">${esc(o.whatsapp_number || '')}${o.email ? (o.whatsapp_number ? ' · ' : '') + esc(o.email) : ''}</span></td>
+      <td><span class="cell-main">${esc(couple || '—')}</span><span class="cell-sub">${fmtDate(o.wedding_date)}${o.venue ? ' · ' + esc(o.venue) : ''}</span></td>
+      <td><span class="cell-main">${esc(o.purchased_product || o.purchased_bundle || '—')}</span><span class="cell-sub">${esc(o.product_category || '')}</span></td>
+      <td>${money(o.total_amount)}</td>
+      <td>${statusPill(o.payment_status)}</td>
+      <td>${statusPill(o.order_status)}</td>
+      <td>${fmtDate(o.order_date || o.created_at)}</td>
+      <td><div class="row-actions">
+        <button class="btn ghost" data-view-order="${o.id}">View</button>
+        ${wa ? `<a class="btn ghost" href="${wa}" target="_blank" rel="noopener noreferrer">WhatsApp</a>` : ''}
+        ${(o.payment_status || 'Pending') !== 'Paid' ? `<button class="btn ghost" data-mark-paid="${o.id}">Mark Paid</button>` : ''}
+        <button class="btn danger" data-delete-order="${o.id}">Delete</button>
+      </div></td>
+    </tr>`;
+  }
+
+  function ordersView() {
+    const ui = state.orderUI;
+    const all = state.data.orders;
+    const rows = filteredOrders();
+    const pageRows = paginate(rows, 'orders');
+    const paidRevenue = all.filter((o) => o.payment_status === 'Paid').reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+    const countBy = (status) => all.filter((o) => (o.order_status || 'Pending') === status).length;
+
+    const wrap = document.createElement('section');
+    wrap.className = 'content-card';
+    wrap.innerHTML = `
+      <div class="toolbar">
+        <div><h2>Orders</h2><p class="muted">Every order with full customer, wedding, and purchase details.</p></div>
+        <div class="toolbar-actions"><button class="btn primary" id="order-create">Create order</button></div>
+      </div>
+      <div class="orders-stats">
+        <span class="chip">Total <strong>${all.length}</strong></span>
+        <span class="chip">Pending <strong>${countBy('Pending')}</strong></span>
+        <span class="chip">In Progress <strong>${countBy('In Progress')}</strong></span>
+        <span class="chip">Completed <strong>${countBy('Completed')}</strong></span>
+        <span class="chip">Paid Revenue <strong>${money(paidRevenue)}</strong></span>
+      </div>
+      <div class="filter-bar">
+        <input id="orders-query" type="search" placeholder="Search customer, couple, product, venue..." value="${esc(ui.query)}">
+        <select id="orders-payment">
+          ${['all', 'Pending', 'Paid'].map((v) => `<option value="${v}" ${ui.payment === v ? 'selected' : ''}>${v === 'all' ? 'All payments' : 'Payment: ' + v}</option>`).join('')}
+        </select>
+        <select id="orders-status">
+          ${['all', 'Pending', 'In Progress', 'Completed', 'Cancelled'].map((v) => `<option value="${v}" ${ui.status === v ? 'selected' : ''}>${v === 'all' ? 'All statuses' : 'Status: ' + v}</option>`).join('')}
+        </select>
+        <select id="orders-sort">
+          ${[['newest', 'Newest first'], ['oldest', 'Oldest first'], ['wedding', 'Wedding date'], ['amount_desc', 'Amount: high to low'], ['amount_asc', 'Amount: low to high'], ['name', 'Customer A–Z']].map(([v, t]) => `<option value="${v}" ${ui.sort === v ? 'selected' : ''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Customer</th><th>Wedding</th><th>Product</th><th>Total</th><th>Payment</th><th>Status</th><th>Placed</th><th>Actions</th></tr></thead>
+          <tbody>${pageRows.map(orderRowMarkup).join('') || '<tr><td colspan="8" class="muted" style="text-align:center; padding: 28px;">No orders match the current filters.</td></tr>'}</tbody>
+        </table>
+      </div>
+      ${pagerMarkup('orders', rows.length)}
+    `;
+
+    wrap.querySelector('#order-create').addEventListener('click', () => openEditor('orders'));
+    const query = wrap.querySelector('#orders-query');
+    query.addEventListener('input', () => {
+      ui.query = query.value;
+      state.page.orders = 1;
+      render();
+      const next = document.getElementById('orders-query');
+      if (next) { next.focus(); next.setSelectionRange(next.value.length, next.value.length); }
+    });
+    [['orders-payment', 'payment'], ['orders-status', 'status'], ['orders-sort', 'sort']].forEach(([id, key]) => {
+      wrap.querySelector(`#${id}`).addEventListener('change', (event) => {
+        ui[key] = event.target.value;
+        state.page.orders = 1;
+        render();
+      });
+    });
+    wrap.querySelectorAll('[data-view-order]').forEach((btn) => btn.addEventListener('click', () => openOrderDrawer(btn.dataset.viewOrder)));
+    wrap.querySelectorAll('[data-mark-paid]').forEach((btn) => btn.addEventListener('click', () => updateOrder(btn.dataset.markPaid, { payment_status: 'Paid' })));
+    wrap.querySelectorAll('[data-delete-order]').forEach((btn) => btn.addEventListener('click', () => confirmDelete('orders', btn.dataset.deleteOrder)));
+    wrap.querySelectorAll('[data-page]').forEach((btn) => btn.addEventListener('click', () => {
+      state.page.orders = Math.max(1, (state.page.orders || 1) + Number(btn.dataset.page));
+      render();
+    }));
+    return wrap;
+  }
+
+  function ensureDrawer() {
+    if (document.getElementById('order-drawer')) return;
+    const backdrop = document.createElement('div');
+    backdrop.id = 'drawer-backdrop';
+    backdrop.className = 'drawer-backdrop';
+    backdrop.addEventListener('click', closeOrderDrawer);
+    const drawer = document.createElement('aside');
+    drawer.id = 'order-drawer';
+    drawer.className = 'drawer';
+    document.body.append(backdrop, drawer);
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeOrderDrawer(); });
+  }
+
+  function detailItem(label, value, full) {
+    return `<div class="detail-item${full ? ' full' : ''}"><span>${label}</span><strong>${value}</strong></div>`;
+  }
+
+  function openOrderDrawer(id) {
+    const o = state.data.orders.find((row) => String(row.id) === String(id));
+    if (!o) return;
+    ensureDrawer();
+    state.drawerOrderId = String(id);
+    const wa = waHref(o);
+    const statusSelect = (name, options, current) => `<select data-status-field="${name}">${options.map((v) => `<option ${v === (current || 'Pending') ? 'selected' : ''}>${v}</option>`).join('')}</select>`;
+    const drawer = document.getElementById('order-drawer');
+    drawer.innerHTML = `
+      <div class="drawer-head">
+        <div><p class="eyebrow">Order</p><h2>${esc(o.customer_name || 'Customer')}</h2></div>
+        <button class="icon-btn" id="drawer-close" aria-label="Close">✕</button>
+      </div>
+      <div class="drawer-badges">${statusPill(o.payment_status)}${statusPill(o.order_status)}<span class="pill">${money(o.total_amount)}</span></div>
+      <div class="drawer-section"><h3>Customer</h3><div class="detail-grid">
+        ${detailItem('Full Name', esc(o.customer_name || '—'))}
+        ${detailItem('Phone', esc(o.whatsapp_number || '—'))}
+        ${detailItem('Email', esc(o.email || '—'))}
+        ${detailItem('Language', esc(o.preferred_language || '—'))}
+      </div></div>
+      <div class="drawer-section"><h3>Wedding Details</h3><div class="detail-grid">
+        ${detailItem('Bride', esc(o.bride_name || '—'))}
+        ${detailItem('Groom', esc(o.groom_name || '—'))}
+        ${detailItem('Wedding Date', fmtDate(o.wedding_date))}
+        ${detailItem('Venue', esc(o.venue || '—'))}
+        ${detailItem('Color Preference', esc(o.color_preference || '—'))}
+        ${detailItem('Music Link', o.music_link ? `<a href="${esc(o.music_link)}" target="_blank" rel="noopener noreferrer" style="color: var(--gold);">Open link</a>` : '—')}
+        ${detailItem('Special Requests', esc(o.special_requests || '—'), true)}
+      </div></div>
+      <div class="drawer-section"><h3>Purchase</h3><div class="detail-grid">
+        ${detailItem('Product', esc(o.purchased_product || o.purchased_bundle || '—'))}
+        ${detailItem('Category', esc(o.product_category || '—'))}
+        ${detailItem('Price', money(o.total_amount))}
+        ${detailItem('Order Date', fmtDate(o.order_date || o.created_at, true))}
+      </div></div>
+      <div class="drawer-section"><h3>Status</h3><div class="detail-grid">
+        <label>Payment Status ${statusSelect('payment_status', ['Pending', 'Paid'], o.payment_status)}</label>
+        <label>Order Status ${statusSelect('order_status', ['Pending', 'In Progress', 'Completed', 'Cancelled'], o.order_status)}</label>
+      </div></div>
+      <div class="drawer-actions">
+        <button class="btn ghost" id="drawer-edit">Edit</button>
+        ${wa ? `<a class="btn ghost" href="${wa}" target="_blank" rel="noopener noreferrer">Open WhatsApp</a>` : ''}
+        ${(o.payment_status || 'Pending') !== 'Paid' ? '<button class="btn primary" id="drawer-paid">Mark as Paid</button>' : ''}
+        <button class="btn danger" id="drawer-delete">Delete Order</button>
+      </div>
+    `;
+    drawer.querySelector('#drawer-close').addEventListener('click', closeOrderDrawer);
+    drawer.querySelector('#drawer-edit').addEventListener('click', () => { closeOrderDrawer(); openEditor('orders', o); });
+    const paidBtn = drawer.querySelector('#drawer-paid');
+    if (paidBtn) paidBtn.addEventListener('click', () => updateOrder(o.id, { payment_status: 'Paid' }));
+    drawer.querySelector('#drawer-delete').addEventListener('click', () => { closeOrderDrawer(); confirmDelete('orders', o.id); });
+    drawer.querySelectorAll('[data-status-field]').forEach((sel) => sel.addEventListener('change', () => updateOrder(o.id, { [sel.dataset.statusField]: sel.value })));
+    document.getElementById('drawer-backdrop').classList.add('show');
+    drawer.classList.add('open');
+  }
+
+  function closeOrderDrawer() {
+    state.drawerOrderId = null;
+    const drawer = document.getElementById('order-drawer');
+    if (drawer) drawer.classList.remove('open');
+    const backdrop = document.getElementById('drawer-backdrop');
+    if (backdrop) backdrop.classList.remove('show');
+  }
+
+  async function updateOrder(id, patch) {
+    const index = state.data.orders.findIndex((row) => String(row.id) === String(id));
+    if (index === -1) return;
+    if (client && state.session) {
+      const { data, error } = await client.from('orders').update(patch).eq('id', id).select().single();
+      if (error) return toast(error.message, 'error');
+      state.data.orders[index] = data;
+    } else {
+      state.data.orders[index] = { ...state.data.orders[index], ...patch, updated_at: new Date().toISOString() };
+    }
+    toast('Order updated.');
+    render();
+    if (state.drawerOrderId === String(id) && document.getElementById('order-drawer')?.classList.contains('open')) {
+      openOrderDrawer(id);
+    }
   }
 
   function settingsView() {

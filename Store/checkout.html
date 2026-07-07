@@ -76,6 +76,14 @@
               </div>
             </div>
 
+            <!-- Wedding Details -->
+            <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
+              <h3 style="margin-bottom: 24px;">Wedding Details</h3>
+              <div id="wedding-summary" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px;">
+                <!-- Wedding details loaded by JavaScript -->
+              </div>
+            </div>
+
             <!-- Payment Method -->
             <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
               <h3 style="margin-bottom: 24px;">Payment Method</h3>
@@ -144,7 +152,7 @@
       window.MEMORA_SUPABASE.anonKey
     );
 
-    // Load order data
+    // Order data is held in localStorage only between the form and this page.
     const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
 
     document.getElementById('fullName').value = orderData.fullName || '';
@@ -152,18 +160,21 @@
     document.getElementById('phone').value = orderData.phone || '';
 
     const productCatalog = {
-      'standard': { name: 'Modern Minimal', price: 500 },
-      'premium': { name: 'Luxury Bloom', price: 800 },
-      'authentic': { name: 'Authentic', price: 800 },
-      'memora-essential': { name: 'Memora Essential', price: 950 },
-      'memora-signature': { name: 'Memora Signature', price: 1250 },
+      'standard': { name: 'Modern Minimal', category: 'Standard', price: 500 },
+      'premium': { name: 'Luxury Bloom', category: 'Premium', price: 800 },
+      'authentic': { name: 'Authentic', category: 'Premium', price: 800 },
+      'memora-essential': { name: 'Memora Essential', category: 'Bundle', price: 950 },
+      'memora-signature': { name: 'Memora Signature', category: 'Bundle', price: 1250 },
     };
+
+    const languageLabels = { english: 'English', spanish: 'Spanish', french: 'French', arabic: 'Arabic', other: 'Other' };
+    const colorLabels = { gold: 'Gold & Ivory', rose: 'Rose & Blush', emerald: 'Emerald & Gold', navy: 'Navy & Gold', custom: 'Custom / Not Sure' };
 
     const cartItems = [];
     if (orderData.product && productCatalog[orderData.product]) {
       cartItems.push({ ...productCatalog[orderData.product], quantity: 1 });
     } else {
-      cartItems.push({ name: 'Memora Order', price: 0, quantity: 1 });
+      cartItems.push({ name: 'Memora Order', category: '', price: 0, quantity: 1 });
     }
 
     // Update cart display
@@ -179,11 +190,32 @@
       itemEl.innerHTML = `
         <div>
           <div style="font-weight: 600;">${item.name}</div>
-          <div style="font-size: 12px; color: var(--text-light);">Qty: ${item.quantity}</div>
+          <div style="font-size: 12px; color: var(--text-light);">${item.category ? item.category + ' · ' : ''}Qty: ${item.quantity}</div>
         </div>
         <div style="font-weight: 600; text-align: right;">EGP ${itemTotal.toFixed(2)}</div>
       `;
       cartContainer.appendChild(itemEl);
+    });
+
+    // Wedding details summary
+    const weddingSummary = document.getElementById('wedding-summary');
+    const summaryFields = [
+      ['Bride', orderData.brideName],
+      ['Groom', orderData.groomName],
+      ['Wedding Date', orderData.weddingDate],
+      ['Venue', orderData.venue],
+      ['Color Preference', colorLabels[orderData.colorPreference] || orderData.colorPreference],
+      ['Language', languageLabels[orderData.language] || orderData.language],
+      ['Music Link', orderData.musicLink],
+      ['Special Requests', orderData.specialRequests],
+    ];
+    summaryFields.forEach(([label, value]) => {
+      const el = document.createElement('div');
+      el.innerHTML = `
+        <div style="font-size: 12px; color: var(--text-light); margin-bottom: 2px;">${label}</div>
+        <div style="font-size: 14px; font-weight: 600; word-break: break-word;">${value || '—'}</div>
+      `;
+      weddingSummary.appendChild(el);
     });
 
     // Calculate totals
@@ -210,7 +242,8 @@
       const payButton = document.getElementById('pay-button');
       payButton.disabled = true;
 
-      const productName = cartItems[0]?.name || 'Unknown Product';
+      const product = cartItems[0];
+      const productName = product?.name || 'Unknown Product';
 
       const { error } = await supabaseClient
         .from('orders')
@@ -218,8 +251,18 @@
           customer_name: orderData.fullName,
           whatsapp_number: orderData.phone,
           email: orderData.email,
+          preferred_language: languageLabels[orderData.language] || orderData.language || null,
+          bride_name: orderData.brideName || null,
+          groom_name: orderData.groomName || null,
+          wedding_date: orderData.weddingDate || null,
+          venue: orderData.venue || null,
+          color_preference: colorLabels[orderData.colorPreference] || orderData.colorPreference || null,
+          music_link: orderData.musicLink || null,
+          special_requests: orderData.specialRequests || null,
           purchased_product: productName,
+          product_category: product?.category || null,
           total_amount: total,
+          order_date: new Date().toISOString(),
           payment_status: 'Pending',
           order_status: 'Pending'
         }]);
@@ -234,19 +277,23 @@
       const message =
 `Hello Memora 👋
 
-I would like to purchase:
+I have just placed a new order:
 
-Product: ${productName}
+🛍️ Product: ${productName}
+💰 Total Price: EGP ${total}
 
-Price: ${total} EGP
+👤 Customer Details
+• Name: ${orderData.fullName}
+• Phone: ${orderData.phone}
+• Email: ${orderData.email}
 
-Name: ${orderData.fullName}
+💍 Wedding Details
+• Bride: ${orderData.brideName || '—'}
+• Groom: ${orderData.groomName || '—'}
+• Wedding Date: ${orderData.weddingDate || '—'}
+• Venue: ${orderData.venue || '—'}
 
-Phone: ${orderData.phone}
-
-Email: ${orderData.email}
-
-I have completed the InstaPay transfer and will send the payment screenshot now.`;
+✅ I have completed the InstaPay transfer and will send the payment screenshot now.`;
 
       localStorage.removeItem('memora-order');
       localStorage.removeItem('memora-cart');
