@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Valentine's Memories</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            background-attachment: fixed;
+            color: #4a2c2a;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Floating Hearts Animation */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-hearts span {
+            position: absolute;
+            display: block;
+            animation: float-up 15s infinite;
+            opacity: 0.6;
+        }
+
+
+        /* Page Navigation & Layout */
+        .page-section {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page-section.active {
+            display: flex;
+        }
+
+        /* Page 1: Lock Screen */
+        .lock-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .lock-title {
+            font-family: 'Dancing Script', cursive;
+            color: #e91e63;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .heart-lock {
+            font-size: 80px;
+            margin: 20px 0;
+            color: #ff6b9d;
+            animation: pulse 2s infinite;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ffb6c1;
+            border-radius: 12px;
+            font-size: 1.2em;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .password-input:focus {
+            border-color: #e91e63;
+            box-shadow: 0 0 10px rgba(233, 30, 99, 0.2);
+        }
+
+        .unlock-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .unlock-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .hint-text {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.9em;
+            color: rgba(184, 90, 113, 0.7);
+            font-style: italic;
+        }
+
+        /* Page 2: Proposal */
+        .proposal-title {
+            font-family: 'Dancing Script', cursive;
+            color: #e91e63;
+            font-size: 3.5em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            /* For button movement context if needed */
+        }
+
+        .proposal-btn {
+            padding: 15px 40px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-yes {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            background: #45a049;
+        }
+
+        .btn-no {
+            background: #ff4757;
+            color: white;
+            position: relative;
+            /* Changed to absolute in JS or keeps relative until hover */
+        }
+
+        /* Updates to existing container for Page 3 */
+        #main-content {
+            display: none;
+            /* Hidden by default */
+            padding-top: 20px;
+            padding-bottom: 50px;
+        }
+
+        /* Animation for Floating Hearts */
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(255, 105, 135, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #e91e63;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.2);
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1em;
+            color: #b85a71;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .tsa-lock-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .tumbler-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 50px;
+        }
+
+        .tumbler-digit {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #f9f9f9, white, #f9f9f9);
+            width: 100%;
+            user-select: none;
+        }
+
+        .tumbler-btn {
+            width: 100%;
+            height: 30px;
+            background: #e91e63;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background 0.2s;
+            user-select: none;
+        }
+
+        .tumbler-btn:hover {
+            background: #d81b60;
+        }
+
+        .tumbler-btn:active {
+            background: #c2185b;
+        }
+
+
+
+        .heart-icon {
+            font-size: 1.5em;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Photo Gallery */
+        .gallery-wrapper {
+            margin: 30px 0;
+            padding: 20px 0;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .swiper {
+            width: 90%;
+            height: 480px;
+            max-width: 380px;
+            margin: 0 auto;
+            padding: 20px 0;
+            overflow: visible;
+        }
+
+        .upload-btn-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .upload-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px dashed #e91e63;
+            color: #e91e63;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn:hover {
+            background: #ffe6eb;
+            transform: translateY(-2px);
+        }
+
+        .swiper-slide {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            background: #fff;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        /* Memory Timeline */
+        .memories-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .memories-section h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #e91e63;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .memory-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(255, 218, 233, 0.3) 100%);
+            border-radius: 16px;
+            border-left: 4px solid #e91e63;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .memory-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.15);
+        }
+
+        .memory-icon {
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .memory-content {
+            flex: 1;
+        }
+
+        .memory-date {
+            font-size: 0.85em;
+            color: #e91e63;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .memory-text {
+            font-size: 1em;
+            line-height: 1.5;
+            color: #5a3d3d;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px dashed rgba(233, 30, 99, 0.3);
+            text-align: center;
+        }
+
+        .footer .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+            color: #e91e63;
+            margin-bottom: 8px;
+        }
+
+        .footer .tagline {
+            font-size: 0.95em;
+            color: #b85a71;
+            font-style: italic;
+        }
+
+        /* Swipe hint */
+        .swipe-hint {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #b85a71;
+            opacity: 0.8;
+        }
+
+        /* Countdown Timer */
+        .countdown-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 15px 20px;
+            border-radius: 12px;
+            min-width: 70px;
+        }
+
+        .countdown-number {
+            font-size: 2em;
+            font-weight: 600;
+            display: block;
+        }
+
+        .countdown-label {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+
+        .countdown-passed {
+            font-size: 1.3em;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Love Letter */
+        .love-letter-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .envelope-btn {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            border: none;
+            padding: 20px 40px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 117, 140, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .envelope-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 117, 140, 0.5);
+        }
+
+        .envelope-btn:active {
+            transform: translateY(0);
+        }
+
+        .envelope-icon {
+            font-size: 1.5em;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            100% {
+                transform: rotate(-5deg);
+            }
+
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .love-letter-content {
+            display: none;
+            margin-top: 25px;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe4ec 100%);
+            border-radius: 20px;
+            border: 2px solid #ffb6c1;
+            text-align: left;
+            animation: unfold 0.5s ease-out;
+        }
+
+        .love-letter-content.show {
+            display: block;
+        }
+
+        @keyframes unfold {
+            0% {
+                opacity: 0;
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+
+            100% {
+                opacity: 1;
+                transform: scaleY(1);
+            }
+        }
+
+        .letter-header {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+            color: #e91e63;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .letter-body {
+            font-size: 1em;
+            line-height: 1.8;
+            color: #5a3d3d;
+        }
+
+        .letter-body p {
+            margin-bottom: 15px;
+        }
+
+        .letter-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5em;
+            color: #e91e63;
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 4s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(-100%) rotate(0deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe4ec 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(233, 30, 99, 0.2);
+        }
+
+        .section-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+            color: #e91e63;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Reasons List */
+        .reasons-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .reasons-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            border-left: 4px solid #ff6b9d;
+            transition: transform 0.2s ease;
+        }
+
+        .reasons-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .reason-number {
+            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85em;
+            flex-shrink: 0;
+        }
+
+        .reason-text {
+            color: #5a3d3d;
+            line-height: 1.5;
+        }
+
+        /* Bucket List */
+        .bucket-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .bucket-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .bucket-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(233, 30, 99, 0.15);
+        }
+
+        .bucket-icon {
+            font-size: 1.5em;
+        }
+
+        .bucket-text {
+            color: #5a3d3d;
+            font-size: 0.95em;
+        }
+
+        /* Playlist */
+        .playlist-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s ease;
+        }
+
+        .song-item:hover {
+            transform: translateX(5px);
+        }
+
+        .song-number {
+            font-size: 1.5em;
+        }
+
+        .song-info {
+            flex: 1;
+        }
+
+        .song-title {
+            font-weight: 600;
+            color: #4a2c2a;
+            margin-bottom: 2px;
+        }
+
+        .song-artist {
+            font-size: 0.85em;
+            color: #b85a71;
+        }
+
+        /* Quiz Modal */
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .quiz-modal.show {
+            display: flex;
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe4ec 100%);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: quiz-appear 0.3s ease-out;
+        }
+
+        @keyframes quiz-appear {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .quiz-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+            color: #e91e63;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .quiz-subtitle {
+            text-align: center;
+            color: #b85a71;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question p {
+            font-weight: 600;
+            color: #4a2c2a;
+            margin-bottom: 12px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #ffb6c1;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .quiz-option:hover {
+            border-color: #e91e63;
+            background: #fff0f3;
+        }
+
+        .quiz-option.selected {
+            border-color: #e91e63;
+            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
+            color: white;
+        }
+
+        .quiz-option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .quiz-option.wrong {
+            border-color: #f44336;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .quiz-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #e91e63 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .quiz-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 30, 99, 0.3);
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .quiz-result.show {
+            display: block;
+        }
+
+        .quiz-score {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+
+        .quiz-message {
+            color: #5a3d3d;
+            margin-bottom: 20px;
+        }
+
+        /* Mobile Responsive Styles */
+
+        /* Tablet */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+                word-wrap: break-word;
+            }
+
+            .swiper {
+                height: 450px;
+                max-width: 340px;
+            }
+
+            .memory-item {
+                padding: 14px;
+            }
+
+            .memories-section h2 {
+                font-size: 1.7em;
+            }
+
+            .gallery-wrapper {
+                margin: 20px 0;
+                padding: 15px 0;
+            }
+        }
+
+        /* Mobile phones */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            .container {
+                padding: 20px 12px;
+                border-radius: 16px;
+                margin: 0 2px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+                line-height: 1.3;
+            }
+
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 20px;
+            }
+
+            .heart-icon {
+                font-size: 1.2em;
+            }
+
+            .swiper {
+                height: 400px;
+                max-width: 85%;
+                width: 85%;
+                padding: 10px 0;
+            }
+
+            .swiper-slide {
+                border-radius: 16px;
+            }
+
+            .gallery-wrapper {
+                margin: 15px 0;
+                padding: 10px 0;
+            }
+
+            .swipe-hint {
+                font-size: 0.8em;
+                margin-top: 10px;
+            }
+
+            .memories-section {
+                margin-top: 25px;
+            }
+
+            .memories-section h2 {
+                font-size: 1.5em;
+                margin-bottom: 18px;
+            }
+
+            .memory-item {
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 10px;
+                margin-bottom: 10px;
+                border-radius: 12px;
+            }
+
+            .memory-icon {
+                font-size: 1.3em;
+            }
+
+            .memory-date {
+                font-size: 0.8em;
+            }
+
+            .memory-text {
+                font-size: 0.9em;
+                line-height: 1.45;
+                word-wrap: break-word;
+            }
+
+            .footer {
+                margin-top: 25px;
+                padding-top: 20px;
+            }
+
+            .footer .signature {
+                font-size: 1.3em;
+            }
+
+            .footer .tagline {
+                font-size: 0.85em;
+                line-height: 1.4;
+            }
+
+            /* Reduce floating hearts on mobile for performance */
+            .floating-hearts span {
+                opacity: 0.4;
+            }
+
+            /* Mobile styling for Lock & Proposal Pages */
+            .lock-container,
+            .proposal-container {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .lock-title {
+                font-size: 2em;
+            }
+
+            .heart-lock svg {
+                width: 80px;
+                height: 80px;
+            }
+
+            .tsa-lock-container {
+                gap: 5px;
+                padding: 10px;
+            }
+
+            .tumbler-wrapper {
+                width: 40px;
+            }
+
+            .tumbler-digit {
+                font-size: 1.5em;
+                height: 50px;
+            }
+
+            .tumbler-btn {
+                height: 25px;
+                font-size: 0.7em;
+            }
+
+            .proposal-title {
+                font-size: 2.2em;
+                padding: 0 10px;
+            }
+
+            .proposal-btn {
+                padding: 12px 30px;
+                font-size: 1.2em;
+            }
+
+            #noBtn {
+                /* Ensure absolute positioning context works better on small screens if moved */
+                transition: none;
+                /* Instant move on mobile to prevent accidental clicks */
+            }
+        }
+
+        /* Extra small phones (iPhone SE, older devices) */
+        @media screen and (max-width: 360px) {
+            body {
+                padding: 6px;
+            }
+
+            .container {
+                padding: 18px 10px;
+                border-radius: 14px;
+            }
+
+            h1 {
+                font-size: 1.4em;
+            }
+
+            .subtitle {
+                font-size: 0.8em;
+            }
+
+            .swiper {
+                height: 340px;
+            }
+
+            .memories-section h2 {
+                font-size: 1.3em;
+            }
+
+            .memory-item {
+                padding: 10px 8px;
+            }
+
+            .memory-text {
+                font-size: 0.85em;
+            }
+
+            .footer .signature {
+                font-size: 1.2em;
+            }
+
+            .footer .tagline {
+                font-size: 0.8em;
+            }
+        }
+
+        /* Landscape orientation on mobile */
+        @media screen and (max-width: 768px) and (orientation: landscape) {
+            .swiper {
+                height: 280px;
+                max-width: 300px;
+            }
+
+            .gallery-wrapper {
+                margin: 10px 0;
+                padding: 10px 0;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .memory-item:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .memory-item:active {
+                transform: scale(0.98);
+                background: linear-gradient(135deg, rgba(255, 182, 193, 0.5) 0%, rgba(255, 218, 233, 0.5) 100%);
+            }
+
+            .swiper {
+                touch-action: pan-y;
+            }
+        }
+
+        /* Editable Input Styles - Minimalist Redesign */
+        .editable-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(233, 30, 99, 0.3);
+            /* Underline style */
+            width: 100%;
+            font-family: inherit;
+            font-size: 1em;
+            color: #5a3d3d;
+            padding: 5px 0;
+            /* Minimal padding */
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0;
+            /* Clear rounded corners */
+            margin-bottom: 8px;
+        }
+
+        .editable-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            /* Very subtle background for large text */
+            border: 1px solid rgba(233, 30, 99, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            font-family: inherit;
+            /* Consider 'Dancing Script' for letter specifically? */
+            font-size: 1em;
+            color: #5a3d3d;
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* Focus Effects */
+        .editable-input:focus {
+            border-bottom-color: #e91e63;
+            border-bottom-width: 3px;
+            background: linear-gradient(to top, rgba(233, 30, 99, 0.05), transparent);
+        }
+
+        .editable-textarea:focus {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: #e91e63;
+            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.1);
+        }
+
+        /* Placeholder styling */
+        .editable-input::placeholder,
+        .editable-textarea::placeholder {
+            color: rgba(184, 90, 113, 0.5);
+            font-style: italic;
+        }
+
+        /* Specific tweaks for story date */
+        .story-date {
+            font-weight: 600;
+            color: #e91e63;
+            font-size: 0.95em;
+        }
+
+        /* Layout fixes for lists */
+        .reasons-list li .editable-input,
+        .bucket-item .editable-input {
+            flex: 1;
+            width: auto;
+            margin-bottom: 0;
+            margin-top: -5px;
+            /* Slight alignment tweak */
+        }
+
+        .reasons-list li,
+        .bucket-item {
+            align-items: center;
+            /* Center vertically */
+        }
+
+        /* Ensure buckets grid works with new inputs */
+        .bucket-list {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            /* slightly wider for inputs */
+        }
+
+        /* Editable Emoji Styles */
+        .editable-emoji {
+            background: transparent;
+            border: none;
+            font-size: 1.5em;
+            width: 50px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .editable-emoji:hover {
+            transform: scale(1.2);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .editable-emoji:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(233, 30, 99, 0.2);
+        }
+
+        /* Edit Mode Styles */
+        body:not(.edit-mode) .add-btn-container,
+        body:not(.edit-mode) .delete-btn {
+            display: none !important;
+        }
+
+        body:not(.edit-mode) .editable-input,
+        body:not(.edit-mode) .editable-textarea {
+            border-bottom-color: transparent;
+            /* Hide underline in view mode */
+            pointer-events: none;
+            /* Read-only */
+        }
+
+        body:not(.edit-mode) .editable-emoji {
+            pointer-events: none;
+        }
+
+        .edit-toggle-btn {
+            position: fixed;
+            bottom: 30px;
+            /* Move to bottom */
+            right: 30px;
+            /* Move to right */
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.6);
+            /* More transparent initially */
+            border: 2px solid #e91e63;
+            color: #e91e63;
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            opacity: 0.7;
+            /* Fade out when not hovering */
+        }
+
+        .edit-toggle-btn:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.05);
+            /* Slight grow on hover */
+        }
+
+        .edit-toggle-btn.active {
+            background: #e91e63;
+            color: white;
+            opacity: 1;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-left: 5px;
+            transition: transform 0.2s;
+            opacity: 0.7;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        /* Delete Photo Button on Slides */
+        .delete-photo-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e91e63;
+            color: #e91e63;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 16px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .delete-photo-btn:hover {
+            background: #e91e63;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Floating Hearts Background -->
+    <div class="floating-hearts">
+        <span style="left: 10%; animation-delay: 0s; font-size: 20px;">💕</span>
+        <span style="left: 20%; animation-delay: 2s; font-size: 15px;">💗</span>
+        <span style="left: 35%; animation-delay: 4s; font-size: 25px;">❤️</span>
+        <span style="left: 50%; animation-delay: 1s; font-size: 18px;">💖</span>
+        <span style="left: 65%; animation-delay: 3s; font-size: 22px;">💕</span>
+        <span style="left: 80%; animation-delay: 5s; font-size: 16px;">💗</span>
+        <span style="left: 90%; animation-delay: 2.5s; font-size: 20px;">❤️</span>
+    </div>
+
+    <!-- Page 1: Lock Screen -->
+    <div id="lock-screen" class="page-section active">
+        <div class="lock-container">
+            <h1 class="lock-title">Unlock for Surprise 🔒</h1>
+            <div class="heart-lock">
+                <svg width="120" height="120" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                    style="overflow: visible;">
+                    <!-- Shackle -->
+                    <path d="M30 40 V 25 A 20 20 0 0 1 70 25 V 40" fill="none" stroke="#e91e63" stroke-width="8"
+                        stroke-linecap="round" />
+                    <!-- Heart Body -->
+                    <path
+                        d="M50 90 C 20 70 5 50 5 35 C 5 20 25 15 35 15 C 42 15 47 20 50 25 C 53 20 58 15 65 15 C 75 15 95 20 95 35 C 95 50 80 70 50 90 Z"
+                        fill="#ffb6c1" stroke="#e91e63" stroke-width="4" transform="translate(0, 10)" />
+                    <!-- Keyhole -->
+                    <circle cx="50" cy="50" r="6" fill="#e91e63" />
+                    <rect x="47" y="50" width="6" height="12" fill="#e91e63" />
+                </svg>
+            </div>
+            <p style="font-size: 1.2em; color: #b85a71;">The password is our date</p>
+            <!-- TSA Lock Mechanism -->
+            <div class="tsa-lock-container">
+                <div class="tumbler-wrapper">
+                    <div class="tumbler-btn up" onclick="updateTumbler(0, 1)">▲</div>
+                    <div class="tumbler-digit" id="digit-0">0</div>
+                    <div class="tumbler-btn down" onclick="updateTumbler(0, -1)">▼</div>
+                </div>
+                <div class="tumbler-wrapper">
+                    <div class="tumbler-btn up" onclick="updateTumbler(1, 1)">▲</div>
+                    <div class="tumbler-digit" id="digit-1">0</div>
+                    <div class="tumbler-btn down" onclick="updateTumbler(1, -1)">▼</div>
+                </div>
+                <div class="tumbler-wrapper">
+                    <div class="tumbler-btn up" onclick="updateTumbler(2, 1)">▲</div>
+                    <div class="tumbler-digit" id="digit-2">0</div>
+                    <div class="tumbler-btn down" onclick="updateTumbler(2, -1)">▼</div>
+                </div>
+                <div class="tumbler-wrapper">
+                    <div class="tumbler-btn up" onclick="updateTumbler(3, 1)">▲</div>
+                    <div class="tumbler-digit" id="digit-3">0</div>
+                    <div class="tumbler-btn down" onclick="updateTumbler(3, -1)">▼</div>
+                </div>
+            </div>
+            <button class="unlock-btn" onclick="checkPassword()">Unlock ❤️</button>
+        </div>
+    </div>
+
+    <!-- Page 2: Proposal -->
+    <div id="proposal-screen" class="page-section">
+        <h1 class="proposal-title">Will you be my Valentine? 🌹</h1>
+        <div class="buttons-container">
+            <button class="proposal-btn btn-yes" onclick="acceptProposal()">Yes! 💖</button>
+            <button class="proposal-btn btn-no" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">No
+                😢</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <button class="edit-toggle-btn" onclick="toggleEditMode()">✏️ Edit Page</button>
+        <div class="container">
+            <h1>Happy Valentine's Day <span class="heart-icon">💖</span></h1>
+            <p class="subtitle">To the love of my life</p>
+
+            <!-- Swipeable Photo Gallery -->
+            <div class="gallery-wrapper">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <!-- Slides will be added dynamically by user upload -->
+                        <div class="swiper-slide" id="placeholder-slide"
+                            style="display: flex; justify-content: center; align-items: center; background: #f8f8f8; color: #aaa; text-align: center;">
+                            <div style="padding: 20px;">
+                                <span style="font-size: 3em; display: block; margin-bottom: 10px;">📸</span>
+                                <p>No memories yet!<br>Upload photos below.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <p class="swipe-hint">👆 Swipe to see more memories</p>
+
+                <div class="upload-btn-container">
+                    <button class="upload-btn" onclick="document.getElementById('photoUpload').click()">
+                        <span>➕ Add More Memories</span>
+                    </button>
+                    <input type="file" id="photoUpload" multiple accept="image/*" style="display: none;"
+                        onchange="handlePhotoUpload(this)">
+                </div>
+            </div>
+
+            <!-- Memory Timeline -->
+            <div class="memories-section">
+                <h2>Our Love Story 💕</h2>
+                <div id="love-story-container">
+                    <div class="memory-item">
+                        <input type="text" class="editable-emoji story-icon" value="🌟" oninput="saveContent()">
+                        <div class="memory-content">
+                            <input type="text" class="editable-input story-date" placeholder="Date (e.g., Nov 9, 2020)"
+                                oninput="saveContent()">
+                            <textarea class="editable-textarea story-text" placeholder="What happened?" rows="2"
+                                oninput="saveContent()"></textarea>
+                        </div>
+                        <button class="delete-btn" onclick="removeSelf(this)" title="Delete item">🗑️</button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 15px;" class="add-btn-container">
+                <button class="unlock-btn" style="font-size: 0.9em; padding: 8px 20px;" onclick="addStoryItem()">➕ Add
+                    Memory</button>
+            </div>
+        </div>
+
+        <!-- Countdown Timer Section -->
+        <div class="countdown-section">
+            <p class="countdown-title">💝 Countdown to Valentine's Day 💝</p>
+            <div class="countdown-timer" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anniversary Countdown Section -->
+        <div class="countdown-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <p class="countdown-title">💍 Countdown to Our Anniversary (July 24) 💍</p>
+            <div class="countdown-timer" id="anniversaryCountdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="annDays">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="annHours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="annMinutes">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="annSeconds">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Relationship Duration Counter -->
+        <div class="countdown-section" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <p class="countdown-title">❤️ Together Since July 24, 2024 ❤️</p>
+            <div class="countdown-timer" id="relationshipDuration">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="relYears">0</span>
+                    <span class="countdown-label">Years</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="relMonths">0</span>
+                    <span class="countdown-label">Months</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="relDays">0</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="relTotalDays">0</span>
+                    <span class="countdown-label">Total Days</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Love Letter Section -->
+        <div class="love-letter-section">
+            <button class="envelope-btn" onclick="revealLetter()">
+                <span class="envelope-icon">💌</span>
+                <span>Open My Love Letter</span>
+            </button>
+            <div class="love-letter-content" id="loveLetter">
+                <h3 class="letter-header">My Dearest...</h3>
+                <textarea id="loveLetterText" class="editable-textarea"
+                    style="min-height: 400px; font-family: 'Dancing Script', cursive; font-size: 1.5em; line-height: 1.5; background: rgba(255,255,255,0.4);"
+                    placeholder="Write your love letter here..." oninput="saveContent()"></textarea>
+                <p class="letter-signature">Forever yours, <input type="text" class="editable-input"
+                        style="width: 200px; display: inline-block; text-align: left;" placeholder="Your Name"
+                        id="letterSignature" oninput="saveContent()"></p>
+            </div>
+        </div>
+
+        <!-- Reasons I Love You Section -->
+        <div class="content-section">
+            <h2 class="section-title">💕 Reasons I Love You 💕</h2>
+            <ul class="reasons-list">
+                <li><span class="reason-number">1</span><input type="text" class="editable-input reason-input"
+                        placeholder="Reason #1" oninput="saveContent()"> <button class="delete-btn"
+                        onclick="removeSelf(this)" title="Delete item">🗑️</button></li>
+            </ul>
+            <div style="text-align: center; margin-top: 15px;" class="add-btn-container">
+                <button class="unlock-btn" style="font-size: 0.9em; padding: 8px 20px;" onclick="addReasonItem()">➕ Add
+                    Reason</button>
+            </div>
+        </div>
+
+        <!-- Our Bucket List Section -->
+        <div class="content-section">
+            <h2 class="section-title">✨ Our Bucket List ✨</h2>
+            <div class="bucket-list">
+                <div class="bucket-item"><input type="text" class="editable-emoji bucket-icon" value="🌊"
+                        oninput="saveContent()"><input type="text" class="editable-input bucket-input"
+                        placeholder="Bucket list item..." oninput="saveContent()"> <button class="delete-btn"
+                        onclick="removeSelf(this)" title="Delete item">�️</button></div>
+            </div>
+            <div style="text-align: center; margin-top: 15px;" class="add-btn-container">
+                <button class="unlock-btn" style="font-size: 0.9em; padding: 8px 20px;" onclick="addBucketItem()">➕ Add
+                    Item</button>
+            </div>
+        </div>
+
+        <!-- Our Playlist Section -->
+        <div class="content-section">
+            <h2 class="section-title">🎵 Our Playlist 🎵</h2>
+            <div class="playlist-container">
+                <div class="song-item">
+                    <span class="song-number">🎶</span>
+                    <div class="song-info">
+                        <a href="https://youtu.be/Kax_tVLW7TU?si=HmgedoMkS5LAj9_G" target="_blank"
+                            style="text-decoration: none;">
+                            <div class="song-title">Habibty</div>
+                        </a>
+                        <div class="song-artist">Hassan Shakosh</div>
+                    </div>
+                </div>
+                <div class="song-item">
+                    <span class="song-number">🎶</span>
+                    <div class="song-info">
+                        <a href="https://www.youtube.com/watch?v=I3aZ8F5ne_U&list=RDI3aZ8F5ne_U&start_radio=1"
+                            target="_blank" style="text-decoration: none;">
+                            <div class="song-title">3ashry w ibrahim</div>
+                        </a>
+                        <div class="song-artist">Eslam Kabonga</div>
+                    </div>
+                </div>
+                <div class="song-item">
+                    <span class="song-number">🎶</span>
+                    <div class="song-info">
+                        <a href="https://www.youtube.com/results?search_query=A+Thousand+Years+Christina+Perri"
+                            target="_blank" style="text-decoration: none;">
+                            <div class="song-title">el waqaa el akheera</div>
+                        </a>
+                        <div class="song-artist">Hamza Namira</div>
+                    </div>
+                </div>
+                <div class="song-item">
+                    <span class="song-number">🎶</span>
+                    <div class="song-info">
+                        <a href="https://youtu.be/yOx2JBeOzkk?si=eTkD638Z_fT9qeN8" target="_blank"
+                            style="text-decoration: none;">
+                            <div class="song-title">enty el ahbab</div>
+                        </a>
+                        <div class="song-artist">Abdelrahman Roshdy</div>
+                    </div>
+                </div>
+                <div class="song-item">
+                    <span class="song-number">🎶</span>
+                    <div class="song-info">
+                        <a href="https://youtu.be/mrWwGl00f40?si=sREjBR8YFbZbIxfQ" target="_blank"
+                            style="text-decoration: none;">
+                            <div class="song-title">etamen</div>
+                        </a>
+                        <div class="song-artist">Tamer Hosny</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="signature">With all my love, Your Name 💕</p>
+            <p class="tagline">For my dearest Her/His Name – our memories are just the beginning</p>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-container">
+            <h2 class="quiz-title">💝 How Well Do You Know Me? 💝</h2>
+            <p class="quiz-subtitle">Answer these questions to unlock my love letter!</p>
+
+            <div id="quizQuestions">
+                <div class="quiz-question" data-correct="2">
+                    <p>1. What is my fav moment together?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="1">Proposal</div>
+                        <div class="quiz-option" data-value="2">Valantine</div>
+                        <div class="quiz-option" data-value="3">Anniversary</div>
+                    </div>
+                </div>
+
+                <div class="quiz-question" data-correct="3">
+                    <p>2. When is our anniversary?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="1">February 14</div>
+                        <div class="quiz-option" data-value="2">April 25</div>
+                        <div class="quiz-option" data-value="3">July 24</div>
+                    </div>
+                </div>
+
+                <div class="quiz-question" data-correct="1">
+                    <p>3. Who do i love more?</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="1">you</div>
+                        <div class="quiz-option" data-value="2">polbolty</div>
+                        <div class="quiz-option" data-value="3">wella</div>
+                    </div>
+                </div>
+
+                <div class="quiz-question" data-correct="2">
+                    <p>4. When is polbola birthday? 🎂</p>
+                    <div class="quiz-options">
+                        <div class="quiz-option" data-value="1">September 8</div>
+                        <div class="quiz-option" data-value="2">September 9</div>
+                        <div class="quiz-option" data-value="3">July 25</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-result" id="quizResult">
+                <p class="quiz-score" id="quizScore">0/4</p>
+                <p class="quiz-message" id="quizMessage"></p>
+            </div>
+
+            <button class="quiz-submit" id="quizSubmit" onclick="submitQuiz()">Check My Answers 💕</button>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // Initialize Swiper
+        const swiper = new Swiper('.swiper', {
+            effect: 'cards',
+            cardsEffect: {
+                slideShadows: true,
+                perSlideOffset: 8,
+                perSlideRotate: 2,
+            },
+            loop: true,
+            grabCursor: true,
+            keyboard: {
+                enabled: true,
+            },
+        });
+
+        // Countdown Timer to Valentine's Day
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let valentinesDay = new Date(currentYear, 1, 14); // Feb 14
+
+            // If Valentine's Day has passed this year, count to next year
+            if (now > valentinesDay) {
+                valentinesDay = new Date(currentYear + 1, 1, 14);
+            }
+
+            const diff = valentinesDay - now;
+
+            if (diff <= 0) {
+                // It's Valentine's Day!
+                document.getElementById('countdown').innerHTML =
+                    '<p class="countdown-passed">💕 Happy Valentine\'s Day! 💕</p>';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Anniversary Countdown (July 24)
+        function updateAnniversaryCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let anniversary = new Date(currentYear, 6, 24); // July 24 (month is 0-indexed)
+
+            // If anniversary has passed this year, count to next year
+            if (now > anniversary) {
+                anniversary = new Date(currentYear + 1, 6, 24);
+            }
+
+            const diff = anniversary - now;
+
+            if (diff <= 0) {
+                // It's Anniversary Day!
+                document.getElementById('anniversaryCountdown').innerHTML =
+                    '<p class="countdown-passed">🎉 Happy Anniversary! 🎉</p>';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('annDays').textContent = days.toString().padStart(2, '0');
+            document.getElementById('annHours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('annMinutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('annSeconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        updateAnniversaryCountdown();
+        setInterval(updateAnniversaryCountdown, 1000);
+
+        // Relationship Duration Counter (since July 24, 2024)
+        function updateRelationshipDuration() {
+            const startDate = new Date(2024, 6, 24); // July 24, 2024
+            const now = new Date();
+
+            // Calculate total days
+            const diffTime = now - startDate;
+            const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            // Calculate years, months, days
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months--;
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            document.getElementById('relYears').textContent = years;
+            document.getElementById('relMonths').textContent = months;
+            document.getElementById('relDays').textContent = days;
+            document.getElementById('relTotalDays').textContent = totalDays;
+        }
+
+        updateRelationshipDuration();
+        setInterval(updateRelationshipDuration, 1000 * 60); // Update every minute
+
+        // Love Letter Reveal
+        function revealLetter() {
+            // Check if letter is already open
+            const letter = document.getElementById('loveLetter');
+            if (letter.classList.contains('show')) {
+                letter.classList.remove('show');
+                return;
+            }
+
+            // Show quiz modal first
+            document.getElementById('quizModal').classList.add('show');
+        }
+
+        // Quiz Logic
+        // Handle option selection
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const question = this.closest('.quiz-question');
+                // Remove selected class from sibling options
+                question.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                    // Improve Retry UX: clearer feedback by removing validation colors on new selection
+                    opt.classList.remove('correct', 'wrong');
+                });
+                // Add selected class to clicked option
+                this.classList.add('selected');
+            });
+        });
+
+        function submitQuiz() {
+            const questions = document.querySelectorAll('.quiz-question');
+            let score = 0;
+            let allAnswered = true;
+
+            questions.forEach(question => {
+                const selected = question.querySelector('.quiz-option.selected');
+                if (!selected) {
+                    allAnswered = false;
+                    return;
+                }
+
+                const correctVal = question.dataset.correct;
+                const selectedVal = selected.dataset.value;
+
+                // Reset classes
+                question.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('correct', 'wrong');
+                });
+
+                if (selectedVal === correctVal) {
+                    score++;
+                    selected.classList.add('correct');
+                } else {
+                    selected.classList.add('wrong');
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Please answer all questions first! 💕');
+                return;
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            const scoreText = document.getElementById('quizScore');
+            const messageText = document.getElementById('quizMessage');
+            const submitBtn = document.getElementById('quizSubmit');
+
+            resultDiv.classList.add('show');
+            scoreText.textContent = `${score}/${questions.length}`;
+
+            if (score === questions.length) {
+                messageText.textContent = "Perfect! You know our story by heart! ❤️";
+                submitBtn.style.display = 'none';
+
+                // Close modal and open letter after 1.5 seconds
+                setTimeout(() => {
+                    document.getElementById('quizModal').classList.remove('show');
+                    // Open the letter
+                    const letter = document.getElementById('loveLetter');
+                    letter.classList.add('show');
+                    // Trigger confetti
+                    createConfetti(100);
+                    // Scroll to letter
+                    letter.scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            } else {
+                messageText.textContent = "Oops! Some answers were incorrect. Give it another try! 🥺";
+                submitBtn.textContent = "Try Again 🔄";
+            }
+        }
+
+        // Close modal if clicking outside
+        document.getElementById('quizModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.classList.remove('show');
+            }
+        });
+
+        // Confetti Animation
+        function createConfetti(count = 100) {
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+
+            const colors = ['#ff6b9d', '#ff8fab', '#ffb6c1', '#e91e63', '#ff4081', '#f50057', '#ffd700', '#ff69b4'];
+            const shapes = ['❤️', '💕', '💖', '💗', '✨', '💝', '🌹', '💐'];
+
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('span');
+                confetti.className = 'confetti';
+                confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                container.appendChild(confetti);
+            }
+
+            // Remove confetti after animation
+            setTimeout(() => {
+                container.remove();
+            }, 6000);
+        }
+
+        // New Page Logic
+        // Tumbler Logic
+        const tumblers = [0, 0, 0, 0];
+
+        function updateTumbler(index, direction) {
+            tumblers[index] = (tumblers[index] + direction + 10) % 10;
+            document.getElementById(`digit-${index}`).textContent = tumblers[index];
+
+            // Optional: Check password automatically on change?
+            // checking manually via button is safer/better UX for this
+        }
+
+        function checkPassword() {
+            const password = tumblers.join('');
+            if (password === '2407') {
+                document.getElementById('lock-screen').classList.remove('active');
+                document.getElementById('proposal-screen').classList.add('active');
+                createConfetti(50); // Little celebration for unlocking
+            } else {
+                alert('Wrong password! Try again 💕 Hint: Our Date');
+                // Shake animation on tumblers
+                const container = document.querySelector('.tsa-lock-container');
+                container.animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(0)' }
+                ], {
+                    duration: 100,
+                    iterations: 3
+                });
+            }
+        }
+
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const container = document.getElementById('proposal-screen');
+
+            // Get container dimensions
+            const btnRect = btn.getBoundingClientRect();
+
+            // Calculate random position within window
+            const maxX = window.innerWidth - btnRect.width - 20;
+            const maxY = window.innerHeight - btnRect.height - 20;
+
+            const randomX = Math.max(10, Math.random() * maxX);
+            const randomY = Math.max(10, Math.random() * maxY);
+
+            btn.style.position = 'absolute';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        function acceptProposal() {
+            document.getElementById('proposal-screen').classList.remove('active');
+            // Show main content
+            const mainContent = document.getElementById('main-content');
+            mainContent.style.display = 'block';
+
+            // Trigger confetti
+            createConfetti(200);
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Persistent Photo Storage Logic
+        const STORAGE_KEY = 'valentine_memories';
+
+        // Load saved memories on startup
+        function loadSavedMemories() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const images = JSON.parse(saved);
+                images.forEach(imgSrc => {
+                    addSlideToSwiper(imgSrc, false); // false = don't animate/save again
+                });
+                if (images.length > 0) {
+                    swiper.update();
+                }
+            }
+        }
+
+        function addSlideToSwiper(imgSrc, animate = true) {
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
+
+            // Remove placeholder if it exists
+            const placeholder = document.getElementById('placeholder-slide');
+            if (placeholder) {
+                placeholder.remove();
+                swiper.update();
+            }
+
+            const slide = document.createElement('div');
+            slide.className = 'swiper-slide';
+
+            // Delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-photo-btn';
+            deleteBtn.innerHTML = '🗑️';
+            deleteBtn.onclick = function (e) {
+                e.stopPropagation(); // Prevent swiper interactions
+                deletePhoto(imgSrc, slide);
+            };
+            slide.appendChild(deleteBtn);
+
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = 'Memory';
+
+            slide.appendChild(img);
+            swiperWrapper.appendChild(slide);
+
+            if (animate) {
+                swiper.update();
+                swiper.slideTo(swiper.slides.length - 1);
+            }
+        }
+
+        // Compress and save image
+        function saveMemory(base64Str) {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            let images = saved ? JSON.parse(saved) : [];
+            images.push(base64Str);
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
+            } catch (e) {
+                alert("Storage full! Cannot save more photos permanently 😢 But they are visible now!");
+            }
+        }
+
+        function handlePhotoUpload(input) {
+            const files = input.files;
+            if (!files.length) return;
+
+            Array.from(files).forEach(file => {
+                // Compress image before saving
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        // Resize logic (max 800px)
+                        const MAX_WIDTH = 800;
+                        const MAX_HEIGHT = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Compress to JPEG 0.7 quality
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+
+                        addSlideToSwiper(compressedDataUrl, true);
+                        saveMemory(compressedDataUrl);
+                        createConfetti(30);
+                    };
+                }
+                reader.readAsDataURL(file);
+            });
+
+            input.value = '';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            loadSavedMemories();
+            loadContent(); // Load text content
+            setTimeout(() => createConfetti(80), 500);
+        });
+
+        // Delete Photo Function
+        function deletePhoto(imgSrc, slideElement) {
+            if (!confirm("Are you sure you want to delete this memory? 🗑️")) {
+                return;
+            }
+
+            // 1. Remove from Swiper UI
+            slideElement.remove();
+            swiper.update();
+
+            // 2. Remove from LocalStorage
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                let images = JSON.parse(saved);
+                // Filter out the image. 
+                // Note: This removes all instances if duplicate. 
+                // Given the flow, this is acceptable behavior.
+                images = images.filter(src => src !== imgSrc);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(images));
+
+                // 3. Check if empty -> Show placeholder
+                if (images.length === 0) {
+                    const swiperWrapper = document.querySelector('.swiper-wrapper');
+                    // Check if placeholder already exists (it shouldn't if we just deleted the last real photo)
+                    if (!document.getElementById('placeholder-slide')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'swiper-slide';
+                        placeholder.id = 'placeholder-slide';
+                        placeholder.style.cssText = "display: flex; justify-content: center; align-items: center; background: #f8f8f8; color: #aaa; text-align: center;";
+                        placeholder.innerHTML = `
+                            <div style="padding: 20px;">
+                                <span style="font-size: 3em; display: block; margin-bottom: 10px;">📸</span>
+                                <p>No memories yet!<br>Upload photos below.</p>
+                            </div>
+                        `;
+                        swiperWrapper.appendChild(placeholder);
+                        swiper.update();
+                    }
+                }
+            }
+        }
+
+        // Content Persistence for Text Inputs
+        function saveContent() {
+            const data = {
+                storyDates: Array.from(document.querySelectorAll('.story-date')).map(i => i.value),
+                storyTexts: Array.from(document.querySelectorAll('.story-text')).map(i => i.value),
+                storyIcons: Array.from(document.querySelectorAll('.story-icon')).map(i => i.value), // Save story icons
+                loveLetter: document.getElementById('loveLetterText').value,
+                signature: document.getElementById('letterSignature').value,
+                reasons: Array.from(document.querySelectorAll('.reason-input')).map(i => i.value),
+                bucketList: Array.from(document.querySelectorAll('.bucket-input')).map(i => i.value),
+                bucketIcons: Array.from(document.querySelectorAll('.bucket-icon')).map(i => i.value) // Save bucket icons
+            };
+            localStorage.setItem('valentines_content_text', JSON.stringify(data));
+        }
+
+        function loadContent() {
+            const saved = localStorage.getItem('valentines_content_text');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+
+                    // Load Stories
+                    const storyContainer = document.getElementById('love-story-container');
+                    if (data.storyDates && data.storyDates.length > 0) {
+                        // Clear existing manual items if we have saved data
+                        storyContainer.innerHTML = '';
+                        data.storyDates.forEach((date, i) => {
+                            const text = data.storyTexts[i] || '';
+                            const icon = (data.storyIcons && data.storyIcons[i]) ? data.storyIcons[i] : '❤️';
+                            createStoryItem(icon, date, text);
+                        });
+                    }
+
+                    // Load Reasons
+                    const reasonsList = document.querySelector('.reasons-list');
+                    if (data.reasons && data.reasons.length > 0) {
+                        reasonsList.innerHTML = '';
+                        data.reasons.forEach((reason, i) => {
+                            createReasonItem(i + 1, reason);
+                        });
+                    }
+
+                    // Load Bucket List
+                    const bucketList = document.querySelector('.bucket-list');
+                    if (data.bucketList && data.bucketList.length > 0) {
+                        bucketList.innerHTML = '';
+                        data.bucketList.forEach((item, i) => {
+                            const icon = (data.bucketIcons && data.bucketIcons[i]) ? data.bucketIcons[i] : '✨';
+                            createBucketItem(icon, item);
+                        });
+                    }
+
+                    // Load Letter
+                    const letterFn = document.getElementById('loveLetterText');
+                    if (letterFn) letterFn.value = data.loveLetter || '';
+
+                    const sigFn = document.getElementById('letterSignature');
+                    if (sigFn) sigFn.value = data.signature || '';
+
+                } catch (e) {
+                    console.error("Error loading saved content", e);
+                }
+            }
+        }
+
+        /* Dynamic Item Creation Functions */
+        function createStoryItem(icon = '❤️', date = '', text = '') {
+            const container = document.getElementById('love-story-container');
+            const div = document.createElement('div');
+            div.className = 'memory-item';
+            div.innerHTML = `
+                <input type="text" class="editable-emoji story-icon" value="${icon}" oninput="saveContent()">
+                <div class="memory-content">
+                    <input type="text" class="editable-input story-date" placeholder="Date..." value="${date}" oninput="saveContent()">
+                    <textarea class="editable-textarea story-text" placeholder="Memory details..." rows="2" oninput="saveContent()">${text}</textarea>
+                </div>
+                <button class="delete-btn" onclick="removeSelf(this)" title="Delete item">🗑️</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addStoryItem() {
+            createStoryItem();
+            saveContent();
+        }
+
+        function createReasonItem(number, text = '') {
+            const list = document.querySelector('.reasons-list');
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="reason-number">${number}</span><input type="text" class="editable-input reason-input" placeholder="Reason #${number}" value="${text}" oninput="saveContent()"> <button class="delete-btn" onclick="removeSelf(this)" title="Delete item">🗑️</button>`;
+            list.appendChild(li);
+        }
+
+        function addReasonItem() {
+            const list = document.querySelector('.reasons-list');
+            const number = list.children.length + 1;
+            createReasonItem(number);
+            saveContent();
+        }
+
+        function createBucketItem(icon = '✨', text = '') {
+            const list = document.querySelector('.bucket-list');
+            const div = document.createElement('div');
+            div.className = 'bucket-item';
+            div.innerHTML = `<input type="text" class="editable-emoji bucket-icon" value="${icon}" oninput="saveContent()"><input type="text" class="editable-input bucket-input" placeholder="Bucket list item..." value="${text}" oninput="saveContent()"> <button class="delete-btn" onclick="removeSelf(this)" title="Delete item">🗑️</button>`;
+            list.appendChild(div);
+        }
+
+        function addBucketItem() {
+            createBucketItem();
+            saveContent();
+        }
+
+        function removeSelf(element) {
+            if (confirm('Delete this item? 🗑️')) {
+                // Find parent container to remove (li for reasons, memory-item div for others)
+                let parent = element.parentElement;
+                // For bucket item and memory item, the parent is the container.
+                // For reasons, the parent is the li.
+                parent.remove();
+
+                // Re-index reasons if needed
+                const reasonsList = document.querySelector('.reasons-list');
+                if (reasonsList) {
+                    Array.from(reasonsList.children).forEach((li, index) => {
+                        const numSpan = li.querySelector('.reason-number');
+                        const input = li.querySelector('.reason-input');
+                        if (numSpan) numSpan.textContent = index + 1;
+                        if (input) input.placeholder = `Reason #${index + 1}`;
+                    });
+                }
+                saveContent();
+            }
+        }
+
+        function toggleEditMode() {
+            document.body.classList.toggle('edit-mode');
+            const btn = document.querySelector('.edit-toggle-btn');
+            if (document.body.classList.contains('edit-mode')) {
+                btn.textContent = '✅ Finish Editing';
+                btn.classList.add('active');
+            } else {
+                btn.textContent = '✏️ Edit Page';
+                btn.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+
+
+
+</html>

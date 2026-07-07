@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Invitation</title>
+    <meta name="description" content="Wedding invitation with envelope intro, countdown and venue map." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="envelope-wrapper">
+        <div id="envelope-container">
+            <div class="floating-petals">
+                <span class="petal p1">✿</span>
+                <span class="petal p2">✿</span>
+                <span class="petal p3">✿</span>
+                <span class="petal p4">✿</span>
+                <span class="petal p5">✿</span>
+            </div>
+
+            <div class="envelope">
+                <div class="envelope-body"></div>
+                <div class="envelope-flap"></div>
+                <div class="envelope-letter">
+                    <div class="letter-content">
+                        <div class="letter-ornament">❦</div>
+                        <div class="letter-text">You're Invited</div>
+                        <div class="letter-ornament-bottom">❦</div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="open-btn">
+                <span class="btn-icon">✉</span>
+                <span class="btn-text">Open Invitation</span>
+            </button>
+        </div>
+    </div>
+
+
+    <main id="invitation" class="hidden">
+
+        <section id="hero" class="section">
+            <div class="section-wrapper">
+                <div class="ornament-top">✿ ✦ ✿</div>
+                <div class="save-the-date">Together with their families</div>
+                <div class="couple-names">
+                    <div class="name" id="groom-name"></div>
+                    <div class="ampersand">&</div>
+                    <div class="name" id="bride-name"></div>
+                </div>
+                <div class="tagline">Request the pleasure of your company</div>
+                <div class="wedding-date" id="wedding-date-display"></div>
+            </div>
+        </section>
+
+        <section id="countdown-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Counting Down</h2>
+                <div class="ornament-divider">
+                    <div class="line"></div>
+                    <div class="diamond">✦</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="countdown-grid">
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="days">00</div>
+                        </div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="hours">00</div>
+                        </div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="minutes">00</div>
+                        </div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="seconds">00</div>
+                        </div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="details-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Details</h2>
+                <div class="ornament-divider small">
+                    <div class="line"></div>
+                    <div class="diamond">✦</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">✦</div>
+                        <div class="detail-title">Ceremony</div>
+                        <div class="detail-info" id="ceremony-time"></div>
+                        <div class="detail-venue" id="ceremony-venue"></div>
+                        <div class="detail-address" id="ceremony-address"></div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">♡</div>
+                        <div class="detail-title">Reception</div>
+                        <div class="detail-info" id="reception-time"></div>
+                        <div class="detail-venue" id="reception-venue"></div>
+                        <div class="detail-address" id="reception-address"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="location-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Location</h2>
+                <div class="map-container">
+                    <iframe id="google-map" src="" frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div style="margin-top:18px; text-align:center;">
+                    <a id="map-directions-link" class="map-link" href="" target="_blank" rel="noopener noreferrer">Get Directions</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="rsvp-section" class="section">
+            <div class="section-wrapper">
+                <div class="closing-ornament">✿</div>
+                <div class="closing-title">We hope you can join us</div>
+                <div class="closing-message">Your presence is the greatest gift we could ask for.</div>
+
+                <div style="margin-bottom: 35px;">
+                    <a href="messages.html" class="map-link" style="text-decoration: none; font-size: 0.9rem; padding: 12px 25px;">💌 View Guest Messages</a>
+                </div>
+
+                <!-- Confetti container -->
+                <div id="confetti-container" class="confetti-container" aria-hidden="true"></div>
+
+                <div id="rsvp-form-wrapper">
+                    <form id="rsvp-form" class="rsvp-form" novalidate>
+                        <div class="rsvp-form-header">
+                            <div class="rsvp-form-icon">✉</div>
+                            <h3 class="rsvp-form-title">Leave your Message here</h3>
+                            <p class="rsvp-form-subtitle">Kindly respond with Love</p>
+                        </div>
+
+                        <div class="rsvp-form-divider">
+                            <div class="rsvp-divider-line"></div>
+                            <div class="rsvp-divider-diamond">✦</div>
+                            <div class="rsvp-divider-line"></div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="floating-input">
+                                <input type="text" id="rsvp-name" name="rsvp-name" placeholder=" " required autocomplete="name" />
+                                <label for="rsvp-name">Your Full Name</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="floating-input">
+                                <select id="rsvp-guests" name="rsvp-guests">
+                                    <option value="1">1 Guest</option>
+                                    <option value="2">2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4 Guests</option>
+                                    <option value="5">5 Guests</option>
+                                    <option value="6">6 Guests</option>
+                                    <option value="7">7 Guests</option>
+                                </select>
+                                <label for="rsvp-guests" class="select-label">Number of Guests</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row attendance-row">
+                            <legend class="attendance-legend">Will you attend?</legend>
+                            <div class="pill-toggle" id="pill-toggle">
+                                <div class="pill-slider" id="pill-slider"></div>
+                                <button type="button" class="pill-option" data-value="yes" id="pill-yes">
+                                    <span class="pill-icon">✓</span>
+                                    <span>Joyfully Accept</span>
+                                </button>
+                                <button type="button" class="pill-option" data-value="no" id="pill-no">
+                                    <span class="pill-icon">✕</span>
+                                    <span>Regretfully Decline</span>
+                                </button>
+                            </div>
+                            <input type="hidden" name="rsvp-attend" id="rsvp-attend-hidden" value="" />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="floating-input">
+                                <textarea id="rsvp-message" name="rsvp-message" rows="4" placeholder=" "></textarea>
+                                <label for="rsvp-message">Message & Duaa</label>
+                            </div>
+                            <div id="rsvp-char-count" class="char-count" aria-hidden="true">0 / 300</div>
+                        </div>
+
+                        <div class="form-row">
+                            <button type="submit" id="rsvp-submit" class="rsvp-submit-btn">
+                                <span class="btn-label">Send RSVP</span>
+                                <span class="btn-shimmer"></span>
+                                <span class="btn-spinner" id="btn-spinner"></span>
+                            </button>
+                        </div>
+
+                        <div id="rsvp-feedback" aria-live="polite" class="rsvp-feedback"></div>
+                    </form>
+
+                    <div id="rsvp-success-card" class="rsvp-success-card" style="display:none;">
+                        <div class="success-check" id="success-check">
+                            <svg viewBox="0 0 52 52" class="success-svg">
+                                <circle cx="26" cy="26" r="24" class="success-circle"/>
+                                <path d="M14 27l7 7 16-16" class="success-tick"/>
+                            </svg>
+                        </div>
+                        <h3 class="success-title" id="success-title">Thank You!</h3>
+                        <p class="success-message" id="success-message"></p>
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                            <a href="messages.html" class="map-link" style="padding:10px 20px; font-size:0.9rem; text-decoration: none; justify-content: center;">💌 View Guest Messages</a>
+                            <button type="button" id="rsvp-edit-btn" class="rsvp-edit-btn">Edit Response</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="couple-monogram">
+                    <span id="groom-initial"></span>
+                    <span class="heart-icon">♥</span>
+                    <span id="bride-initial"></span>
+                </div>
+                <div class="closing-footer">Formal invitation to follow</div>
+            </div>
+        </section>
+
+        <div id="rsvp-modal" aria-hidden="true">
+            <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="rsvp-modal-title">
+                <div class="modal-header">
+                    <h3 id="rsvp-modal-title">RSVP Manager</h3>
+                    <div class="modal-header-actions">
+                        <button id="export-csv" class="export-btn">📄 Export CSV</button>
+                        <button id="rsvp-modal-close" class="modal-close" aria-label="Close">✕</button>
+                    </div>
+                </div>
+
+                <div id="rsvp-password-area">
+                    <div class="password-prompt">
+                        <div class="password-icon">🔐</div>
+                        <p>Enter password to view submissions</p>
+                        <div class="password-input-group">
+                            <input id="rsvp-manager-password" type="password" placeholder="Password" />
+                            <button id="rsvp-password-submit" class="password-unlock-btn">Unlock</button>
+                        </div>
+                        <div id="rsvp-password-feedback" class="rsvp-feedback" aria-live="polite"></div>
+                    </div>
+                </div>
+
+                <div id="submissions-view" style="display:none;">
+                    <!-- Stats Dashboard -->
+                    <div class="rsvp-stats-dashboard" id="rsvp-stats-dashboard" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="stat-card stat-total">
+                            <div class="stat-number" id="stat-total">0</div>
+                            <div class="stat-label">Total Responses</div>
+                        </div>
+                        <div class="stat-card stat-attending">
+                            <div class="stat-number" id="stat-attending">0</div>
+                            <div class="stat-label">Attending</div>
+                        </div>
+                        <div class="stat-card stat-declined">
+                            <div class="stat-number" id="stat-declined">0</div>
+                            <div class="stat-label">Declined</div>
+                        </div>
+                    </div>
+                    <div class="submissions-list" id="submissions-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <p>We can't wait to celebrate with you — <span id="groom-name-footer"></span> & <span id="bride-name-footer"></span></p>
+            <div style="margin-top:10px; display: flex; justify-content: center; gap: 15px;">
+                <a href="messages.html" class="map-link" style="padding:8px 18px; font-size:0.85rem; text-decoration: none;">💌 Guest Messages</a>
+                <button id="manage-rsvps-btn" class="map-link" style="padding:8px 18px; font-size:0.85rem;">🔒 Manage RSVPs</button>
+            </div>
+        </footer>
+    </main>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

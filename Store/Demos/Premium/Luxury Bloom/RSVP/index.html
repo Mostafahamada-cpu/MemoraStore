@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#B08D57">
+<title>Omar &amp; Rowan — 07.10.2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ PRELOADER ============ -->
+  <div id="preloader" aria-hidden="true">
+    <svg class="pre-arch" width="140" height="50" viewBox="0 0 140 50">
+      <path d="M4,46 C4,14 136,14 136,46"/>
+    </svg>
+    <div class="pre-mono">O &amp; R</div>
+  </div>
+
+  <div id="envelope-wrapper" aria-hidden="true">
+    <div id="envelope-container">
+      <div class="envelope">
+        <div class="envelope-body"></div>
+        <div class="envelope-flap"></div>
+        <div class="envelope-letter">
+          <div class="letter-content">
+            <span class="letter-ornament">❖</span>
+            <strong>Omar &amp; Rowan</strong>
+            <span class="letter-subtext">Open Your Invitation</span>
+          </div>
+        </div>
+      </div>
+      <button id="open-btn">
+        <span class="btn-icon">✉</span>
+        <span class="btn-text">Open Invitation</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ MUSIC WIDGET ============ -->
+  <div id="music-widget">
+    <div id="music-panel">
+      <div id="music-empty-state" class="music-empty">
+        <strong>Add Your Song</strong>
+        Paste your Spotify track link into <code>SPOTIFY_TRACK_URL</code> near the top of the script, and it will play right here.
+      </div>
+      <div id="music-frame-wrap" style="display:none;"></div>
+    </div>
+    <button id="music-btn" aria-label="Toggle wedding playlist" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </button>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header id="hero">
+    <div class="bokeh" style="width:120px;height:120px; top:14%; left:10%; animation-duration:9s;"></div>
+    <div class="bokeh" style="width:70px;height:70px; top:64%; left:82%; animation-duration:11s;"></div>
+    <div class="bokeh" style="width:90px;height:90px; top:20%; left:78%; animation-duration:8s;"></div>
+    <div class="bokeh" style="width:50px;height:50px; top:74%; left:16%; animation-duration:10s;"></div>
+
+    <div class="hero-inner">
+      <span class="eyebrow">The Wedding Of</span>
+      <h1 class="hero-names">Omar <span style="color:var(--blush-deep);">&amp;</span> Rowan</h1>
+      <svg class="hero-arch arch-divider" viewBox="0 0 150 44"><path d="M3,40 C3,10 147,10 147,40"/></svg>
+      <p class="hero-meta">07 <span>&middot;</span> October <span>&middot;</span> 2026 &nbsp;&mdash;&nbsp; La Beau Garden, Giza</p>
+    </div>
+
+    <div class="scroll-cue">Scroll</div>
+  </header>
+
+  <main>
+
+    <!-- ============ LOVE STORY ============ -->
+    <section id="story" data-reveal>
+      <div class="section-head">
+        <span class="eyebrow">Our Story</span>
+        <h2>How It Began</h2>
+      </div>
+      <div class="container-narrow">
+        <div class="story-copy" id="story-text">
+          <p>They say the best stories start when you least expect them. For Omar and Rowan, that moment arrived quietly — an ordinary conversation that was supposed to last five minutes and stretched into hours, the kind that made the rest of the world go soft at the edges.</p>
+          <p>What followed was a friendship that deepened into something neither of them wanted to rush, built on long walks, shared playlists, and the particular comfort of being fully understood by someone else.</p>
+          <p>When Omar asked Rowan to spend forever together, there was really only one answer. Now, surrounded by the people who love them most, they're ready to begin the next chapter — as partners, as a family, as each other's favorite person.</p>
+        </div>
+        <button class="narrate-btn" id="narrate-btn" aria-pressed="false">
+          <span class="bars"><span></span><span></span><span></span></span>
+          <span id="narrate-label">Listen to Our Story</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ COUNTDOWN ============ -->
+    <section id="countdown" data-reveal>
+      <div class="section-head">
+        <span class="eyebrow">Save The Moment</span>
+        <h2>Counting Down to Forever</h2>
+      </div>
+      <div class="cd-grid">
+        <div class="cd-cell"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Days</span></div>
+        <div class="cd-cell"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Hours</span></div>
+        <div class="cd-cell"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">Minutes</span></div>
+        <div class="cd-cell"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">Seconds</span></div>
+      </div>
+    </section>
+
+    <!-- ============ LOCATION ============ -->
+    <section id="location" data-reveal>
+      <div class="section-head">
+        <span class="eyebrow">Where To Find Us</span>
+        <h2>The Venue</h2>
+      </div>
+      <div class="loc-card">
+        <svg class="loc-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 21s7-7.2 7-12a7 7 0 1 0-14 0c0 4.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>
+        <h3>La Beau Garden</h3>
+        <p class="loc-addr">Sheikh Zayed, Giza, Egypt</p>
+        <p class="loc-time">Ceremony begins at <em>6:00 PM</em></p>
+        <a class="btn btn-fill" href="https://www.google.com/maps?q=La+beau+garden+Sheikh+Zayed+Giza" target="_blank" rel="noopener">Get Directions</a>
+      </div>
+    </section>
+
+    <!-- ============ GUIDELINES ============ -->
+    <section id="guidelines" data-reveal>
+      <div class="section-head">
+        <span class="eyebrow">Good To Know</span>
+        <h2>A Few Details</h2>
+      </div>
+      <div class="g-grid">
+        <div class="g-card">
+          <svg class="g-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 2l2.5 4.5L20 8l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1.5z"/></svg>
+          <h4>Dress Code</h4>
+          <p>Cocktail attire. Think tailored silhouettes and elegant separates for an evening garden celebration.</p>
+        </div>
+        <div class="g-card">
+          <svg class="g-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <h4>Colors &amp; Comfort</h4>
+          <p>Our palette is blush &amp; gold — feel free to draw inspiration. We just kindly ask guests to leave white and ivory for the couple.</p>
+        </div>
+        <div class="g-card">
+          <svg class="g-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 21c4-4 7-7.5 7-11a7 7 0 1 0-14 0c0 3.5 3 7 7 11z"/></svg>
+          <h4>Footwear</h4>
+          <p>The celebration is outdoors on garden grounds — low heels or flats are recommended for comfort underfoot.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY ============ -->
+    <section id="gallery" data-reveal>
+      <div class="section-head">
+        <span class="eyebrow">Gallery</span>
+        <h2>Moments We'll Treasure</h2>
+      </div>
+      <div class="gal-grid">
+        <div class="gal-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Your Photo Here</span></div>
+        <div class="gal-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Your Photo Here</span></div>
+        <div class="gal-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Your Photo Here</span></div>
+        <div class="gal-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Your Photo Here</span></div>
+        <div class="gal-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Your Photo Here</span></div>
+        <div class="gal-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Your Photo Here</span></div>
+      </div>
+    </section>
+
+    <!-- ============ RSVP ============ -->
+    <section id="rsvp" data-reveal>
+      <div class="section-head">
+        <span class="eyebrow">Join Us</span>
+        <h2>RSVP</h2>
+      </div>
+
+      <form id="rsvp-form">
+        <div class="field">
+          <label for="r-name">Full Name</label>
+          <input type="text" id="r-name" placeholder="Your name" required>
+        </div>
+
+        <div class="field">
+          <label>Will You Be Attending?</label>
+          <div class="radio-row">
+            <label class="radio-pill"><input type="radio" name="attending" value="Joyfully Accepts" checked><span>Joyfully Accepts</span></label>
+            <label class="radio-pill"><input type="radio" name="attending" value="Regretfully Declines"><span>Regretfully Declines</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="r-guests">Number of Guests</label>
+          <input type="number" id="r-guests" min="1" max="10" value="1">
+        </div>
+
+        <div class="field">
+          <label for="r-msg">Message to the Couple</label>
+          <textarea id="r-msg" placeholder="Leave Omar &amp; Rowan a note..."></textarea>
+        </div>
+
+        <button type="submit" class="btn rsvp-submit">Send RSVP</button>
+        <p class="rsvp-note">Your response is saved automatically — no email needed.</p>
+      </form>
+
+      <div id="rsvp-confirm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5L16 9"/></svg>
+        <h3>Thank You!</h3>
+        <p>Your RSVP has been received. We can't wait to celebrate with you.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="foot-mono">O &amp; R</div>
+    <p>07.10.2026 &middot; La Beau Garden, Giza &middot; With Love &amp; Gratitude</p>
+    <button id="admin-link">Couple's View</button>
+  </footer>
+
+  <!-- ============ ADMIN MODAL ============ -->
+  <div id="admin-modal">
+    <div class="admin-box">
+      <h3>RSVP Responses</h3>
+      <div id="admin-list"><p class="admin-empty">Loading...</p></div>
+      <button class="btn" id="admin-close">Close</button>
+    </div>
+  </div>
+
+<script src="script.js"></script>
+</html>

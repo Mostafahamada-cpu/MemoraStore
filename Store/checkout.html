@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Memora</title>
+  <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  <link rel="stylesheet" href="assets/css/premium.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <img src="images/logo.jpeg" alt="Memora Logo" style="height: 42px; width: auto; object-fit: contain; margin-right: 12px; border-radius: 8px;">
+        <span>Memora</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Checkout Section -->
+  <section class="section section-bg-light">
+    <div class="container">
+      <div class="grid grid-2" style="gap: 40px; align-items: start;">
+        <!-- Order Summary -->
+        <div order="2" style="display: flex; flex-direction: column;">
+          <div style="background: white; padding: 32px; border-radius: 16px; position: sticky; top: 100px;">
+            <h3 style="margin-bottom: 24px;">Order Summary</h3>
+
+            <div id="cart-items" style="margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 24px;">
+              <!-- Cart items loaded by JavaScript -->
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+              <span>Subtotal:</span>
+              <span id="subtotal">$0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+              <span>Discount:</span>
+              <span id="discount" style="color: var(--accent-gold);">-$0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light);">
+              <span>Total:</span>
+              <span id="total" style="color: var(--accent-gold);">$0</span>
+            </div>
+
+            <button class="btn btn-primary btn-full" style="margin-top: 24px;" onclick="processPayment()">
+              <span class="btn-icon">💳</span>
+              Proceed to Payment
+            </button>
+
+            <a href="order-form.html" class="btn btn-outline btn-full" style="margin-top: 12px;">Back to Form</a>
+          </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <div order="1">
+          <form id="checkout-form">
+            <!-- Billing Address -->
+            <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
+              <h3 style="margin-bottom: 24px;">Billing Address</h3>
+
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" id="fullName" class="form-input" readonly>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" id="email" class="form-input" readonly>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" id="phone" class="form-input" readonly>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
+              <h3 style="margin-bottom: 24px;">Payment Method</h3>
+
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="payment-method" value="card" checked>
+                  <span>
+                    <strong>Credit / Debit Card</strong>
+                    <br>
+                    <span style="font-size: 12px; color: var(--text-light);">Visa, Mastercard, American Express</span>
+                  </span>
+                </label>
+
+                <label class="form-radio">
+                  <input type="radio" name="payment-method" value="paypal">
+                  <span>
+                    <strong>PayPal</strong>
+                    <br>
+                    <span style="font-size: 12px; color: var(--text-light);">Secure payment via PayPal</span>
+                  </span>
+                </label>
+
+                <label class="form-radio">
+                  <input type="radio" name="payment-method" value="bank">
+                  <span>
+                    <strong>Bank Transfer</strong>
+                    <br>
+                    <span style="font-size: 12px; color: var(--text-light);">Direct bank transfer</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Card Details (shown for credit card payment) -->
+            <div id="card-details" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
+              <h3 style="margin-bottom: 24px;">Card Details</h3>
+
+              <div class="form-group">
+                <label class="form-label required">Cardholder Name</label>
+                <input type="text" name="card-name" class="form-input" placeholder="John Doe">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label required">Card Number</label>
+                <input type="text" name="card-number" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19">
+              </div>
+
+              <div class="grid grid-2">
+                <div class="form-group">
+                  <label class="form-label required">Expiry Date</label>
+                  <input type="text" name="card-expiry" class="form-input" placeholder="MM/YY" maxlength="5">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label required">CVV</label>
+                  <input type="text" name="card-cvv" class="form-input" placeholder="123" maxlength="4">
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms -->
+            <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px;">
+              <label class="form-radio">
+                <input type="checkbox" name="terms" required>
+                <span>
+                  I agree to the <strong>Terms of Service</strong>, <strong>Privacy Policy</strong>, and <strong>Refund Policy</strong>
+                </span>
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="section section-bg-white">
+    <div class="container">
+      <div class="grid grid-3">
+        <div style="text-align: center;">
+          <div style="font-size: 28px; margin-bottom: 12px;">🔒</div>
+          <h5>Secure Payment</h5>
+          <p style="font-size: 14px; color: var(--text-secondary);">All transactions are secured with SSL encryption</p>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="font-size: 28px; margin-bottom: 12px;">✓</div>
+          <h5>30-Day Guarantee</h5>
+          <p style="font-size: 14px; color: var(--text-secondary);">Not satisfied? Get a full refund within 30 days</p>
+        </div>
+
+        <div style="text-align: center;">
+          <div style="font-size: 28px; margin-bottom: 12px;">💬</div>
+          <h5>24/7 Support</h5>
+          <p style="font-size: 14px; color: var(--text-secondary);">Our team is here to help with any questions</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/premium.js"></script>
+  <script>
+    // Load order data
+    const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
+    
+    document.getElementById('fullName').value = orderData.fullName || '';
+    document.getElementById('email').value = orderData.email || '';
+    document.getElementById('phone').value = orderData.phone || '';
+
+    const productCatalog = {
+      'standard': { name: 'Modern Minimal', price: 500 },
+      'premium': { name: 'Luxury Bloom', price: 800 },
+      'authentic': { name: 'Authentic', price: 800 },
+      'memora-essential': { name: 'Memora Essential', price: 950 },
+      'memora-signature': { name: 'Memora Signature', price: 1250 },
+    };
+
+    const cartItems = [];
+    if (orderData.product && productCatalog[orderData.product]) {
+      cartItems.push({ ...productCatalog[orderData.product], quantity: 1 });
+    } else {
+      cartItems.push({ name: 'Memora Order', price: 0, quantity: 1 });
+    }
+
+    // Update cart display
+    const cartContainer = document.getElementById('cart-items');
+    let subtotal = 0;
+
+    cartItems.forEach(item => {
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+
+      const itemEl = document.createElement('div');
+      itemEl.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 12px;';
+      itemEl.innerHTML = `
+        <div>
+          <div style="font-weight: 600;">${item.name}</div>
+          <div style="font-size: 12px; color: var(--text-light);">Qty: ${item.quantity}</div>
+        </div>
+        <div style="font-weight: 600; text-align: right;">EGP ${itemTotal.toFixed(2)}</div>
+      `;
+      cartContainer.appendChild(itemEl);
+    });
+
+    // Calculate totals
+    const discount = 0; // Could be calculated based on promo codes
+    const total = subtotal - discount;
+
+    document.getElementById('subtotal').textContent = `EGP ${subtotal.toFixed(2)}`;
+    document.getElementById('discount').textContent = `-EGP ${discount.toFixed(2)}`;
+    document.getElementById('total').textContent = `EGP ${total.toFixed(2)}`;
+
+    // Payment method toggle
+    const paymentRadios = document.querySelectorAll('input[name="payment-method"]');
+    const cardDetails = document.getElementById('card-details');
+
+    paymentRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        cardDetails.style.display = e.target.value === 'card' ? 'block' : 'none';
+      });
+    });
+
+    function processPayment() {
+      const form = document.getElementById('checkout-form');
+      
+      if (!form.checkValidity()) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      // Show success animation
+      UI.showNotification('Processing payment...', 'info');
+
+      setTimeout(() => {
+        UI.showNotification('Payment successful! 🎉', 'success');
+        
+        setTimeout(() => {
+          // Clear localStorage
+          localStorage.removeItem('memora-order');
+          localStorage.removeItem('memora-cart');
+          
+          // Redirect to thank you page
+          window.location.href = 'thank-you.html';
+        }, 1500);
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Invitation</title>
+    <meta name="description" content="Colorful Wedding Invitation." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../../assets/css/demo-toolbar.css">
+</head>
+<body data-theme="garden-romance">
+
+    <div id="envelope-wrapper">
+        <div id="envelope-container">
+            <div class="floating-petals">
+                <span class="petal p1">✨</span>
+                <span class="petal p2">🎈</span>
+                <span class="petal p3">🎉</span>
+                <span class="petal p4">✨</span>
+                <span class="petal p5">🎊</span>
+            </div>
+
+            <div class="envelope">
+                <div class="envelope-body"></div>
+                <div class="envelope-flap"></div>
+                <div class="envelope-letter">
+                    <div class="letter-content">
+                        <div class="letter-ornament">💖</div>
+                        <div class="letter-text">You're Invited!</div>
+                        <div class="letter-ornament-bottom">✨</div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="open-btn">
+                <span class="btn-icon">💌</span>
+                <span class="btn-text">Open Invitation</span>
+            </button>
+        </div>
+    </div>
+
+
+    <main id="invitation" class="hidden">
+
+        <section id="hero" class="section">
+            <div class="section-wrapper">
+                <div class="ornament-top">🎉 ✨ 🎉</div>
+                <div class="save-the-date">Together with their families</div>
+                <div class="couple-names">
+                    <div class="name" id="groom-name"></div>
+                    <div class="ampersand">&</div>
+                    <div class="name" id="bride-name"></div>
+                </div>
+                <div class="tagline">Invite you to celebrate their wedding</div>
+                <div class="wedding-date" id="wedding-date-display"></div>
+            </div>
+        </section>
+
+        <section id="countdown-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Counting Down</h2>
+                <div class="ornament-divider">
+                    <div class="line"></div>
+                    <div class="diamond">💖</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="countdown-grid">
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="days">00</div>
+                        </div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="hours">00</div>
+                        </div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="minutes">00</div>
+                        </div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="seconds">00</div>
+                        </div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="details-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Event Details</h2>
+                <div class="ornament-divider">
+                    <div class="line"></div>
+                    <div class="diamond">✨</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="details-container">
+                    <div class="detail-card">
+                        <div class="detail-icon">🥂</div>
+                        <h3 class="detail-title">Ceremony</h3>
+                        <p class="detail-time" id="ceremony-time"></p>
+                        <p class="detail-location" id="ceremony-location"></p>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">🎉</div>
+                        <h3 class="detail-title">Reception</h3>
+                        <p class="detail-time" id="reception-time"></p>
+                        <p class="detail-location" id="reception-location"></p>
+                    </div>
+                </div>
+
+                <div class="map-container" style="margin-top: 40px; border: 4px solid var(--accent-magenta); border-radius: 12px; overflow: hidden; height: 350px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                    <iframe id="google-map" src="" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div style="margin-top: 20px; text-align: center;">
+                    <a id="map-directions-link" href="#" target="_blank" class="submit-btn" style="display: inline-block; text-decoration: none; padding: 15px 40px; width: auto; min-width: 200px; background: var(--gradient-primary);">Get Directions</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="rsvp-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">RSVP</h2>
+                <div class="ornament-divider">
+                    <div class="line"></div>
+                    <div class="diamond">💌</div>
+                    <div class="line"></div>
+                </div>
+                
+                <p class="rsvp-deadline">Please respond by <span id="rsvp-deadline-date"></span></p>
+
+                <form id="rsvp-form" class="rsvp-form">
+                    <div class="form-group">
+                        <label for="guest-name">Full Name</label>
+                        <input type="text" id="guest-name" name="guest-name" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="attendance">Will you attend?</label>
+                        <select id="attendance" name="attendance" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="attending">Joyfully Accept</option>
+                            <option value="not-attending">Regretfully Decline</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="guests-group">
+                        <label for="guests-count">Number of Guests</label>
+                        <select id="guests-count" name="guests-count">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dietary">Dietary Requirements</label>
+                        <textarea id="dietary" name="dietary" rows="2" placeholder="Any allergies or dietary restrictions?"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Send RSVP</button>
+                    <div id="form-message" class="hidden"></div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+    <script src="../../../assets/js/demo-toolbar.js"></script>
+</body>
+</html>

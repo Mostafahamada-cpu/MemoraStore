@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classic Love Card - Memora</title>
+  <link rel="stylesheet" href="../../assets/css/premium.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #faf8f6 0%, #f5f3f0 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .love-card {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 20px;
+      padding: 60px 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      animation: cardEntry 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes cardEntry {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .card-header {
+      margin-bottom: 32px;
+    }
+
+    .card-icon {
+      font-size: 80px;
+      margin-bottom: 16px;
+      display: inline-block;
+      animation: heartbeat 1.5s ease infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+    }
+
+    .card-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin: 16px 0 8px;
+      font-family: var(--font-display);
+    }
+
+    .card-subtitle {
+      font-size: 14px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .card-divider {
+      width: 60px;
+      height: 2px;
+      background: var(--accent-gold);
+      margin: 24px auto;
+    }
+
+    .card-names {
+      margin: 32px 0;
+    }
+
+    .card-names p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin: 12px 0;
+      font-weight: 600;
+    }
+
+    .card-ampersand {
+      font-size: 24px;
+      color: var(--accent-gold);
+      margin: 4px 0;
+      font-family: var(--font-script);
+    }
+
+    .card-message {
+      margin: 32px 0;
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .card-details {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .card-details p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .card-footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .card-footer-text {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .responsive-note {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      box-shadow: var(--shadow-md);
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 600px) {
+      .love-card {
+        padding: 40px 24px;
+      }
+
+      .card-title {
+        font-size: 24px;
+      }
+
+      .card-names p {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="love-card">
+    <div class="card-header">
+      <div class="card-icon">💍</div>
+      <div class="card-title">We're Getting Married!</div>
+      <div class="card-subtitle">Save the Date</div>
+    </div>
+
+    <div class="card-divider"></div>
+
+    <div class="card-names">
+      <p>Sarah Johnson</p>
+      <div class="card-ampersand">&</div>
+      <p>Michael Smith</p>
+    </div>
+
+    <div class="card-message">
+      "Two souls with but a single thought, two hearts that beat as one."
+      <br><br>
+      We joyfully invite you to celebrate our love as we begin our journey together.
+    </div>
+
+    <div class="card-details">
+      <p><strong>June 15th, 2024</strong></p>
+      <p>The Grand Ballroom</p>
+      <p>San Francisco, California</p>
+    </div>
+
+    <div class="card-footer">
+      <p class="card-footer-text">RSVP by June 1st</p>
+      <p style="margin-top: 12px; font-size: 14px; color: var(--accent-gold);">www.memories-sarah-michael.com</p>
+    </div>
+  </div>
+
+  <div class="responsive-note">
+    👁️ Resize window to see responsive design
+  </div>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product - Memora</title>
+  <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  <link rel="stylesheet" href="assets/css/premium.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <img src="images/logo.jpeg" alt="Memora Logo" style="height: 42px; width: auto; object-fit: contain; margin-right: 12px; border-radius: 8px;">
+        <span>Memora</span>
+      </div>
+      <div class="nav-links" id="nav-links">
+        <a href="premium-home.html">Back to Store</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Product Hero -->
+  <section class="section section-bg-light">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: center; gap: 40px;">
+        <!-- Product Image -->
+        <div>
+          <div id="product-image" style="border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: white; box-shadow: var(--shadow-lg);">
+            <img src="" alt="Product" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div>
+          <div id="product-badges" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;"></div>
+          
+          <h1 id="product-name" style="margin-bottom: 16px;"></h1>
+          
+          <p id="product-description" style="font-size: 18px; margin-bottom: 24px;"></p>
+
+          <div style="background: var(--bg-white); padding: 20px; border-radius: 12px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px;">
+              <span style="font-size: 36px; font-weight: 700; color: var(--accent-gold);" id="product-price">$0</span>
+              <span style="font-size: 14px; color: var(--text-light);">one-time purchase</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 14px;">✓ Lifetime access • ✓ Future updates • ✓ Email support</p>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-bottom: 32px;">
+            <a id="live-demo-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg" style="flex: 1;">Live Demo</a>
+            <button class="btn btn-primary btn-lg" onclick="buyNow()" style="flex: 1;">Buy Now</button>
+          </div>
+
+          <ul id="product-features" style="list-style: none; display: flex; flex-direction: column; gap: 12px;"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Included Features -->
+  <section class="section section-bg-white">
+    <div class="container">
+      <h2 style="margin-bottom: 32px; text-align: center;">What's Included</h2>
+
+      <div class="grid grid-3">
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 40px; margin-bottom: 16px;">🎨</div>
+          <h4 style="margin-bottom: 12px;">Professional Design</h4>
+          <p style="color: var(--text-secondary); font-size: 14px;">Carefully crafted by our design team with modern aesthetics</p>
+        </div>
+
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 40px; margin-bottom: 16px;">📱</div>
+          <h4 style="margin-bottom: 12px;">Fully Responsive</h4>
+          <p style="color: var(--text-secondary); font-size: 14px;">Works perfectly on all devices: desktop, tablet, and mobile</p>
+        </div>
+
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 40px; margin-bottom: 16px;">✨</div>
+          <h4 style="margin-bottom: 12px;">Smooth Animations</h4>
+          <p style="color: var(--text-secondary); font-size: 14px;">Beautiful transitions and interactive elements</p>
+        </div>
+
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 40px; margin-bottom: 16px;">⚙️</div>
+          <h4 style="margin-bottom: 12px;">Easy Customization</h4>
+          <p style="color: var(--text-secondary); font-size: 14px;">Change colors, fonts, and content without coding</p>
+        </div>
+
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 40px; margin-bottom: 16px;">🔧</div>
+          <h4 style="margin-bottom: 12px;">Technical Support</h4>
+          <p style="color: var(--text-secondary); font-size: 14px;">Email support and documentation included</p>
+        </div>
+
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 40px; margin-bottom: 16px;">♾️</div>
+          <h4 style="margin-bottom: 12px;">Lifetime Updates</h4>
+          <p style="color: var(--text-secondary); font-size: 14px;">Free updates and new features forever</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Table -->
+  <section class="section section-bg-light">
+    <div class="container">
+      <h2 style="margin-bottom: 32px; text-align: center;">Feature Comparison</h2>
+
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background: white; border-bottom: 2px solid var(--border-color);">
+              <th style="text-align: left; padding: 16px; font-weight: 600;">Feature</th>
+              <th style="text-align: center; padding: 16px; font-weight: 600;">Included</th>
+            </tr>
+          </thead>
+          <tbody id="features-table">
+            <!-- Features loaded by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Responsive Preview -->
+  <section class="section section-bg-white">
+    <div class="container">
+      <h2 style="margin-bottom: 32px; text-align: center;">Responsive Preview</h2>
+
+      <div class="grid grid-3" style="gap: 24px;">
+        <div style="border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
+          <div style="background: var(--bg-gray); padding: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Desktop View</div>
+          <div style="aspect-ratio: 16/9; background: white; display: flex; align-items: center; justify-content: center; color: var(--text-light);">🖥️ 1920px</div>
+        </div>
+
+        <div style="border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
+          <div style="background: var(--bg-gray); padding: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Tablet View</div>
+          <div style="aspect-ratio: 4/3; background: white; display: flex; align-items: center; justify-content: center; color: var(--text-light);">📱 768px</div>
+        </div>
+
+        <div style="border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
+          <div style="background: var(--bg-gray); padding: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Mobile View</div>
+          <div style="aspect-ratio: 2/3; background: white; display: flex; align-items: center; justify-content: center; color: var(--text-light);">📱 375px</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-bg-light">
+    <div class="container">
+      <h2 style="margin-bottom: 32px; text-align: center;">Frequently Asked Questions</h2>
+
+      <div style="max-width: 800px; margin: 0 auto;">
+        <details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
+          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+            Can I customize this template?
+            <span style="font-size: 20px;">+</span>
+          </summary>
+          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
+            Yes! All our templates come with comprehensive customization options. You can change colors, fonts, images, text, and more without any coding knowledge.
+          </p>
+        </details>
+
+        <details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
+          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+            How do I get support?
+            <span style="font-size: 20px;">+</span>
+          </summary>
+          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
+            We provide email support for all customers. Premium customers also get priority support and video tutorials.
+          </p>
+        </details>
+
+        <details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
+          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
+            What's the return policy?
+            <span style="font-size: 20px;">+</span>
+          </summary>
+          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
+            We offer a 30-day money-back guarantee. If you're not satisfied, we'll refund your purchase.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Products -->
+  <section class="section section-bg-white">
+    <div class="container">
+      <h2 style="margin-bottom: 32px; text-align: center;">You Might Also Like</h2>
+
+      <div class="grid grid-3" id="related-products">
+        <!-- Related products loaded by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section-bg-light">
+    <div class="container">
+      <div style="text-align: center; background: white; padding: 64px 24px; border-radius: 24px;">
+        <h2 style="margin-bottom: 16px;">Ready to Order?</h2>
+        <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
+          Join hundreds of happy couples who have created their perfect wedding website.
+        </p>
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn btn-primary btn-lg" onclick="buyNow()">Buy Now</button>
+          <a href="premium-home.html" class="btn btn-secondary btn-lg">Browse More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/premium.js"></script>
+  <script>
+    // Load product data from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    // Product database
+    const products = {
+      'luxury-bloom': {
+        name: 'Luxury Bloom',
+        price: 800,
+        type: 'premium',
+        category: 'Premium',
+        image: 'images/demo_luxury_bloom.png',
+        demo: 'https://luxury-bloom-demo.vercel.app/',
+        description: 'Elegance meets luxury with animated gold accents and premium features. Perfect for couples looking for sophistication and style.',
+        badges: ['Premium', 'Bestseller'],
+        features: [
+          '🎨 Premium Gold Design',
+          '✨ Advanced Animations',
+          '🎵 Music Integration',
+          '📸 Full Photo Gallery',
+          '📱 Fully Responsive',
+          '✓ RSVP System',
+          '🔧 Full Customization',
+          '💬 Priority Support',
+          '⚡ Fast Loading',
+          '🔒 SSL Secure'
+        ]
+      },
+      'modern-minimal': {
+        name: 'Modern Minimal',
+        price: 500,
+        type: 'standard',
+        category: 'Standard',
+        image: 'images/demo_modern_minimal.png',
+        demo: 'https://modern-minimal-delta.vercel.app/',
+        description: 'Clean, contemporary design with powerful animations. Perfect for minimalist couples who appreciate simplicity and elegance.',
+        badges: ['Standard'],
+        features: [
+          '🎨 Minimalist Design',
+          '✨ Smooth Animations',
+          '📱 Mobile Optimized',
+          '✓ RSVP System',
+          '📸 Photo Gallery',
+          '🎵 Music Support',
+          '⚡ Fast Loading',
+          '🔒 Secure',
+          '💬 Contact Form',
+          '📊 Analytics Ready'
+        ]
+      },
+      'authentic': {
+        name: 'Authentic',
+        price: 800,
+        type: 'premium',
+        category: 'Premium',
+        image: 'images/demo_royal_gold.png',
+        demo: 'https://authentic-demo-chi.vercel.app/',
+        description: 'Elegant authentic wedding invitation with timeless design. Perfect for couples who appreciate sophisticated simplicity.',
+        badges: ['Premium', 'New'],
+        features: [
+          'Timeless Design',
+          'Professional Layout',
+          'Photo Gallery',
+          'Couple Story',
+          'Fully Responsive',
+          'RSVP System',
+          'Venue Details',
+          'Guest Messages',
+          'Fast Loading',
+          'SSL Secure'
+        ]
+      }    };
+
+    const product = products[productId];
+
+    if (!product) {
+      document.body.innerHTML = '<h1 style="padding: 50px; text-align: center;">Product not found</h1>';
+    } else {
+      // Load product data
+      document.title = `${product.name} - Memora`;
+      
+      document.getElementById('product-name').textContent = product.name;
+      document.getElementById('product-description').textContent = product.description;
+      document.getElementById('product-price').textContent = `EGP ${product.price}`;
+      document.getElementById('product-image').querySelector('img').src = product.image;
+      document.getElementById('live-demo-btn').href = product.demo;
+
+      // Load badges
+      const badgesContainer = document.getElementById('product-badges');
+      product.badges.forEach(badge => {
+        const badgeEl = document.createElement('span');
+        badgeEl.className = `badge badge-${badge.toLowerCase() === 'premium' ? 'gold' : badge.toLowerCase() === 'bestseller' ? 'rose' : 'emerald'}`;
+        badgeEl.textContent = badge;
+        badgesContainer.appendChild(badgeEl);
+      });
+
+      // Load features
+      const featuresContainer = document.getElementById('product-features');
+      product.features.slice(0, 6).forEach(feature => {
+        const li = document.createElement('li');
+        li.style.cssText = 'display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; font-size: 15px;';
+        li.innerHTML = `
+          <span style="color: var(--accent-gold); font-weight: 700; min-width: 20px;">✓</span>
+          <span>${feature}</span>
+        `;
+        featuresContainer.appendChild(li);
+      });
+
+      // Load features table
+      const tableContainer = document.getElementById('features-table');
+      product.features.forEach(feature => {
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid ' + 'var(--border-light)';
+        row.innerHTML = `
+          <td style="text-align: left; padding: 16px;">${feature}</td>
+          <td style="text-align: center; padding: 16px; color: var(--accent-gold); font-weight: 700;">✓</td>
+        `;
+        tableContainer.appendChild(row);
+      });
+
+      // Load related products
+      const relatedContainer = document.getElementById('related-products');
+      const otherProducts = Object.entries(products)
+        .filter(([id]) => id !== productId)
+        .slice(0, 3);
+
+      otherProducts.forEach(([id, prod]) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-image">
+            <img src="${prod.image}" alt="${prod.name}">
+          </div>
+          <div class="card-content">
+            <h4 class="card-title">${prod.name}</h4>
+            <div class="card-meta" style="border-bottom: none; padding-bottom: 0;">
+            <div class="card-price">EGP ${prod.price}</div>
+            </div>
+            <a href="product.html?id=${id}" class="btn btn-primary btn-full" style="margin-top: 12px;">View Details</a>
+          </div>
+        `;
+        relatedContainer.appendChild(card);
+      });
+    }
+
+    function buyNow() {
+      if (product) {
+        Store.buyNow(product.name);
+      }
+    }
+  </script>
+</body>
+</html>

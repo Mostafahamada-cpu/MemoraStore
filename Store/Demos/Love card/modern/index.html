@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Love Card - Memora</title>
+  <link rel="stylesheet" href="../../assets/css/premium.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .love-card {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+      animation: cardEntry 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes cardEntry {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-rose) 100%);
+      padding: 60px 40px;
+      color: white;
+      text-align: center;
+    }
+
+    .card-header-icon {
+      font-size: 60px;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .card-header-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 0;
+      font-family: var(--font-display);
+    }
+
+    .card-header-subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 8px;
+    }
+
+    .card-content {
+      padding: 48px 40px;
+      text-align: center;
+    }
+
+    .card-names {
+      margin-bottom: 32px;
+    }
+
+    .card-name-line {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card-name-line::before,
+    .card-name-line::after {
+      content: '';
+      height: 1px;
+      background: var(--border-light);
+    }
+
+    .card-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-family: var(--font-display);
+    }
+
+    .card-ampersand {
+      font-size: 20px;
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .card-message {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+
+    .card-details {
+      background: var(--bg-gray);
+      padding: 24px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .card-detail-item {
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    .card-detail-label {
+      color: var(--text-light);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .card-detail-value {
+      color: var(--primary-dark);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .card-footer {
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .card-website {
+      font-size: 13px;
+      color: var(--accent-gold);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .card-rsvp {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      .card-content {
+        padding: 32px 24px;
+      }
+
+      .card-header {
+        padding: 40px 24px;
+      }
+
+      .card-header-title {
+        font-size: 22px;
+      }
+
+      .card-name {
+        font-size: 18px;
+      }
+
+      .card-detail-value {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="love-card">
+    <div class="card-header">
+      <div class="card-header-icon">💕</div>
+      <h1 class="card-header-title">You're Invited</h1>
+      <p class="card-header-subtitle">To Celebrate Our Love</p>
+    </div>
+
+    <div class="card-content">
+      <div class="card-names">
+        <div class="card-name-line">
+          <div class="card-name">Sarah Johnson</div>
+          <div class="card-ampersand">&</div>
+          <div class="card-name">Michael Smith</div>
+        </div>
+      </div>
+
+      <p class="card-message">
+        Are getting married and would love to share this special moment with you.
+      </p>
+
+      <div class="card-details">
+        <div class="card-detail-item">
+          <span class="card-detail-label">📅 Date & Time</span>
+          <span class="card-detail-value">Saturday, June 15, 2024 at 5:00 PM</span>
+        </div>
+        <div class="card-detail-item">
+          <span class="card-detail-label">📍 Location</span>
+          <span class="card-detail-value">The Grand Ballroom, San Francisco, CA</span>
+        </div>
+        <div class="card-detail-item">
+          <span class="card-detail-label">🎉 Reception</span>
+          <span class="card-detail-value">Immediately following the ceremony</span>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary);">RSVP by June 1st</p>
+        <a href="#" class="card-website">www.sarah-michael-2024.com</a>
+        <p class="card-rsvp">✓ RSVP Online • ✓ View Photos • ✓ Leave Wishes</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

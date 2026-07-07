@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Form - Memora</title>
+  <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  <link rel="stylesheet" href="assets/css/premium.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <span class="nav-brand-icon">💍</span>
+        <span>Memora</span>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Form Section -->
+  <section class="section section-bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2>Create Your Order</h2>
+        <p>Tell us about your wedding and choose the perfect template</p>
+      </div>
+
+      <div style="max-width: 800px; margin: 0 auto;">
+        <form id="order-form">
+          <!-- Personal Information -->
+          <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
+            <h3 style="margin-bottom: 24px;">Personal Information</h3>
+
+            <div class="grid grid-2">
+              <div class="form-group required">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="fullName" class="form-input" required>
+              </div>
+
+              <div class="form-group required">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-input" required>
+              </div>
+
+              <div class="form-group required">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" name="phone" class="form-input" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Language</label>
+                <select name="language" class="form-select">
+                  <option value="english">English</option>
+                  <option value="spanish">Spanish</option>
+                  <option value="french">French</option>
+                  <option value="arabic">Arabic</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wedding Details -->
+          <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
+            <h3 style="margin-bottom: 24px;">Wedding Details</h3>
+
+            <div class="grid grid-2">
+              <div class="form-group required">
+                <label class="form-label">Bride Name</label>
+                <input type="text" name="brideName" class="form-input" required>
+              </div>
+
+              <div class="form-group required">
+                <label class="form-label">Groom Name</label>
+                <input type="text" name="groomName" class="form-input" required>
+              </div>
+
+              <div class="form-group required">
+                <label class="form-label">Wedding Date</label>
+                <input type="date" name="weddingDate" class="form-input" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Venue</label>
+                <input type="text" name="venue" class="form-input" placeholder="Location or name">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Color Preference</label>
+                <select name="colorPreference" class="form-select">
+                  <option value="">Select a color scheme</option>
+                  <option value="gold">Gold & Ivory</option>
+                  <option value="rose">Rose & Blush</option>
+                  <option value="emerald">Emerald & Gold</option>
+                  <option value="navy">Navy & Gold</option>
+                  <option value="custom">Custom / Not Sure</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Music Link (Optional)</label>
+                <input type="url" name="musicLink" class="form-input" placeholder="Spotify, YouTube, etc.">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Special Requests</label>
+              <textarea name="specialRequests" class="form-textarea" placeholder="Tell us any special requests or preferences..."></textarea>
+            </div>
+          </div>
+
+          <!-- Product Selection -->
+          <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
+            <h3 style="margin-bottom: 24px;">Choose Your Product</h3>
+
+            <div class="form-radio-group">
+              <label class="form-radio">
+                <input type="radio" name="product" value="standard" onchange="updateProductFields('standard')" required>
+                <span>
+                  <strong>Modern Minimal</strong>
+                  <br>
+                  <span style="font-size: 12px; color: var(--text-light);">Modern Minimal template with RSVP - EGP 500</span>
+                </span>
+              </label>
+
+              <label class="form-radio">
+                <input type="radio" name="product" value="premium" onchange="updateProductFields('premium')" required>
+                <span>
+                  <strong>Luxury Bloom</strong>
+                  <br>
+                  <span style="font-size: 12px; color: var(--text-light);">Luxury Bloom website with advanced features - EGP 800</span>
+                </span>
+              </label>
+
+              <label class="form-radio">
+                <input type="radio" name="product" value="authentic" onchange="updateProductFields('authentic')" required>
+                <span>
+                  <strong>Authentic</strong>
+                  <br>
+                  <span style="font-size: 12px; color: var(--text-light);">Authentic premium invitation template - EGP 800</span>
+                </span>
+              </label>
+
+              <label class="form-radio">
+                <input type="radio" name="product" value="memora-essential" onchange="updateProductFields('bundle-essential')" required>
+                <span>
+                  <strong>Memora Essential</strong>
+                  <br>
+                  <span style="font-size: 12px; color: var(--text-light);">Modern Minimal + Love Card - EGP 950</span>
+                </span>
+              </label>
+
+              <label class="form-radio">
+                <input type="radio" name="product" value="memora-signature" onchange="updateProductFields('bundle-signature')" required>
+                <span>
+                  <strong>Memora Signature</strong>
+                  <br>
+                  <span style="font-size: 12px; color: var(--text-light);">Luxury Bloom + Love Card - EGP 1250</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Love Card Inclusion Note -->
+          <div id="lovecard-fields" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; display: none;">
+            <h3 style="margin-bottom: 24px;">Love Card Included</h3>
+            <p style="font-size: 15px; color: var(--text-secondary);">Love Card is not sold alone. It is included only with Memora Essential and Memora Signature bundles.</p>
+          </div>
+
+          <!-- Standard Theme Selection -->
+          <div id="standard-fields" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; display: none;">
+            <h3 style="margin-bottom: 24px;">Selected Standard Theme</h3>
+            <p style="font-size: 15px; color: var(--text-secondary);">Modern Minimal — clean, modern wedding website with RSVP, music, and gallery.</p>
+          </div>
+
+          <!-- Premium Theme Selection -->
+          <div id="premium-fields" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; display: none;">
+            <h3 style="margin-bottom: 24px;">Selected Premium Theme</h3>
+            <p style="font-size: 15px; color: var(--text-secondary);">Luxury Bloom — luxury wedding website with advanced animations and premium styling.</p>
+          </div>
+
+          <!-- Terms & Conditions -->
+          <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px; margin-bottom: 24px;">
+            <label class="form-radio" style="margin-bottom: 16px;">
+              <input type="checkbox" name="terms" required>
+              <span>
+                I agree to the <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>
+              </span>
+            </label>
+
+            <label class="form-radio">
+              <input type="checkbox" name="newsletter">
+              <span>
+                Subscribe to our newsletter for wedding planning tips and updates
+              </span>
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <div style="display: flex; gap: 16px; justify-content: center;">
+            <button type="submit" class="btn btn-primary btn-lg" style="min-width: 200px;">
+              <span class="btn-icon">💳</span>
+              Proceed to Checkout
+            </button>
+            <a href="premium-home.html" class="btn btn-outline btn-lg">Continue Shopping</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/premium.js"></script>
+  <script>
+    function updateProductFields(productType) {
+      // Hide all fields
+      document.getElementById('lovecard-fields').style.display = 'none';
+      document.getElementById('standard-fields').style.display = 'none';
+      document.getElementById('premium-fields').style.display = 'none';
+
+      // Show relevant fields
+      if (productType === 'bundle-essential' || productType === 'bundle-signature') {
+        document.getElementById('lovecard-fields').style.display = 'block';
+      } else if (productType === 'standard') {
+        document.getElementById('standard-fields').style.display = 'block';
+      } else if (productType === 'premium' || productType === 'authentic') {
+        document.getElementById('premium-fields').style.display = 'block';
+      }
+    }
+
+    // Form submission
+    document.getElementById('order-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+
+      // Store form data
+      localStorage.setItem('memora-order', JSON.stringify(data));
+
+      // Show success message
+      UI.showNotification('Order saved! Processing your request...', 'success');
+
+      // Redirect to checkout
+      setTimeout(() => {
+        window.location.href = 'checkout.html';
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

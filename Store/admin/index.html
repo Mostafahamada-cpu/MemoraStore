@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memora Admin Login</title>
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpeg">
+  <link rel="stylesheet" href="assets/admin.css">
+</head>
+<body class="auth-page">
+  <main class="auth-card glass-panel">
+    <img src="../images/logo.jpeg" alt="Memora Logo" class="auth-logo">
+    <p class="eyebrow">Memora Admin</p>
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in securely with Supabase Authentication.</p>
+
+    <form id="login-form" class="stack">
+      <label>Email
+        <input type="email" name="email" autocomplete="email" required>
+      </label>
+      <label>Password
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" name="remember" checked>
+        <span>Remember session</span>
+      </label>
+      <button class="btn primary" type="submit">Login</button>
+    </form>
+  </main>
+
+  <div id="toast-root"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/supabase-config.js"></script>
+  <script src="assets/admin.js"></script>
+  <script>MemoraAdmin.initLogin();</script>
+</body>
+</html>

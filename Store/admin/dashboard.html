@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memora Admin Dashboard</title>
+  <link rel="icon" type="image/jpeg" href="../images/logo.jpeg">
+  <link rel="stylesheet" href="assets/admin.css">
+</head>
+<body>
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" data-view="dashboard">
+        <img src="../images/logo.jpeg" alt="Memora Logo">
+        <span>Memora</span>
+      </a>
+      <nav>
+        <button data-view="dashboard" class="active">Dashboard</button>
+        <button data-view="products">Products</button>
+        <button data-view="bundles">Bundles</button>
+        <button data-view="orders">Orders</button>
+        <button data-view="coupons">Coupons</button>
+        <button data-view="analytics">Analytics</button>
+        <button data-view="settings">Settings</button>
+        <button id="logout-btn">Logout</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar glass-panel">
+        <button class="icon-btn" id="sidebar-toggle" aria-label="Toggle sidebar">Menu</button>
+        <div>
+          <p class="eyebrow">Admin Dashboard</p>
+          <h1 id="view-title">Dashboard</h1>
+        </div>
+        <label class="global-search">
+          <span>Search</span>
+          <input id="global-search" type="search" placeholder="Products, bundles, orders...">
+        </label>
+        <div class="profile-menu">
+          <span id="admin-email">Admin</span>
+        </div>
+      </header>
+
+      <section id="loading-state" class="loading glass-panel">Loading Memora data...</section>
+      <section id="view-root" class="view-root"></section>
+    </main>
+  </div>
+
+  <dialog id="editor-dialog" class="modal glass-panel">
+    <form method="dialog" id="editor-form">
+      <div class="modal-head">
+        <h2 id="dialog-title">Edit</h2>
+        <button class="icon-btn" value="cancel" type="submit">x</button>
+      </div>
+      <div id="dialog-fields" class="form-grid"></div>
+      <div class="modal-actions">
+        <button class="btn ghost" value="cancel" type="submit">Cancel</button>
+        <button class="btn primary" id="dialog-save" value="default" type="button">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="confirm-dialog" class="modal glass-panel small">
+    <h2>Confirm delete</h2>
+    <p id="confirm-message" class="muted">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn ghost" id="confirm-cancel">Cancel</button>
+      <button class="btn danger" id="confirm-delete">Delete</button>
+    </div>
+  </dialog>
+
+  <div id="toast-root"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/supabase-config.js"></script>
+  <script src="assets/admin.js"></script>
+  <script>MemoraAdmin.initDashboard();</script>
+</body>
+</html>

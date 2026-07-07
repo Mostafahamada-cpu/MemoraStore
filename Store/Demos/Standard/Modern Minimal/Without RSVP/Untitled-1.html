@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding Invitation</title>
+    <meta name="description" content="Wedding invitation with envelope intro, countdown and venue map." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Untitled-1.css">
+</head>
+<body>
+
+    <div id="envelope-wrapper">
+        <div id="envelope-container">
+            <div class="floating-petals">
+                <span class="petal p1">✿</span>
+                <span class="petal p2">✿</span>
+                <span class="petal p3">✿</span>
+                <span class="petal p4">✿</span>
+                <span class="petal p5">✿</span>
+            </div>
+
+            <div class="envelope">
+                <div class="envelope-body"></div>
+                <div class="envelope-flap"></div>
+                <div class="envelope-letter">
+                    <div class="letter-content">
+                        <div class="letter-ornament">❦</div>
+                        <div class="letter-text">You're Invited</div>
+                        <div class="letter-ornament-bottom">❦</div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="open-btn">
+                <span class="btn-icon">✉</span>
+                <span class="btn-text">Open Invitation</span>
+            </button>
+        </div>
+    </div>
+
+
+    <main id="invitation" class="hidden">
+
+        <section id="hero" class="section">
+            <div class="section-wrapper">
+                <div class="ornament-top">✿ ✦ ✿</div>
+                <div class="save-the-date">Together with their families</div>
+                <div class="couple-names">
+                    <div class="name" id="groom-name"></div>
+                    <div class="ampersand">&</div>
+                    <div class="name" id="bride-name"></div>
+                </div>
+                <div class="tagline">Request the pleasure of your company</div>
+                <div class="wedding-date" id="wedding-date-display"></div>
+            </div>
+        </section>
+
+        <section id="countdown-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Counting Down</h2>
+                <div class="ornament-divider">
+                    <div class="line"></div>
+                    <div class="diamond">✦</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="countdown-grid">
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="days">00</div>
+                        </div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="hours">00</div>
+                        </div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="minutes">00</div>
+                        </div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-card">
+                            <div class="countdown-number" id="seconds">00</div>
+                        </div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="details-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Details</h2>
+                <div class="ornament-divider small">
+                    <div class="line"></div>
+                    <div class="diamond">✦</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">✦</div>
+                        <div class="detail-title">Ceremony</div>
+                        <div class="detail-info" id="ceremony-time"></div>
+                        <div class="detail-venue" id="ceremony-venue"></div>
+                        <div class="detail-address" id="ceremony-address"></div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">♡</div>
+                        <div class="detail-title">Reception</div>
+                        <div class="detail-info" id="reception-time"></div>
+                        <div class="detail-venue" id="reception-venue"></div>
+                        <div class="detail-address" id="reception-address"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="location-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">Location</h2>
+                <div class="map-container">
+                    <iframe id="google-map" src="" frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <div style="margin-top:18px; text-align:center;">
+                    <a id="map-directions-link" class="map-link" href="" target="_blank" rel="noopener noreferrer">Get Directions</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="couple-monogram">
+            <span id="groom-initial"></span>
+            <span class="heart-icon">♥</span>
+            <span id="bride-initial"></span>
+        </div>
+        <div class="closing-footer">Formal invitation to follow</div>
+
+        <!-- RSVP removed in this "without RSVP" variant -->
+
+        <footer id="footer">
+            <p>We can't wait to celebrate with you — <span id="groom-name-footer"></span> & <span id="bride-name-footer"></span></p>
+                <div style="margin-top:10px; display: flex; justify-content: center; gap: 15px;">
+                <a href="messages.html" class="map-link" style="padding:8px 18px; font-size:0.85rem; text-decoration: none;">💌 Guest Messages</a>
+            </div>
+        </footer>
+    </main>
+
+    <script type="module" src="Untitled-1.js"></script>
+</body>
+</html>

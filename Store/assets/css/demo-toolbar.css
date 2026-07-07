@@ -1,0 +1,195 @@
+/* ================================================================
+   DEMO TOOLBAR — Fixed Header for Template Previews
+   ================================================================ */
+
+:root {
+  --toolbar-bg: rgba(248, 244, 239, 0.98);
+  --toolbar-border: #E7D8C9;
+  --toolbar-text: #2C2C2C;
+  --toolbar-accent: #C9A46A;
+  --toolbar-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.demo-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--toolbar-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--toolbar-border);
+  box-shadow: var(--toolbar-shadow);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.demo-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.demo-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--toolbar-text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.demo-logo-icon {
+  font-size: 24px;
+}
+
+.demo-theme-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--toolbar-accent);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-left: 1px solid var(--toolbar-border);
+  padding-left: 24px;
+}
+
+.demo-toolbar-center {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.demo-view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  color: var(--toolbar-text);
+}
+
+.demo-view-btn:hover {
+  background: var(--toolbar-accent);
+  color: white;
+  border-color: var(--toolbar-accent);
+}
+
+.demo-view-btn.active {
+  background: var(--toolbar-accent);
+  color: white;
+  border-color: var(--toolbar-accent);
+}
+
+.demo-toolbar-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.demo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 24px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--toolbar-text);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.demo-btn:hover {
+  background: var(--toolbar-text);
+  color: white;
+  border-color: var(--toolbar-text);
+}
+
+.demo-btn.primary {
+  background: var(--toolbar-accent);
+  color: white;
+  border-color: var(--toolbar-accent);
+}
+
+.demo-btn.primary:hover {
+  background: var(--toolbar-text);
+  border-color: var(--toolbar-text);
+}
+
+/* Apply top-margin to body when toolbar is present */
+body.has-demo-toolbar {
+  padding-top: 64px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .demo-toolbar {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .demo-toolbar-left {
+    gap: 12px;
+  }
+
+  .demo-theme-name {
+    display: none;
+  }
+
+  .demo-logo {
+    font-size: 18px;
+  }
+
+  .demo-view-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .demo-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-toolbar {
+    height: 56px;
+    padding: 0 12px;
+    flex-wrap: wrap;
+  }
+
+  .demo-toolbar-center {
+    gap: 4px;
+  }
+
+  .demo-view-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .demo-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .demo-toolbar-right {
+    gap: 6px;
+  }
+}

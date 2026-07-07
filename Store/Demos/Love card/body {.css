@@ -1,0 +1,123 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffb6c1;
+    /* Soft pink background */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #ff1493;
+    /* Deep pink for title */
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    /* Semi-transparent white box for content */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.swiper {
+    width: 100%;
+    height: 400px;
+    /* Adjust height as needed */
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.text-section {
+    margin-top: 20px;
+}
+
+.text-section p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.heart {
+    color: #ff1493;
+    font-size: 2em;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+
+    .container {
+        padding: 15px;
+        margin: 0 5px;
+    }
+
+    .swiper {
+        height: 300px;
+    }
+
+    .text-section p {
+        font-size: 1em;
+    }
+
+    .text-section h2 {
+        font-size: 1.3em;
+    }
+
+    .heart {
+        font-size: 1.5em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        padding: 8px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+
+    .container {
+        padding: 12px;
+        margin: 0;
+        border-radius: 8px;
+    }
+
+    .swiper {
+        height: 250px;
+    }
+
+    .text-section p {
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+
+    .text-section h2 {
+        font-size: 1.2em;
+    }
+
+    .heart {
+        font-size: 1.3em;
+    }
+}
+
