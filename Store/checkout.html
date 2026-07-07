@@ -22,8 +22,9 @@
   <section class="section section-bg-light">
     <div class="container">
       <div class="grid grid-2" style="gap: 40px; align-items: start;">
-        <!-- Order Summary -->
-        <div order="2" style="display: flex; flex-direction: column;">
+        
+        <!-- Order Summary (Right Column) -->
+        <div style="order: 2; display: flex; flex-direction: column;">
           <div style="background: white; padding: 32px; border-radius: 16px; position: sticky; top: 100px;">
             <h3 style="margin-bottom: 24px;">Order Summary</h3>
 
@@ -33,81 +34,143 @@
 
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
               <span>Subtotal:</span>
-              <span id="subtotal">$0</span>
+              <span id="subtotal">EGP 0</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
               <span>Discount:</span>
-              <span id="discount" style="color: var(--accent-gold);">-$0</span>
+              <span id="discount" style="color: var(--accent-gold);">-EGP 0</span>
             </div>
             <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light);">
               <span>Total:</span>
-              <span id="total" style="color: var(--accent-gold);">$0</span>
+              <span id="total" style="color: var(--accent-gold);">EGP 0</span>
             </div>
 
-            <button class="btn btn-primary btn-full" id="pay-button" style="margin-top: 24px;" onclick="processPayment()">
-              <span class="btn-icon">💳</span>
-              Proceed to Payment
+            <!-- InstaPay Box -->
+            <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 20px; border-radius: 12px; margin-top: 24px; border: 2px solid var(--accent-gold);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <span style="font-size: 20px;">💳</span>
+                <h4 style="margin: 0;">Payment via InstaPay</h4>
+              </div>
+              <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">InstaPay Number:</p>
+                <p style="font-size: 18px; font-weight: 700; color: var(--accent-gold); word-break: break-all;">+201099885633</p>
+              </div>
+              <div style="background: white; padding: 16px; border-radius: 8px;">
+                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Amount Required:</p>
+                <p style="font-size: 18px; font-weight: 700; color: var(--accent-gold);" id="instapay-amount">EGP 0</p>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" style="margin-top: 24px;" onclick="proceedToPayment()">
+              <span class="btn-icon">💬</span>
+              Confirm via WhatsApp
             </button>
 
             <a href="order-form.html" class="btn btn-outline btn-full" style="margin-top: 12px;">Back to Form</a>
           </div>
         </div>
 
-        <!-- Checkout Form -->
-        <div order="1">
+        <!-- Checkout Form (Left Column) -->
+        <div style="order: 1;">
           <form id="checkout-form">
             <!-- Billing Address -->
             <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-              <h3 style="margin-bottom: 24px;">Billing Address</h3>
+              <h3 style="margin-bottom: 24px;">Customer Information</h3>
 
               <div class="form-group">
-                <label class="form-label">Full Name</label>
-                <input type="text" id="fullName" class="form-input" readonly>
+                <label class="form-label required">Full Name</label>
+                <input type="text" id="fullName" name="fullName" class="form-input" required readonly>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" id="email" class="form-input" readonly>
+                <label class="form-label required">Email</label>
+                <input type="email" id="email" name="email" class="form-input" required readonly>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Phone</label>
-                <input type="tel" id="phone" class="form-input" readonly>
+                <label class="form-label required">Phone Number</label>
+                <input type="tel" id="phone" name="phone" class="form-input" required readonly>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Language</label>
+                <input type="text" id="language" name="language" class="form-input" readonly>
               </div>
             </div>
 
             <!-- Wedding Details -->
             <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
               <h3 style="margin-bottom: 24px;">Wedding Details</h3>
-              <div id="wedding-summary" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px;">
-                <!-- Wedding details loaded by JavaScript -->
+
+              <div class="grid grid-2">
+                <div class="form-group">
+                  <label class="form-label">Bride Name</label>
+                  <input type="text" id="brideName" name="brideName" class="form-input" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Groom Name</label>
+                  <input type="text" id="groomName" name="groomName" class="form-input" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Wedding Date</label>
+                  <input type="date" id="weddingDate" name="weddingDate" class="form-input" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Venue</label>
+                  <input type="text" id="venue" name="venue" class="form-input" placeholder="Location or name" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Color Preference</label>
+                  <input type="text" id="colorPreference" name="colorPreference" class="form-input" readonly>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Music Link</label>
+                  <input type="url" id="musicLink" name="musicLink" class="form-input" readonly>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Special Requests</label>
+                <textarea name="specialRequests" id="specialRequests" class="form-textarea" readonly></textarea>
               </div>
             </div>
 
-            <!-- Payment Method -->
+            <!-- Product Selection (Read-only) -->
             <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-              <h3 style="margin-bottom: 24px;">Payment Method</h3>
+              <h3 style="margin-bottom: 24px;">Your Order</h3>
 
-              <div class="form-radio-group">
-                <label class="form-radio">
-                  <input type="radio" name="payment-method" value="instapay" checked>
-                  <span>
-                    <strong>InstaPay</strong>
-                    <br>
-                    <span style="font-size:12px;color:var(--text-light)">
-                      Send your payment via InstaPay, then press Proceed to Payment to send us the payment screenshot on WhatsApp.
-                    </span>
-                  </span>
-                </label>
+              <div style="background: var(--bg-gray); padding: 20px; border-radius: 12px;">
+                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Product:</p>
+                <p style="font-size: 16px; font-weight: 600; color: var(--primary-dark); margin-bottom: 16px;" id="selectedProduct"></p>
+                
+                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Category:</p>
+                <p style="font-size: 14px; color: var(--text-secondary);" id="selectedCategory"></p>
               </div>
+            </div>
 
+            <!-- Payment Instructions -->
+            <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px; margin-bottom: 24px; border-left: 4px solid var(--accent-gold);">
+              <h4 style="margin-bottom: 12px; color: var(--primary-dark);">💡 Payment Instructions</h4>
+              <ol style="color: var(--text-secondary); font-size: 14px; line-height: 1.8; margin-left: 20px;">
+                <li>Click "Confirm via WhatsApp" to open your chat with our team</li>
+                <li>A pre-filled message with your order details will be sent</li>
+                <li>Transfer the amount via InstaPay to: <strong>+201099885633</strong></li>
+                <li>Send the payment screenshot through WhatsApp</li>
+                <li>Our team will verify and confirm your order</li>
+              </ol>
+            </div>
 
             <!-- Terms -->
             <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px;">
               <label class="form-radio">
-                <input type="checkbox" name="terms" required>
+                <input type="checkbox" name="terms" id="terms" required>
                 <span>
-                  I agree to the <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.
+                  I agree to the <strong>Terms of Service</strong>, <strong>Privacy Policy</strong>, and <strong>Refund Policy</strong>
                 </span>
               </label>
             </div>
@@ -122,187 +185,371 @@
     <div class="container">
       <div class="grid grid-3">
         <div style="text-align: center;">
-          <div style="font-size: 28px; margin-bottom: 12px;">🔒</div>
-          <h5>Secure Payment</h5>
-          <p style="font-size: 14px; color: var(--text-secondary);">All transactions are secured with SSL encryption</p>
+          <div style="font-size: 28px; margin-bottom: 12px;">💬</div>
+          <h5>WhatsApp Support</h5>
+          <p style="font-size: 14px; color: var(--text-secondary);">Chat directly with our team for instant support</p>
         </div>
 
         <div style="text-align: center;">
           <div style="font-size: 28px; margin-bottom: 12px;">✓</div>
-          <h5>Instant Delivery</h5>
-          <p style="font-size: 14px; color: var(--text-secondary);">Receive your invitation after payment confirmation.</p>
+          <h5>30-Day Guarantee</h5>
+          <p style="font-size: 14px; color: var(--text-secondary);">Not satisfied? Get a full refund within 30 days</p>
         </div>
 
         <div style="text-align: center;">
-          <div style="font-size: 28px; margin-bottom: 12px;">💬</div>
-          <h5>24/7 Support</h5>
-          <p style="font-size: 14px; color: var(--text-secondary);">Our team is here to help with any questions</p>
+          <div style="font-size: 28px; margin-bottom: 12px;">🔒</div>
+          <h5>Secure Payment</h5>
+          <p style="font-size: 14px; color: var(--text-secondary);">Your payment is verified before processing</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Status Messages -->
+  <div id="toast-root" style="position: fixed; right: 20px; bottom: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; display: flex; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 40px; border-radius: 16px; text-align: center;">
+      <p style="font-size: 48px; margin-bottom: 16px;">⏳</p>
+      <p style="font-size: 18px; color: var(--text-primary); font-weight: 600;">Processing your order...</p>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="admin/assets/supabase-config.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
   <script src="assets/js/premium.js"></script>
   <script>
-    // Supabase client
-    const supabaseClient = window.supabase.createClient(
-      window.MEMORA_SUPABASE.url,
-      window.MEMORA_SUPABASE.anonKey
-    );
+    // Initialize Supabase
+    const supabaseUrl = window.MEMORA_SUPABASE?.url;
+    const supabaseKey = window.MEMORA_SUPABASE?.anonKey;
+    const supabase = supabaseUrl && supabaseKey ? 
+      window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 
-    // Order data is held in localStorage only between the form and this page.
-    const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
-
-    document.getElementById('fullName').value = orderData.fullName || '';
-    document.getElementById('email').value = orderData.email || '';
-    document.getElementById('phone').value = orderData.phone || '';
-
+    // Product catalog
     const productCatalog = {
-      'standard': { name: 'Modern Minimal', category: 'Standard', price: 500 },
-      'premium': { name: 'Luxury Bloom', category: 'Premium', price: 800 },
-      'authentic': { name: 'Authentic', category: 'Premium', price: 800 },
-      'memora-essential': { name: 'Memora Essential', category: 'Bundle', price: 950 },
-      'memora-signature': { name: 'Memora Signature', category: 'Bundle', price: 1250 },
+      'standard': { 
+        name: 'Modern Minimal', 
+        price: 500,
+        category: 'Standard'
+      },
+      'premium': { 
+        name: 'Luxury Bloom', 
+        price: 800,
+        category: 'Premium'
+      },
+      'authentic': { 
+        name: 'Authentic', 
+        price: 800,
+        category: 'Premium'
+      },
+      'memora-essential': { 
+        name: 'Memora Essential', 
+        price: 950,
+        category: 'Bundle'
+      },
+      'memora-signature': { 
+        name: 'Memora Signature', 
+        price: 1250,
+        category: 'Bundle'
+      },
     };
 
-    const languageLabels = { english: 'English', spanish: 'Spanish', french: 'French', arabic: 'Arabic', other: 'Other' };
-    const colorLabels = { gold: 'Gold & Ivory', rose: 'Rose & Blush', emerald: 'Emerald & Gold', navy: 'Navy & Gold', custom: 'Custom / Not Sure' };
+    // Load order data from form
+    function loadOrderData() {
+      const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
+      
+      // Populate form fields
+      document.getElementById('fullName').value = orderData.fullName || '';
+      document.getElementById('email').value = orderData.email || '';
+      document.getElementById('phone').value = orderData.phone || '';
+      document.getElementById('language').value = orderData.language || 'english';
+      document.getElementById('brideName').value = orderData.brideName || '';
+      document.getElementById('groomName').value = orderData.groomName || '';
+      document.getElementById('weddingDate').value = orderData.weddingDate || '';
+      document.getElementById('venue').value = orderData.venue || '';
+      document.getElementById('colorPreference').value = orderData.colorPreference || '';
+      document.getElementById('musicLink').value = orderData.musicLink || '';
+      document.getElementById('specialRequests').value = orderData.specialRequests || '';
 
-    const cartItems = [];
-    if (orderData.product && productCatalog[orderData.product]) {
-      cartItems.push({ ...productCatalog[orderData.product], quantity: 1 });
-    } else {
-      cartItems.push({ name: 'Memora Order', category: '', price: 0, quantity: 1 });
+      // Get product info
+      const productKey = orderData.product;
+      const product = productCatalog[productKey];
+      
+      if (product) {
+        document.getElementById('selectedProduct').textContent = product.name;
+        document.getElementById('selectedCategory').textContent = `Category: ${product.category}`;
+        
+        updateCartDisplay(product);
+      }
     }
 
-    // Update cart display
-    const cartContainer = document.getElementById('cart-items');
-    let subtotal = 0;
+    function updateCartDisplay(product) {
+      const cartContainer = document.getElementById('cart-items');
+      const subtotal = product.price;
+      const discount = 0;
+      const total = subtotal - discount;
 
-    cartItems.forEach(item => {
-      const itemTotal = item.price * item.quantity;
-      subtotal += itemTotal;
-
-      const itemEl = document.createElement('div');
-      itemEl.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 12px;';
-      itemEl.innerHTML = `
-        <div>
-          <div style="font-weight: 600;">${item.name}</div>
-          <div style="font-size: 12px; color: var(--text-light);">${item.category ? item.category + ' · ' : ''}Qty: ${item.quantity}</div>
+      cartContainer.innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+          <div>
+            <div style="font-weight: 600;">${product.name}</div>
+            <div style="font-size: 12px; color: var(--text-light);">Qty: 1</div>
+          </div>
+          <div style="font-weight: 600; text-align: right;">EGP ${subtotal.toFixed(2)}</div>
         </div>
-        <div style="font-weight: 600; text-align: right;">EGP ${itemTotal.toFixed(2)}</div>
       `;
-      cartContainer.appendChild(itemEl);
-    });
 
-    // Wedding details summary
-    const weddingSummary = document.getElementById('wedding-summary');
-    const summaryFields = [
-      ['Bride', orderData.brideName],
-      ['Groom', orderData.groomName],
-      ['Wedding Date', orderData.weddingDate],
-      ['Venue', orderData.venue],
-      ['Color Preference', colorLabels[orderData.colorPreference] || orderData.colorPreference],
-      ['Language', languageLabels[orderData.language] || orderData.language],
-      ['Music Link', orderData.musicLink],
-      ['Special Requests', orderData.specialRequests],
-    ];
-    summaryFields.forEach(([label, value]) => {
-      const el = document.createElement('div');
-      el.innerHTML = `
-        <div style="font-size: 12px; color: var(--text-light); margin-bottom: 2px;">${label}</div>
-        <div style="font-size: 14px; font-weight: 600; word-break: break-word;">${value || '—'}</div>
+      document.getElementById('subtotal').textContent = `EGP ${subtotal.toFixed(2)}`;
+      document.getElementById('discount').textContent = `-EGP ${discount.toFixed(2)}`;
+      document.getElementById('total').textContent = `EGP ${total.toFixed(2)}`;
+      document.getElementById('instapay-amount').textContent = `EGP ${total.toFixed(2)}`;
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+      const root = document.getElementById('toast-root');
+      const toast = document.createElement('div');
+      
+      const bgColor = {
+        success: 'rgba(76, 175, 80, 0.95)',
+        error: 'rgba(231, 76, 60, 0.95)',
+        info: 'rgba(52, 152, 219, 0.95)'
+      }[type] || 'rgba(52, 152, 219, 0.95)';
+
+      toast.style.cssText = `
+        background: ${bgColor};
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease;
       `;
-      weddingSummary.appendChild(el);
-    });
+      
+      toast.textContent = message;
+      root.appendChild(toast);
 
-    // Calculate totals
-    const discount = 0; // Could be calculated based on promo codes
-    const total = subtotal - discount;
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
 
-    document.getElementById('subtotal').textContent = `EGP ${subtotal.toFixed(2)}`;
-    document.getElementById('discount').textContent = `-EGP ${discount.toFixed(2)}`;
-    document.getElementById('total').textContent = `EGP ${total.toFixed(2)}`;
+    // Generate WhatsApp message
+    function generateWhatsAppMessage(orderData, product, total) {
+      const formatDate = (dateStr) => {
+        if (!dateStr) return 'Not specified';
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      };
 
-    async function processPayment() {
+      const message = `Hello Memora Team 👋
+
+I would like to confirm my order.
+
+**Customer Information:**
+- Full Name: ${orderData.fullName || 'Not provided'}
+- Phone Number: ${orderData.phone || 'Not provided'}
+- Email: ${orderData.email || 'Not provided'}
+- Language: ${orderData.language || 'Not specified'}
+
+**Wedding Details:**
+- Bride Name: ${orderData.brideName || 'Not provided'}
+- Groom Name: ${orderData.groomName || 'Not provided'}
+- Wedding Date: ${formatDate(orderData.weddingDate)}
+- Venue: ${orderData.venue || 'Not specified'}
+- Color Preference: ${orderData.colorPreference || 'Not specified'}
+
+**Order Details:**
+- Product: ${product.name}
+- Category: ${product.category}
+- Total Price: ${total} EGP
+
+Please send payment via InstaPay to: +201099885633
+Required payment amount: ${total} EGP
+
+I will send the payment screenshot immediately after the transfer.`;
+
+      return message;
+    }
+
+    // Process payment
+    async function proceedToPayment() {
       const form = document.getElementById('checkout-form');
-
+      const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
+      
+      // Validate form
       if (!form.checkValidity()) {
-        form.reportValidity();
+        showNotification('Please fill in all required fields', 'error');
         return;
       }
 
-      if (!orderData.fullName || !orderData.phone || !orderData.email) {
-        alert('Your order details are missing. Please go back and fill the order form first.');
+      if (!document.getElementById('terms').checked) {
+        showNotification('Please agree to the terms and conditions', 'error');
         return;
       }
 
-      const payButton = document.getElementById('pay-button');
-      payButton.disabled = true;
+      if (!supabase) {
+        showNotification('Payment service not configured. Please contact support.', 'error');
+        return;
+      }
 
-      const product = cartItems[0];
-      const productName = product?.name || 'Unknown Product';
+      // Show loading
+      const loader = document.getElementById('loading-overlay');
+      loader.style.display = 'flex';
 
-      const { error } = await supabaseClient
-        .from('orders')
-        .insert([{
+      try {
+        // Get product info
+        const productKey = orderData.product;
+        const product = productCatalog[productKey];
+        
+        if (!product) {
+          throw new Error('Product not found');
+        }
+
+        const total = product.price;
+
+        // Prepare order data for Supabase
+        const orderPayload = {
           customer_name: orderData.fullName,
-          whatsapp_number: orderData.phone,
           email: orderData.email,
-          preferred_language: languageLabels[orderData.language] || orderData.language || null,
-          bride_name: orderData.brideName || null,
-          groom_name: orderData.groomName || null,
+          phone_number: orderData.phone,
+          preferred_language: orderData.language,
+          bride_name: orderData.brideName,
+          groom_name: orderData.groomName,
           wedding_date: orderData.weddingDate || null,
-          venue: orderData.venue || null,
-          color_preference: colorLabels[orderData.colorPreference] || orderData.colorPreference || null,
-          music_link: orderData.musicLink || null,
-          special_requests: orderData.specialRequests || null,
-          purchased_product: productName,
-          product_category: product?.category || null,
+          venue: orderData.venue,
+          color_preference: orderData.colorPreference,
+          music_link: orderData.musicLink,
+          special_requests: orderData.specialRequests,
+          purchased_product: product.name,
+          product_category: product.category,
           total_amount: total,
-          order_date: new Date().toISOString(),
+          payment_method: 'instapay',
           payment_status: 'Pending',
           order_status: 'Pending'
-        }]);
+        };
 
-      if (error) {
-        payButton.disabled = false;
-        console.error(error);
-        alert(`Order could not be saved: ${error.message}`);
-        return;
+        // Insert into Supabase
+        const { data, error } = await supabase
+          .from('orders')
+          .insert([orderPayload])
+          .select();
+
+        if (error) {
+          console.error('Supabase error:', error);
+          throw new Error(error.message || 'Failed to save order');
+        }
+
+        if (!data || data.length === 0) {
+          throw new Error('Order was not saved properly');
+        }
+
+        const orderId = data[0].id;
+        
+        // Hide loading
+        loader.style.display = 'none';
+
+        // Generate WhatsApp message
+        const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+
+        // Show success and instructions
+        showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
+
+        // Display payment instructions
+        showPaymentInstructions(orderData, product, total);
+
+        // Open WhatsApp (slightly delayed to show success message)
+        setTimeout(() => {
+          window.open(
+            `https://wa.me/201099885633?text=${encodedMessage}`,
+            '_blank',
+            'noopener,noreferrer'
+          );
+        }, 1500);
+
+        // Clear localStorage
+        localStorage.removeItem('memora-order');
+
+      } catch (error) {
+        loader.style.display = 'none';
+        console.error('Payment error:', error);
+        showNotification(`Error: ${error.message}`, 'error');
       }
-
-      const message =
-`Hello Memora 👋
-
-I have just placed a new order:
-
-🛍️ Product: ${productName}
-💰 Total Price: EGP ${total}
-
-👤 Customer Details
-• Name: ${orderData.fullName}
-• Phone: ${orderData.phone}
-• Email: ${orderData.email}
-
-💍 Wedding Details
-• Bride: ${orderData.brideName || '—'}
-• Groom: ${orderData.groomName || '—'}
-• Wedding Date: ${orderData.weddingDate || '—'}
-• Venue: ${orderData.venue || '—'}
-
-✅ I have completed the InstaPay transfer and will send the payment screenshot now.`;
-
-      localStorage.removeItem('memora-order');
-      localStorage.removeItem('memora-cart');
-
-      window.open(
-        `https://wa.me/201099885633?text=${encodeURIComponent(message)}`,
-        '_blank'
-      );
     }
+
+    // Show payment instructions modal
+    function showPaymentInstructions(orderData, product, total) {
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        padding: 20px;
+      `;
+
+      modal.innerHTML = `
+        <div style="background: white; border-radius: 20px; padding: 40px; max-width: 500px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;">
+          <p style="font-size: 48px; margin-bottom: 20px;">✅</p>
+          <h2 style="color: var(--primary-dark); margin-bottom: 16px;">Order Saved Successfully!</h2>
+          <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.8; margin-bottom: 24px;">
+            Your order has been saved. Please send the payment amount via InstaPay and share the payment screenshot through WhatsApp to confirm your order.
+          </p>
+
+          <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 24px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
+            <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">InstaPay Number:</p>
+            <p style="font-size: 20px; font-weight: 700; color: var(--accent-gold); word-break: break-all; margin-bottom: 20px;">+201099885633</p>
+            
+            <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Amount to Send:</p>
+            <p style="font-size: 24px; font-weight: 700; color: var(--accent-gold);">${total} EGP</p>
+          </div>
+
+          <button onclick="this.closest('div').parentElement.remove()" class="btn btn-primary btn-lg" style="width: 100%;">
+            Close & Go to WhatsApp
+          </button>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+    }
+
+    // Add CSS for animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Load data on page load
+    window.addEventListener('load', loadOrderData);
   </script>
 </body>
 </html>
