@@ -80,69 +80,26 @@
             <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
               <h3 style="margin-bottom: 24px;">Payment Method</h3>
 
-              <div class="form-radio-group">
-                <label class="form-radio">
-                  <input type="radio" name="payment-method" value="card" checked>
-                  <span>
-                    <strong>Credit / Debit Card</strong>
-                    <br>
-                    <span style="font-size: 12px; color: var(--text-light);">Visa, Mastercard, American Express</span>
-                  </span>
-                </label>
+         <div class="form-radio-group">
+  <label class="form-radio">
+    <input type="radio" name="payment-method" value="instapay" checked>
+    <span>
+      <strong>InstaPay</strong>
+      <br>
+      <span style="font-size:12px;color:var(--text-light)">
+        Send your payment via InstaPay, then press Proceed to Payment to send us the payment screenshot on WhatsApp.
+      </span>
+    </span>
+  </label>
+</div>
 
-                <label class="form-radio">
-                  <input type="radio" name="payment-method" value="paypal">
-                  <span>
-                    <strong>PayPal</strong>
-                    <br>
-                    <span style="font-size: 12px; color: var(--text-light);">Secure payment via PayPal</span>
-                  </span>
-                </label>
-
-                <label class="form-radio">
-                  <input type="radio" name="payment-method" value="bank">
-                  <span>
-                    <strong>Bank Transfer</strong>
-                    <br>
-                    <span style="font-size: 12px; color: var(--text-light);">Direct bank transfer</span>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Card Details (shown for credit card payment) -->
-            <div id="card-details" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-              <h3 style="margin-bottom: 24px;">Card Details</h3>
-
-              <div class="form-group">
-                <label class="form-label required">Cardholder Name</label>
-                <input type="text" name="card-name" class="form-input" placeholder="John Doe">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label required">Card Number</label>
-                <input type="text" name="card-number" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19">
-              </div>
-
-              <div class="grid grid-2">
-                <div class="form-group">
-                  <label class="form-label required">Expiry Date</label>
-                  <input type="text" name="card-expiry" class="form-input" placeholder="MM/YY" maxlength="5">
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label required">CVV</label>
-                  <input type="text" name="card-cvv" class="form-input" placeholder="123" maxlength="4">
-                </div>
-              </div>
-            </div>
-
+         
             <!-- Terms -->
             <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px;">
               <label class="form-radio">
                 <input type="checkbox" name="terms" required>
                 <span>
-                  I agree to the <strong>Terms of Service</strong>, <strong>Privacy Policy</strong>, and <strong>Refund Policy</strong>
+                  I agree to the <strong>Terms of Service</strong>, <strong>Privacy Policy</strong>, and <strong>I agree to the Terms of Service and Privacy Policy. </strong>
                 </span>
               </label>
             </div>
@@ -164,7 +121,9 @@
 
         <div style="text-align: center;">
           <div style="font-size: 28px; margin-bottom: 12px;">✓</div>
-          <h5>30-Day Guarantee</h5>
+          <h5>Instant Delivery
+            Receive your invitation after payment confirmation.
+          </h5>
           <p style="font-size: 14px; color: var(--text-secondary);">Not satisfied? Get a full refund within 30 days</p>
         </div>
 
@@ -176,10 +135,16 @@
       </div>
     </div>
   </section>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="admin/assets/supabase-config.js"></script>
+<script src="assets/js/premium.js"></script>
   <script src="assets/js/premium.js"></script>
   <script>
     // Load order data
+    const supabase = window.supabase.createClient(
+    window.MEMORA_SUPABASE.url,
+    window.MEMORA_SUPABASE.anonKey
+);
     const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
     
     document.getElementById('fullName').value = orderData.fullName || '';
@@ -233,19 +198,60 @@
     const paymentRadios = document.querySelectorAll('input[name="payment-method"]');
     const cardDetails = document.getElementById('card-details');
 
-    paymentRadios.forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        cardDetails.style.display = e.target.value === 'card' ? 'block' : 'none';
-      });
-    });
+   async function processPayment() {
 
-    function processPayment() {
-      const form = document.getElementById('checkout-form');
-      
-      if (!form.checkValidity()) {
-        alert('Please fill in all required fields');
+    const form = document.getElementById('checkout-form');
+
+    if (!form.checkValidity()) {
+        alert("Please complete the form.");
         return;
-      }
+    }
+
+    const productName = cartItems[0]?.name || "Unknown Product";
+
+    const { error } = await supabase
+        .from("orders")
+        .insert([{
+            customer_name: orderData.fullName,
+            whatsapp_number: orderData.phone,
+            email: orderData.email,
+            purchased_product: productName,
+            total_amount: total,
+            payment_status: "Pending",
+            order_status: "Pending"
+        }]);
+
+    if (error) {
+        console.error(error);
+        alert(error.message);
+        return;
+    }
+
+    const message =
+`Hello Memora 👋
+
+I would like to purchase:
+
+Product: ${productName}
+
+Price: ${total} EGP
+
+Name: ${orderData.fullName}
+
+Phone: ${orderData.phone}
+
+Email: ${orderData.email}
+
+I have completed the InstaPay transfer and will send the payment screenshot now.`;
+
+    localStorage.removeItem("memora-order");
+    localStorage.removeItem("memora-cart");
+
+    window.open(
+        `https://wa.me/201099885633?text=${encodeURIComponent(message)}`,
+        "_blank"
+    );
+}
 
       // Show success animation
       UI.showNotification('Processing payment...', 'info');
@@ -262,7 +268,7 @@
           window.location.href = 'thank-you.html';
         }, 1500);
       }, 2000);
-    }
+    
   </script>
 </body>
 </html>
