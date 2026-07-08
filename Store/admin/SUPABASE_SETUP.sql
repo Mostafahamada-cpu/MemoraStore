@@ -106,11 +106,14 @@ drop policy if exists "Authenticated admins can manage orders" on public.orders;
 drop policy if exists "Authenticated admins can manage coupons" on public.coupons;
 drop policy if exists "Authenticated admins can manage settings" on public.settings;
 
+drop policy if exists "Allow public order inserts" on public.orders;
+
 create policy "Authenticated admins can manage products" on public.products for all to authenticated using (true) with check (true);
 create policy "Authenticated admins can manage bundles" on public.bundles for all to authenticated using (true) with check (true);
 create policy "Authenticated admins can manage orders" on public.orders for all to authenticated using (true) with check (true);
 create policy "Authenticated admins can manage coupons" on public.coupons for all to authenticated using (true) with check (true);
 create policy "Authenticated admins can manage settings" on public.settings for all to authenticated using (true) with check (true);
+create policy "Allow public order inserts" on public.orders for insert to anon with check (true);
 
 -- Create a public bucket named memora-assets in Storage, then add these policies:
 insert into storage.buckets (id, name, public)

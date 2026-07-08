@@ -217,6 +217,8 @@
 
   <script src="assets/js/premium.js"></script>
   <script>
+    const ORDER_STORAGE_KEY = 'memora-order';
+
     function updateProductFields(productType) {
       // Hide all fields
       document.getElementById('lovecard-fields').style.display = 'none';
@@ -236,19 +238,31 @@
     // Form submission
     document.getElementById('order-form').addEventListener('submit', (e) => {
       e.preventDefault();
+      e.stopImmediatePropagation();
       
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
+      const serializedOrder = JSON.stringify(data);
 
-      // Store form data
-      localStorage.setItem('memora-order', JSON.stringify(data));
+      // Store form data for hosted and local file-based flows
+      try {
+        localStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
+      } catch (error) {
+        console.warn('localStorage unavailable:', error);
+      }
+
+      try {
+        sessionStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
+      } catch (error) {
+        console.warn('sessionStorage unavailable:', error);
+      }
 
       // Show success message
       UI.showNotification('Order saved! Processing your request...', 'success');
 
       // Redirect to checkout
       setTimeout(() => {
-        window.location.href = 'checkout.html';
+        window.location.href = `checkout.html?order=${encodeURIComponent(serializedOrder)}`;
       }, 1500);
     });
   </script>

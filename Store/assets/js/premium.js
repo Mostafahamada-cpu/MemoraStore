@@ -7,12 +7,21 @@
 const Store = (() => {
   const WHATSAPP_NUMBER = '201099885633';
 
+  const readStorageArray = (key) => {
+    try {
+      const rawValue = localStorage.getItem(key);
+      return rawValue ? JSON.parse(rawValue) : [];
+    } catch (error) {
+      return [];
+    }
+  };
+
   const state = {
     selectedCategory: 'all',
     searchQuery: '',
     selectedProduct: null,
-    cart: JSON.parse(localStorage.getItem('memora-cart')) || [],
-    favorites: JSON.parse(localStorage.getItem('memora-favorites')) || [],
+    cart: readStorageArray('memora-cart'),
+    favorites: readStorageArray('memora-favorites'),
   };
 
   const products = {
@@ -101,8 +110,12 @@ const Store = (() => {
 
   const setState = (updates) => {
     Object.assign(state, updates);
-    localStorage.setItem('memora-cart', JSON.stringify(state.cart));
-    localStorage.setItem('memora-favorites', JSON.stringify(state.favorites));
+    try {
+      localStorage.setItem('memora-cart', JSON.stringify(state.cart));
+      localStorage.setItem('memora-favorites', JSON.stringify(state.favorites));
+    } catch (error) {
+      // Ignore storage failures on restricted origins such as file://
+    }
   };
 
   const addToCart = (productId) => {

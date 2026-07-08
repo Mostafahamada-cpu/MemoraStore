@@ -161,7 +161,7 @@
               </a>
             </div>
 
-            <button class="btn btn-primary btn-full" style="margin-bottom: 12px; background: #25D366; border-color: #25D366;" onclick="proceedToPayment()">
+            <button type="submit" class="btn btn-primary btn-full" style="margin-bottom: 12px; background: #25D366; border-color: #25D366;">
               <span class="btn-icon">💬</span>
               Confirm via WhatsApp
             </button>
@@ -190,10 +190,13 @@
   <script src="admin/assets/supabase-config.js"></script>
   <script src="assets/js/premium.js"></script>
   <script>
+    const ORDER_STORAGE_KEY = 'memora-order';
+    const WHATSAPP_NUMBER = '+201099885633';
+
     // Initialize Supabase
     const supabaseUrl = window.MEMORA_SUPABASE?.url;
     const supabaseKey = window.MEMORA_SUPABASE?.anonKey;
-    const supabase = supabaseUrl && supabaseKey ? 
+    const supabaseClient = supabaseUrl && supabaseKey && window.supabase?.createClient ?
       window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 
     // Product catalog
@@ -225,9 +228,72 @@
       },
     };
 
+    function safeParseOrderData(value) {
+      if (!value) return null;
+
+      try {
+        return JSON.parse(value);
+      } catch (error) {
+        console.warn('Unable to parse saved order data:', error);
+        return null;
+      }
+    }
+
+    function persistOrderData(orderData) {
+      const serializedOrder = JSON.stringify(orderData);
+
+      try {
+        sessionStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
+      } catch (error) {
+        console.warn('sessionStorage unavailable:', error);
+      }
+
+      try {
+        localStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
+      } catch (error) {
+        console.warn('localStorage unavailable:', error);
+      }
+    }
+
+    function getSavedOrderData() {
+      const queryValue = new URLSearchParams(window.location.search).get('order');
+
+      if (queryValue) {
+        const parsedQueryOrder = safeParseOrderData(queryValue);
+
+        if (parsedQueryOrder) {
+          persistOrderData(parsedQueryOrder);
+          try {
+            window.history.replaceState({}, '', 'checkout.html');
+          } catch (error) {
+            console.warn('Unable to clear checkout query string:', error);
+          }
+          return parsedQueryOrder;
+        }
+      }
+
+      try {
+        const sessionOrder = safeParseOrderData(sessionStorage.getItem(ORDER_STORAGE_KEY));
+        if (sessionOrder) return sessionOrder;
+      } catch (error) {
+        console.warn('sessionStorage read unavailable:', error);
+      }
+
+      try {
+        return safeParseOrderData(localStorage.getItem(ORDER_STORAGE_KEY));
+      } catch (error) {
+        console.warn('localStorage read unavailable:', error);
+        return null;
+      }
+    }
+
     // Load order data from localStorage (saved by order-form.html)
     function loadOrderData() {
-      const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
+      const orderData = getSavedOrderData() || {};
+
+      if (Object.keys(orderData).length > 0) {
+        persistOrderData(orderData);
+      }
       
       // Check if we have required data
       if (!orderData || !orderData.product || !orderData.fullName) {
@@ -360,7 +426,7 @@ I will now send the payment screenshot.`;
 
     // Process payment — save to Supabase then open WhatsApp
     async function proceedToPayment() {
-      const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
+      const orderData = getSavedOrderData() || {};
 
       // Validate terms checkbox
       if (!document.getElementById('terms').checked) {
@@ -369,7 +435,7 @@ I will now send the payment screenshot.`;
       }
 
       // Validate Supabase is configured
-      if (!supabase) {
+      if (!supabaseClient) {
         showNotification('⚠️ Payment system not configured. Please contact support.', 'error');
         console.error('Supabase not initialized. Check admin/assets/supabase-config.js');
         return;
@@ -389,6 +455,8 @@ I will now send the payment screenshot.`;
       loader.style.display = 'flex';
 
       try {
+        persistOrderData(orderData);
+
         // Build the order payload matching the Supabase orders table
         const orderPayload = {
           customer_name: orderData.fullName,
@@ -411,7 +479,7 @@ I will now send the payment screenshot.`;
         };
 
         // Insert into Supabase
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
           .from('orders')
           .insert([orderPayload])
           .select();
@@ -436,7 +504,8 @@ I will now send the payment screenshot.`;
         showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
 
         setTimeout(() => {
-          window.location.href = `https://wa.me/+201099885633?text=${encodedMessage}`;
+          const whatsappTarget = WHATSAPP_NUMBER.replace(/\D/g, '');
+          window.location.href = `https://wa.me/${whatsappTarget}?text=${encodedMessage}`;
         }, 800);
 
       } catch (error) {
@@ -446,6 +515,11 @@ I will now send the payment screenshot.`;
         showNotification(`❌ Error: ${error.message}`, 'error');
       }
     }
+
+    document.getElementById('checkout-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      proceedToPayment();
+    });
 
     // Add CSS for animations
     const style = document.createElement('style');
