@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout Debug - Memora</title>
+  <title>Checkout - Memora</title>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
   <link rel="stylesheet" href="assets/css/premium.css">
 </head>
@@ -18,91 +18,20 @@
     </div>
   </nav>
 
-  <!-- Debug Section -->
+  <!-- Checkout Section -->
   <section class="section section-bg-light">
     <div class="container">
-      <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; border: 3px solid red;">
-        <h2 style="color: red; margin-top: 0;">🔍 DEBUG MODE</h2>
-        
-        <div style="background: #fff3cd; padding: 16px; border-radius: 8px; margin-bottom: 24px; border-left: 4px solid #ff6b6b;">
-          <p style="margin: 0; font-weight: 700; color: #333;">⚠️ This is a debug page to diagnose the issue</p>
-        </div>
-
-        <h3>What's in localStorage?</h3>
-        <div id="localstorage-debug" style="background: #f5f5f5; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; border: 1px solid #ddd;"></div>
-
-        <h3 style="margin-top: 24px;">What's in Product Catalog?</h3>
-        <div id="catalog-debug" style="background: #f5f5f5; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; border: 1px solid #ddd;"></div>
-
-        <h3 style="margin-top: 24px;">Form Fields Status</h3>
-        <div id="fields-debug" style="background: #f5f5f5; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; word-break: break-all; border: 1px solid #ddd;"></div>
-
-        <h3 style="margin-top: 24px;">Solutions:</h3>
-        <ol style="line-height: 1.8;">
-          <li><strong>If localStorage is empty:</strong> Go back to order-form.html and fill it out, then come back here</li>
-          <li><strong>If product is wrong:</strong> Check if product key matches the catalog (standard, premium, authentic, memora-essential, memora-signature)</li>
-          <li><strong>If fields are not showing:</strong> Check browser console (F12) for JavaScript errors</li>
-          <li><strong>To clear and start over:</strong> <button onclick="localStorage.removeItem('memora-order'); location.reload();" class="btn btn-danger">Clear localStorage</button></li>
-        </ol>
-
-        <h3 style="margin-top: 24px;">Test Order (Click to Load):</h3>
-        <button onclick="loadTestData()" class="btn btn-primary" style="margin-bottom: 12px;">Load Test Order Data</button>
-        <p style="font-size: 12px; color: var(--text-secondary);">This will create fake order data so you can test the checkout page</p>
+      <div class="section-header" style="margin-bottom: 40px;">
+        <h2>Checkout</h2>
+        <p>Review your order and complete payment via InstaPay</p>
       </div>
 
       <div class="grid grid-2" style="gap: 40px; align-items: start;">
-        
-        <!-- Order Summary (Right Column) -->
-        <div style="order: 2; display: flex; flex-direction: column;">
-          <div style="background: white; padding: 32px; border-radius: 16px; position: sticky; top: 100px;">
-            <h3 style="margin-bottom: 24px;">Order Summary</h3>
-
-            <div id="cart-items" style="margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 24px;">
-              <p style="color: var(--text-light); text-align: center; margin: 12px 0;">No items loaded yet</p>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-              <span>Subtotal:</span>
-              <span id="subtotal">EGP 0</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-              <span>Discount:</span>
-              <span id="discount" style="color: var(--accent-gold);">-EGP 0</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light); margin-bottom: 24px;">
-              <span>Total:</span>
-              <span id="total" style="color: var(--accent-gold);">EGP 0</span>
-            </div>
-
-            <!-- InstaPay Box -->
-            <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                <span style="font-size: 20px;">💳</span>
-                <h4 style="margin: 0;">Payment via InstaPay</h4>
-              </div>
-              <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 12px;">
-                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">InstaPay Number:</p>
-                <p style="font-size: 18px; font-weight: 700; color: var(--accent-gold); word-break: break-all;">+201099885633</p>
-              </div>
-              <div style="background: white; padding: 16px; border-radius: 8px;">
-                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Amount Required:</p>
-                <p style="font-size: 18px; font-weight: 700; color: var(--accent-gold);" id="instapay-amount">EGP 0</p>
-              </div>
-            </div>
-
-            <button class="btn btn-primary btn-full" style="margin-bottom: 12px;" onclick="proceedToPayment()">
-              <span class="btn-icon">💬</span>
-              Confirm via WhatsApp
-            </button>
-
-            <a href="order-form.html" class="btn btn-outline btn-full">Back to Form</a>
-          </div>
-        </div>
 
         <!-- Checkout Form (Left Column) -->
         <div style="order: 1;">
           <form id="checkout-form">
-            <!-- Billing Address -->
+            <!-- Customer Information -->
             <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
               <h3 style="margin-bottom: 24px;">Customer Information</h3>
 
@@ -175,10 +104,10 @@
 
               <div style="background: var(--bg-gray); padding: 20px; border-radius: 12px;">
                 <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Product:</p>
-                <p style="font-size: 16px; font-weight: 600; color: var(--primary-dark); margin-bottom: 16px;" id="selectedProduct">Not loaded</p>
+                <p style="font-size: 16px; font-weight: 600; color: var(--primary-dark); margin-bottom: 16px;" id="selectedProduct">Loading...</p>
                 
                 <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Category:</p>
-                <p style="font-size: 14px; color: var(--text-secondary);" id="selectedCategory">Not loaded</p>
+                <p style="font-size: 14px; color: var(--text-secondary);" id="selectedCategory">Loading...</p>
               </div>
             </div>
 
@@ -193,6 +122,54 @@
             </div>
           </form>
         </div>
+        
+        <!-- Order Summary (Right Column) -->
+        <div style="order: 2; display: flex; flex-direction: column;">
+          <div style="background: white; padding: 32px; border-radius: 16px; position: sticky; top: 100px;">
+            <h3 style="margin-bottom: 24px;">Order Summary</h3>
+
+            <div id="cart-items" style="margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 24px;">
+              <p style="color: var(--text-light); text-align: center; margin: 12px 0;">Loading order...</p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+              <span>Subtotal:</span>
+              <span id="subtotal">EGP 0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+              <span>Discount:</span>
+              <span id="discount" style="color: var(--accent-gold);">-EGP 0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light); margin-bottom: 24px;">
+              <span>Total:</span>
+              <span id="total" style="color: var(--accent-gold);">EGP 0</span>
+            </div>
+
+            <!-- InstaPay Payment Box -->
+            <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                <span style="font-size: 20px;">💳</span>
+                <h4 style="margin: 0;">Payment via InstaPay</h4>
+              </div>
+              <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 12px;">
+                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Amount Required:</p>
+                <p style="font-size: 22px; font-weight: 700; color: var(--accent-gold);" id="instapay-amount">EGP 0</p>
+              </div>
+              <a href="https://ipn.eg/S/mostafa.moham1163/instapay/1JgkOq" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-full" style="margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 18px;">💳</span>
+                Pay with InstaPay
+              </a>
+            </div>
+
+            <button class="btn btn-primary btn-full" style="margin-bottom: 12px; background: #25D366; border-color: #25D366;" onclick="proceedToPayment()">
+              <span class="btn-icon">💬</span>
+              Confirm via WhatsApp
+            </button>
+
+            <a href="order-form.html" class="btn btn-outline btn-full">Back to Form</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -210,7 +187,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/js/supabase-config.js"></script>
+  <script src="admin/assets/supabase-config.js"></script>
   <script src="assets/js/premium.js"></script>
   <script>
     // Initialize Supabase
@@ -248,55 +225,18 @@
       },
     };
 
-    // DEBUG: Show what's in storage
-    function debugDisplay() {
-      const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
-      document.getElementById('localstorage-debug').textContent = 
-        'localStorage["memora-order"]:\n\n' + 
-        JSON.stringify(orderData, null, 2);
-
-      document.getElementById('catalog-debug').textContent = 
-        'productCatalog:\n\n' + 
-        JSON.stringify(productCatalog, null, 2);
-
-      let fieldStatus = 'Form Fields:\n\n';
-      ['fullName', 'email', 'phone', 'language', 'brideName', 'groomName', 'weddingDate', 'venue', 'colorPreference', 'musicLink', 'specialRequests', 'selectedProduct', 'selectedCategory'].forEach(id => {
-        const el = document.getElementById(id);
-        const value = el?.value || el?.textContent || 'N/A';
-        fieldStatus += `${id}: "${value}"\n`;
-      });
-      document.getElementById('fields-debug').textContent = fieldStatus;
-    }
-
-    // Load test data
-    function loadTestData() {
-      const testData = {
-        fullName: 'John Doe',
-        email: 'john@example.com',
-        phone: '+20 100 123 4567',
-        language: 'english',
-        brideName: 'Jane Smith',
-        groomName: 'John Doe',
-        weddingDate: '2025-07-24',
-        venue: 'Cairo Opera House',
-        colorPreference: 'Gold & Cream',
-        musicLink: 'https://spotify.com/playlist/test',
-        specialRequests: 'Please make it elegant and modern',
-        product: 'premium'
-      };
-      
-      localStorage.setItem('memora-order', JSON.stringify(testData));
-      showNotification('✅ Test data loaded! Refresh the page.', 'success');
-      setTimeout(() => location.reload(), 1500);
-    }
-
-    // Load order data from form
+    // Load order data from localStorage (saved by order-form.html)
     function loadOrderData() {
-      console.log('loadOrderData() called');
       const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
-      console.log('Order data from localStorage:', orderData);
       
-      // Populate form fields
+      // Check if we have any data at all
+      if (!orderData || Object.keys(orderData).length === 0) {
+        showNotification('⚠️ No order data found. Please fill out the order form first.', 'error');
+        setTimeout(() => { window.location.href = 'order-form.html'; }, 2000);
+        return;
+      }
+
+      // Populate customer information fields
       document.getElementById('fullName').value = orderData.fullName || '';
       document.getElementById('email').value = orderData.email || '';
       document.getElementById('phone').value = orderData.phone || '';
@@ -309,24 +249,22 @@
       document.getElementById('musicLink').value = orderData.musicLink || '';
       document.getElementById('specialRequests').value = orderData.specialRequests || '';
 
-      // Get product info
+      // Get product info from catalog using the stored product key
       const productKey = orderData.product;
-      console.log('Product key:', productKey);
       const product = productCatalog[productKey];
-      console.log('Product found:', product);
       
       if (product) {
         document.getElementById('selectedProduct').textContent = product.name;
         document.getElementById('selectedCategory').textContent = `Category: ${product.category}`;
         updateCartDisplay(product);
       } else {
-        document.getElementById('selectedProduct').textContent = 'Product not found';
-        document.getElementById('selectedCategory').textContent = 'Check debug info above';
+        document.getElementById('selectedProduct').textContent = 'Unknown product';
+        document.getElementById('selectedCategory').textContent = 'Please go back and select a product';
+        showNotification('⚠️ Product not found. Please go back and select a product.', 'error');
       }
-
-      debugDisplay();
     }
 
+    // Update the order summary sidebar with product details
     function updateCartDisplay(product) {
       const cartContainer = document.getElementById('cart-items');
       const subtotal = product.price;
@@ -349,7 +287,7 @@
       document.getElementById('instapay-amount').textContent = `EGP ${total.toFixed(2)}`;
     }
 
-    // Show notification
+    // Show notification toast
     function showNotification(message, type = 'info') {
       const root = document.getElementById('toast-root');
       const toast = document.createElement('div');
@@ -379,7 +317,7 @@
       }, 4000);
     }
 
-    // Generate WhatsApp message
+    // Generate WhatsApp confirmation message (matches required template)
     function generateWhatsAppMessage(orderData, product, total) {
       const formatDate = (dateStr) => {
         if (!dateStr) return 'Not specified';
@@ -389,69 +327,69 @@
 
       const message = `Hello Memora Team 👋
 
-I would like to confirm my order.
+I have completed the InstaPay payment.
 
-**Customer Information:**
-- Full Name: ${orderData.fullName || 'Not provided'}
-- Phone Number: ${orderData.phone || 'Not provided'}
-- Email: ${orderData.email || 'Not provided'}
-- Language: ${orderData.language || 'Not specified'}
+Customer:
+${orderData.fullName || 'Not provided'}
 
-**Wedding Details:**
-- Bride Name: ${orderData.brideName || 'Not provided'}
-- Groom Name: ${orderData.groomName || 'Not provided'}
-- Wedding Date: ${formatDate(orderData.weddingDate)}
-- Venue: ${orderData.venue || 'Not specified'}
-- Color Preference: ${orderData.colorPreference || 'Not specified'}
+Phone:
+${orderData.phone || 'Not provided'}
 
-**Order Details:**
-- Product: ${product.name}
-- Category: ${product.category}
-- Total Price: ${total} EGP
+Email:
+${orderData.email || 'Not provided'}
 
-Please send payment via InstaPay to: +201099885633
-Required payment amount: ${total} EGP
+Bride:
+${orderData.brideName || 'Not provided'}
 
-I will send the payment screenshot immediately after the transfer.`;
+Groom:
+${orderData.groomName || 'Not provided'}
+
+Wedding Date:
+${formatDate(orderData.weddingDate)}
+
+Product:
+${product.name}
+
+Amount Paid:
+${total} EGP
+
+I will now send the payment screenshot.`;
 
       return message;
     }
 
-    // Process payment
+    // Process payment — save to Supabase then open WhatsApp
     async function proceedToPayment() {
-      console.log('proceedToPayment() called');
-      const form = document.getElementById('checkout-form');
       const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
-      
-      console.log('Order data:', orderData);
 
+      // Validate terms checkbox
       if (!document.getElementById('terms').checked) {
         showNotification('Please agree to the terms and conditions', 'error');
         return;
       }
 
+      // Validate Supabase is configured
       if (!supabase) {
-        showNotification('⚠️ Supabase not configured. Check supabase-config.js', 'error');
-        console.error('Supabase not initialized');
+        showNotification('⚠️ Payment system not configured. Please contact support.', 'error');
+        console.error('Supabase not initialized. Check admin/assets/supabase-config.js');
         return;
       }
 
+      // Validate product
+      const productKey = orderData.product;
+      const product = productCatalog[productKey];
+
+      if (!product) {
+        showNotification(`❌ Product not found. Please go back and select a product.`, 'error');
+        return;
+      }
+
+      const total = product.price;
       const loader = document.getElementById('loading-overlay');
       loader.style.display = 'flex';
 
       try {
-        const productKey = orderData.product;
-        console.log('Product key:', productKey);
-        const product = productCatalog[productKey];
-        
-        console.log('Product:', product);
-
-        if (!product) {
-          throw new Error(`Product not found. Key: "${productKey}". Available: ${Object.keys(productCatalog).join(', ')}`);
-        }
-
-        const total = product.price;
-
+        // Build the order payload matching the Supabase orders table
         const orderPayload = {
           customer_name: orderData.fullName,
           email: orderData.email,
@@ -472,8 +410,7 @@ I will send the payment screenshot immediately after the transfer.`;
           order_status: 'Pending'
         };
 
-        console.log('Inserting order:', orderPayload);
-
+        // Insert into Supabase
         const { data, error } = await supabase
           .from('orders')
           .insert([orderPayload])
@@ -484,21 +421,19 @@ I will send the payment screenshot immediately after the transfer.`;
           throw new Error(error.message || 'Failed to save order');
         }
 
-        console.log('Order saved:', data);
-
         if (!data || data.length === 0) {
-          throw new Error('Order was not saved properly');
+          throw new Error('Order was not saved properly — no data returned');
         }
 
-        const orderId = data[0].id;
-        
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        // Brief delay for UX
+        await new Promise(resolve => setTimeout(resolve, 1000));
         loader.style.display = 'none';
 
+        // Build WhatsApp message and open
         const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
         const encodedMessage = encodeURIComponent(whatsappMessage);
 
-        showNotification('✅ Order saved successfully!', 'success');
+        showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
 
         setTimeout(() => {
           window.open(
@@ -509,8 +444,9 @@ I will send the payment screenshot immediately after the transfer.`;
         }, 800);
 
       } catch (error) {
+        // On failure: show real error, do NOT open WhatsApp, do NOT continue
         loader.style.display = 'none';
-        console.error('Error:', error);
+        console.error('Checkout error:', error);
         showNotification(`❌ Error: ${error.message}`, 'error');
       }
     }
@@ -561,7 +497,6 @@ I will send the payment screenshot immediately after the transfer.`;
 
     // Load data on page load
     window.addEventListener('load', () => {
-      console.log('Page loaded, calling loadOrderData()');
       loadOrderData();
     });
   </script>

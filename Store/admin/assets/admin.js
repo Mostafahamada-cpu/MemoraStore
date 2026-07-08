@@ -516,28 +516,60 @@ const MemoraAdmin = (() => {
     const order = state.data.orders.find(o => o.id === orderId);
     if (!order) return;
 
-    const details = `
-Customer: ${order.customer_name}
-Email: ${order.email}
-Phone: ${order.phone_number}
-Language: ${order.preferred_language}
+    const dialog = document.getElementById('editor-dialog');
+    document.getElementById('dialog-title').textContent = `${order.customer_name || 'Customer'} — Order Details`;
+    const fields = document.getElementById('dialog-fields');
+    
+    const formatDate = (d) => d ? new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+    const val = (v) => v || '—';
 
-Bride: ${order.bride_name || '-'}
-Groom: ${order.groom_name || '-'}
-Wedding Date: ${order.wedding_date ? new Date(order.wedding_date).toLocaleDateString() : '-'}
-Venue: ${order.venue || '-'}
-Color: ${order.color_preference || '-'}
-Music: ${order.music_link || '-'}
+    fields.innerHTML = `
+      <div style="grid-column: 1 / -1;">
+        <h3 style="margin: 0 0 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6;">Customer Information</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Full Name</span><strong>${val(order.customer_name)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Email</span><strong>${val(order.email)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Phone Number</span><strong>${val(order.phone_number)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Language</span><strong>${val(order.preferred_language)}</strong></div>
+        </div>
 
-Product: ${order.purchased_product}
-Category: ${order.product_category}
-Total: ${money(order.total_amount)}
-Payment: ${order.payment_status}
-Status: ${order.order_status}
+        <h3 style="margin: 0 0 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6;">Wedding Details</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Bride Name</span><strong>${val(order.bride_name)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Groom Name</span><strong>${val(order.groom_name)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Wedding Date</span><strong>${formatDate(order.wedding_date)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Venue</span><strong>${val(order.venue)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Color Preference</span><strong>${val(order.color_preference)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Music Link</span><strong>${order.music_link ? '<a href="' + order.music_link + '" target="_blank" rel="noopener noreferrer" style="color: inherit;">Open Link</a>' : '—'}</strong></div>
+        </div>
 
-Notes: ${order.special_requests || '-'}`;
+        <div style="margin-bottom: 24px;">
+          <span style="font-size: 11px; opacity: 0.5; display: block;">Special Requests</span>
+          <strong>${val(order.special_requests)}</strong>
+        </div>
 
-    alert(details);
+        <h3 style="margin: 0 0 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6;">Purchase Details</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Product</span><strong>${val(order.purchased_product)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Category</span><strong>${val(order.product_category)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Total Price</span><strong>${money(order.total_amount)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Payment Method</span><strong>${val(order.payment_method)}</strong></div>
+        </div>
+
+        <h3 style="margin: 0 0 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6;">Status</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Payment Status</span><strong>${val(order.payment_status)}</strong></div>
+          <div><span style="font-size: 11px; opacity: 0.5; display: block;">Order Status</span><strong>${val(order.order_status)}</strong></div>
+        </div>
+      </div>
+    `;
+
+    // Hide save button for read-only view
+    const saveBtn = document.getElementById('dialog-save');
+    saveBtn.style.display = 'none';
+    dialog.showModal();
+    // Restore save button visibility when dialog closes
+    dialog.addEventListener('close', () => { saveBtn.style.display = ''; }, { once: true });
   }
 
   function editOrder(orderId) {
