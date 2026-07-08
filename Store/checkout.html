@@ -229,8 +229,8 @@
     function loadOrderData() {
       const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
       
-      // Check if we have any data at all
-      if (!orderData || Object.keys(orderData).length === 0) {
+      // Check if we have required data
+      if (!orderData || !orderData.product || !orderData.fullName) {
         showNotification('⚠️ No order data found. Please fill out the order form first.', 'error');
         setTimeout(() => { window.location.href = 'order-form.html'; }, 2000);
         return;
@@ -436,11 +436,7 @@ I will now send the payment screenshot.`;
         showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
 
         setTimeout(() => {
-          window.open(
-            `https://wa.me/201099885633?text=${encodedMessage}`,
-            '_blank',
-            'noopener,noreferrer'
-          );
+          window.location.href = `https://wa.me/+201099885633?text=${encodedMessage}`;
         }, 800);
 
       } catch (error) {
@@ -496,9 +492,13 @@ I will now send the payment screenshot.`;
     document.head.appendChild(style);
 
     // Load data on page load
-    window.addEventListener('load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
       loadOrderData();
     });
+    // Fallback if DOM is already loaded
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(loadOrderData, 1);
+    }
   </script>
 </body>
 </html>

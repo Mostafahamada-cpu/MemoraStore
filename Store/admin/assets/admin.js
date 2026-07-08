@@ -315,7 +315,7 @@ const MemoraAdmin = (() => {
     const columnMap = {
       products: ['title', 'price', 'category', 'featured', 'in_stock'],
       bundles: ['bundle_name', 'bundle_price', 'featured'],
-      orders: ['customer_name', 'email', 'wedding_date', 'purchased_product', 'total_amount', 'payment_status', 'order_status'],
+      orders: ['customer_name', 'bride_name', 'groom_name', 'wedding_date', 'venue', 'color_preference', 'music_link', 'special_requests', 'payment_status'],
       coupons: ['coupon_code', 'discount_percent', 'maximum_uses', 'status']
     };
     
@@ -506,7 +506,7 @@ const MemoraAdmin = (() => {
   function openWhatsApp(phone, name) {
     const message = `Hi ${name}, regarding your Memora order...`;
     window.open(
-      `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`,
+      `https://wa.me/${(phone||'').replace(/[^\d+]/g, '')}?text=${encodeURIComponent(message)}`,
       '_blank',
       'noopener,noreferrer'
     );
