@@ -255,6 +255,20 @@
       }
     }
 
+    function logSavedOrderData(source, orderData) {
+      const debugValues = {
+        source,
+        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        fullName: orderData?.fullName ?? null,
+        phone: orderData?.phone ?? null,
+        email: orderData?.email ?? null,
+        product: orderData?.product ?? null
+      };
+
+      console.log('getSavedOrderData() debug:', debugValues);
+      return orderData;
+    }
+
     function getSavedOrderData() {
       const queryValue = new URLSearchParams(window.location.search).get('order');
 
@@ -268,21 +282,37 @@
           } catch (error) {
             console.warn('Unable to clear checkout query string:', error);
           }
-          return parsedQueryOrder;
+          const result = logSavedOrderData('query-string', parsedQueryOrder);
+          console.log('getSavedOrderData() result:', result);
+          return result;
         }
       }
 
       try {
         const sessionOrder = safeParseOrderData(sessionStorage.getItem(ORDER_STORAGE_KEY));
-        if (sessionOrder) return sessionOrder;
+        if (sessionOrder) {
+          const result = logSavedOrderData('sessionStorage', sessionOrder);
+          console.log('getSavedOrderData() result:', result);
+          return result;
+        }
       } catch (error) {
         console.warn('sessionStorage read unavailable:', error);
       }
 
       try {
-        return safeParseOrderData(localStorage.getItem(ORDER_STORAGE_KEY));
+        const localOrder = safeParseOrderData(localStorage.getItem(ORDER_STORAGE_KEY));
+        if (localOrder) {
+          const result = logSavedOrderData('localStorage', localOrder);
+          console.log('getSavedOrderData() result:', result);
+          return result;
+        }
+        const result = logSavedOrderData('none', null);
+        console.log('getSavedOrderData() result:', result);
+        return result;
       } catch (error) {
         console.warn('localStorage read unavailable:', error);
+        const result = logSavedOrderData('error', null);
+        console.log('getSavedOrderData() result:', result);
         return null;
       }
     }
@@ -290,6 +320,14 @@
     // Load order data from localStorage (saved by order-form.html)
     function loadOrderData() {
       const orderData = getSavedOrderData() || {};
+
+      console.log('loadOrderData() returned:', {
+        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        fullName: orderData.fullName ?? null,
+        phone: orderData.phone ?? null,
+        email: orderData.email ?? null,
+        product: orderData.product ?? null
+      });
 
       if (Object.keys(orderData).length > 0) {
         persistOrderData(orderData);
@@ -439,6 +477,50 @@ I will now send the payment screenshot.`;
       return typeof value === 'string' ? value.trim() : String(value ?? '').trim();
     }
 
+    function logOrderDebugInfo(orderData, product) {
+      const queryValue = new URLSearchParams(window.location.search).get('order');
+      const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+      const debugInfo = {
+        deviceType: isMobileDevice ? 'mobile' : 'desktop',
+        userAgent: navigator.userAgent,
+        queryStringOrderPresent: !!queryValue,
+        localStorageOrderPresent: false,
+        sessionStorageOrderPresent: false,
+        orderData: {
+          fullName: orderData?.fullName ?? null,
+          phone: orderData?.phone ?? null,
+          email: orderData?.email ?? null,
+          product: orderData?.product ?? null
+        },
+        productName: product?.name ?? null
+      };
+
+      try {
+        debugInfo.localStorageOrderPresent = !!localStorage.getItem(ORDER_STORAGE_KEY);
+      } catch (error) {
+        console.warn('localStorage read failed while debugging order data:', error);
+      }
+
+      try {
+        debugInfo.sessionStorageOrderPresent = !!sessionStorage.getItem(ORDER_STORAGE_KEY);
+      } catch (error) {
+        console.warn('sessionStorage read failed while debugging order data:', error);
+      }
+
+      const missingFields = [];
+
+      if (!orderData?.fullName) missingFields.push('orderData.fullName');
+      if (!orderData?.phone) missingFields.push('orderData.phone');
+      if (!orderData?.email) missingFields.push('orderData.email');
+      if (!product?.name) missingFields.push('product?.name');
+
+      debugInfo.missingFields = missingFields.length > 0 ? missingFields : ['none'];
+
+      console.log('Checkout order debug info:', debugInfo);
+      return debugInfo;
+    }
+
     function buildOrderInsertPayload(orderData, product) {
       const customerName = normalizeRequiredOrderValue(orderData.fullName, 'customer_name');
       const whatsappNumber = normalizeRequiredOrderValue(orderData.phone, 'whatsapp_number');
@@ -528,8 +610,11 @@ I will now send the payment screenshot.`;
         console.log('phone:', orderData.phone);
         console.log('email:', orderData.email);
         console.log('product name:', product?.name);
+        logOrderDebugInfo(orderData, product);
 
         const orderPayload = buildOrderInsertPayload(orderData, product);
+
+        console.log('orderPayload:', orderPayload);
 
         if (orderPayload.error) {
           console.error('Order insert validation failed:', {

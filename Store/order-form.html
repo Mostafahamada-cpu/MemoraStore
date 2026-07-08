@@ -257,12 +257,26 @@
         console.warn('sessionStorage unavailable:', error);
       }
 
+      console.log('serializedOrder before redirect:', serializedOrder);
+
+      try {
+        console.log('localStorage.getItem(ORDER_STORAGE_KEY):', localStorage.getItem(ORDER_STORAGE_KEY));
+      } catch (error) {
+        console.warn('localStorage read failed before redirect:', error);
+      }
+
+      try {
+        console.log('sessionStorage.getItem(ORDER_STORAGE_KEY):', sessionStorage.getItem(ORDER_STORAGE_KEY));
+      } catch (error) {
+        console.warn('sessionStorage read failed before redirect:', error);
+      }
+
       // Show success message
       UI.showNotification('Order saved! Processing your request...', 'success');
 
       // Redirect to checkout
       setTimeout(() => {
-        window.location.href = `checkout.html?order=${encodeURIComponent(serializedOrder)}`;
+        window.location.href = 'checkout.html';
       }, 1500);
     });
   </script>
