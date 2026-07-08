@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - Memora</title>
+  <title>Checkout Debug - Memora</title>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
   <link rel="stylesheet" href="assets/css/premium.css">
 </head>
@@ -18,9 +18,38 @@
     </div>
   </nav>
 
-  <!-- Checkout Section -->
+  <!-- Debug Section -->
   <section class="section section-bg-light">
     <div class="container">
+      <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; border: 3px solid red;">
+        <h2 style="color: red; margin-top: 0;">🔍 DEBUG MODE</h2>
+        
+        <div style="background: #fff3cd; padding: 16px; border-radius: 8px; margin-bottom: 24px; border-left: 4px solid #ff6b6b;">
+          <p style="margin: 0; font-weight: 700; color: #333;">⚠️ This is a debug page to diagnose the issue</p>
+        </div>
+
+        <h3>What's in localStorage?</h3>
+        <div id="localstorage-debug" style="background: #f5f5f5; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; border: 1px solid #ddd;"></div>
+
+        <h3 style="margin-top: 24px;">What's in Product Catalog?</h3>
+        <div id="catalog-debug" style="background: #f5f5f5; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; border: 1px solid #ddd;"></div>
+
+        <h3 style="margin-top: 24px;">Form Fields Status</h3>
+        <div id="fields-debug" style="background: #f5f5f5; padding: 16px; border-radius: 8px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; word-break: break-all; border: 1px solid #ddd;"></div>
+
+        <h3 style="margin-top: 24px;">Solutions:</h3>
+        <ol style="line-height: 1.8;">
+          <li><strong>If localStorage is empty:</strong> Go back to order-form.html and fill it out, then come back here</li>
+          <li><strong>If product is wrong:</strong> Check if product key matches the catalog (standard, premium, authentic, memora-essential, memora-signature)</li>
+          <li><strong>If fields are not showing:</strong> Check browser console (F12) for JavaScript errors</li>
+          <li><strong>To clear and start over:</strong> <button onclick="localStorage.removeItem('memora-order'); location.reload();" class="btn btn-danger">Clear localStorage</button></li>
+        </ol>
+
+        <h3 style="margin-top: 24px;">Test Order (Click to Load):</h3>
+        <button onclick="loadTestData()" class="btn btn-primary" style="margin-bottom: 12px;">Load Test Order Data</button>
+        <p style="font-size: 12px; color: var(--text-secondary);">This will create fake order data so you can test the checkout page</p>
+      </div>
+
       <div class="grid grid-2" style="gap: 40px; align-items: start;">
         
         <!-- Order Summary (Right Column) -->
@@ -29,7 +58,7 @@
             <h3 style="margin-bottom: 24px;">Order Summary</h3>
 
             <div id="cart-items" style="margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 24px;">
-              <!-- Cart items loaded by JavaScript -->
+              <p style="color: var(--text-light); text-align: center; margin: 12px 0;">No items loaded yet</p>
             </div>
 
             <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
@@ -67,22 +96,6 @@
             </button>
 
             <a href="order-form.html" class="btn btn-outline btn-full">Back to Form</a>
-
-            <!-- Order Status (shows after successful submission) -->
-            <div id="order-success-section" style="display: none; margin-top: 24px; padding: 20px; background: rgba(76, 175, 80, 0.1); border-radius: 12px; border: 2px solid rgba(76, 175, 80, 0.3);">
-              <div style="text-align: center; margin-bottom: 16px;">
-                <p style="font-size: 48px; margin: 0;">✅</p>
-              </div>
-              <h4 style="margin: 0 0 12px 0; color: var(--primary-dark);">Order Confirmed!</h4>
-              <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 12px;">
-                Your order has been saved to our system. Send the payment screenshot via WhatsApp to confirm.
-              </p>
-              <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; font-size: 12px;">
-                <p style="margin: 0 0 4px 0; color: var(--text-light);">Order ID:</p>
-                <p id="success-order-id" style="margin: 0; font-weight: 700; color: var(--primary-dark); font-family: monospace; word-break: break-all;"></p>
-              </div>
-              <button onclick="document.getElementById('order-success-section').style.display = 'none'" class="btn ghost" style="width: 100%; font-size: 12px;">Hide This</button>
-            </div>
           </div>
         </div>
 
@@ -162,60 +175,23 @@
 
               <div style="background: var(--bg-gray); padding: 20px; border-radius: 12px;">
                 <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Product:</p>
-                <p style="font-size: 16px; font-weight: 600; color: var(--primary-dark); margin-bottom: 16px;" id="selectedProduct"></p>
+                <p style="font-size: 16px; font-weight: 600; color: var(--primary-dark); margin-bottom: 16px;" id="selectedProduct">Not loaded</p>
                 
                 <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Category:</p>
-                <p style="font-size: 14px; color: var(--text-secondary);" id="selectedCategory"></p>
+                <p style="font-size: 14px; color: var(--text-secondary);" id="selectedCategory">Not loaded</p>
               </div>
-            </div>
-
-            <!-- Payment Instructions -->
-            <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px; margin-bottom: 24px; border-left: 4px solid var(--accent-gold);">
-              <h4 style="margin-bottom: 12px; color: var(--primary-dark);">💡 Payment Instructions</h4>
-              <ol style="color: var(--text-secondary); font-size: 14px; line-height: 1.8; margin-left: 20px;">
-                <li>Click "Confirm via WhatsApp" to open your chat with our team</li>
-                <li>A pre-filled message with your order details will be sent</li>
-                <li>Transfer the amount via InstaPay to: <strong>+201099885633</strong></li>
-                <li>Send the payment screenshot through WhatsApp</li>
-                <li>Our team will verify and confirm your order</li>
-              </ol>
             </div>
 
             <!-- Terms -->
             <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px;">
               <label class="form-radio">
-                <input type="checkbox" name="terms" id="terms" required>
+                <input type="checkbox" name="terms" id="terms">
                 <span>
                   I agree to the <strong>Terms of Service</strong>, <strong>Privacy Policy</strong>, and <strong>Refund Policy</strong>
                 </span>
               </label>
             </div>
           </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Trust Section -->
-  <section class="section section-bg-white">
-    <div class="container">
-      <div class="grid grid-3">
-        <div style="text-align: center;">
-          <div style="font-size: 28px; margin-bottom: 12px;">💬</div>
-          <h5>WhatsApp Support</h5>
-          <p style="font-size: 14px; color: var(--text-secondary);">Chat directly with our team for instant support</p>
-        </div>
-
-        <div style="text-align: center;">
-          <div style="font-size: 28px; margin-bottom: 12px;">✓</div>
-          <h5>30-Day Guarantee</h5>
-          <p style="font-size: 14px; color: var(--text-secondary);">Not satisfied? Get a full refund within 30 days</p>
-        </div>
-
-        <div style="text-align: center;">
-          <div style="font-size: 28px; margin-bottom: 12px;">🔒</div>
-          <h5>Secure Payment</h5>
-          <p style="font-size: 14px; color: var(--text-secondary);">Your payment is verified before processing</p>
         </div>
       </div>
     </div>
@@ -272,9 +248,53 @@
       },
     };
 
+    // DEBUG: Show what's in storage
+    function debugDisplay() {
+      const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
+      document.getElementById('localstorage-debug').textContent = 
+        'localStorage["memora-order"]:\n\n' + 
+        JSON.stringify(orderData, null, 2);
+
+      document.getElementById('catalog-debug').textContent = 
+        'productCatalog:\n\n' + 
+        JSON.stringify(productCatalog, null, 2);
+
+      let fieldStatus = 'Form Fields:\n\n';
+      ['fullName', 'email', 'phone', 'language', 'brideName', 'groomName', 'weddingDate', 'venue', 'colorPreference', 'musicLink', 'specialRequests', 'selectedProduct', 'selectedCategory'].forEach(id => {
+        const el = document.getElementById(id);
+        const value = el?.value || el?.textContent || 'N/A';
+        fieldStatus += `${id}: "${value}"\n`;
+      });
+      document.getElementById('fields-debug').textContent = fieldStatus;
+    }
+
+    // Load test data
+    function loadTestData() {
+      const testData = {
+        fullName: 'John Doe',
+        email: 'john@example.com',
+        phone: '+20 100 123 4567',
+        language: 'english',
+        brideName: 'Jane Smith',
+        groomName: 'John Doe',
+        weddingDate: '2025-07-24',
+        venue: 'Cairo Opera House',
+        colorPreference: 'Gold & Cream',
+        musicLink: 'https://spotify.com/playlist/test',
+        specialRequests: 'Please make it elegant and modern',
+        product: 'premium'
+      };
+      
+      localStorage.setItem('memora-order', JSON.stringify(testData));
+      showNotification('✅ Test data loaded! Refresh the page.', 'success');
+      setTimeout(() => location.reload(), 1500);
+    }
+
     // Load order data from form
     function loadOrderData() {
+      console.log('loadOrderData() called');
       const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
+      console.log('Order data from localStorage:', orderData);
       
       // Populate form fields
       document.getElementById('fullName').value = orderData.fullName || '';
@@ -291,14 +311,20 @@
 
       // Get product info
       const productKey = orderData.product;
+      console.log('Product key:', productKey);
       const product = productCatalog[productKey];
+      console.log('Product found:', product);
       
       if (product) {
         document.getElementById('selectedProduct').textContent = product.name;
         document.getElementById('selectedCategory').textContent = `Category: ${product.category}`;
-        
         updateCartDisplay(product);
+      } else {
+        document.getElementById('selectedProduct').textContent = 'Product not found';
+        document.getElementById('selectedCategory').textContent = 'Check debug info above';
       }
+
+      debugDisplay();
     }
 
     function updateCartDisplay(product) {
@@ -393,14 +419,11 @@ I will send the payment screenshot immediately after the transfer.`;
 
     // Process payment
     async function proceedToPayment() {
+      console.log('proceedToPayment() called');
       const form = document.getElementById('checkout-form');
       const orderData = JSON.parse(localStorage.getItem('memora-order') || '{}');
       
-      // Validate form
-      if (!form.checkValidity()) {
-        showNotification('Please fill in all required fields', 'error');
-        return;
-      }
+      console.log('Order data:', orderData);
 
       if (!document.getElementById('terms').checked) {
         showNotification('Please agree to the terms and conditions', 'error');
@@ -408,26 +431,27 @@ I will send the payment screenshot immediately after the transfer.`;
       }
 
       if (!supabase) {
-        showNotification('Payment service not configured. Please contact support.', 'error');
+        showNotification('⚠️ Supabase not configured. Check supabase-config.js', 'error');
+        console.error('Supabase not initialized');
         return;
       }
 
-      // Show loading overlay
       const loader = document.getElementById('loading-overlay');
       loader.style.display = 'flex';
 
       try {
-        // Get product info
         const productKey = orderData.product;
+        console.log('Product key:', productKey);
         const product = productCatalog[productKey];
         
+        console.log('Product:', product);
+
         if (!product) {
-          throw new Error('Product not found');
+          throw new Error(`Product not found. Key: "${productKey}". Available: ${Object.keys(productCatalog).join(', ')}`);
         }
 
         const total = product.price;
 
-        // Prepare order data for Supabase
         const orderPayload = {
           customer_name: orderData.fullName,
           email: orderData.email,
@@ -448,7 +472,8 @@ I will send the payment screenshot immediately after the transfer.`;
           order_status: 'Pending'
         };
 
-        // Insert into Supabase
+        console.log('Inserting order:', orderPayload);
+
         const { data, error } = await supabase
           .from('orders')
           .insert([orderPayload])
@@ -459,33 +484,22 @@ I will send the payment screenshot immediately after the transfer.`;
           throw new Error(error.message || 'Failed to save order');
         }
 
+        console.log('Order saved:', data);
+
         if (!data || data.length === 0) {
           throw new Error('Order was not saved properly');
         }
 
         const orderId = data[0].id;
         
-        // Keep loading visible for 1.5 seconds for feedback
         await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Hide loading
         loader.style.display = 'none';
 
-        // Generate WhatsApp message
         const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
         const encodedMessage = encodeURIComponent(whatsappMessage);
 
-        // Show success notification
         showNotification('✅ Order saved successfully!', 'success');
 
-        // Show success section on page
-        document.getElementById('order-success-section').style.display = 'block';
-        document.getElementById('success-order-id').textContent = orderId;
-
-        // Display payment instructions modal (stays on same page)
-        showPaymentInstructions(orderData, product, total, orderId);
-
-        // Open WhatsApp in new tab/window
         setTimeout(() => {
           window.open(
             `https://wa.me/201099885633?text=${encodedMessage}`,
@@ -496,76 +510,9 @@ I will send the payment screenshot immediately after the transfer.`;
 
       } catch (error) {
         loader.style.display = 'none';
-        console.error('Payment error:', error);
+        console.error('Error:', error);
         showNotification(`❌ Error: ${error.message}`, 'error');
       }
-    }
-
-    // Show payment instructions modal (stays on page, doesn't redirect)
-    function showPaymentInstructions(orderData, product, total, orderId) {
-      const modal = document.createElement('div');
-      modal.id = 'payment-instructions-modal';
-      modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
-        padding: 20px;
-        animation: fadeIn 0.3s ease;
-      `;
-
-      modal.innerHTML = `
-        <div style="background: white; border-radius: 20px; padding: 40px; max-width: 550px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; animation: fadeIn 0.4s ease;">
-          <p style="font-size: 64px; margin-bottom: 20px;">✅</p>
-          
-          <h2 style="color: var(--primary-dark); margin-bottom: 12px; font-size: 28px;">Order Saved Successfully!</h2>
-          
-          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; background: var(--bg-gray); padding: 12px; border-radius: 8px;">
-            Order ID: <strong style="color: var(--primary-dark);">${orderId}</strong>
-          </p>
-
-          <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.8; margin-bottom: 24px;">
-            Next Step: Send the required amount via InstaPay and share the payment screenshot through WhatsApp to confirm your order.
-          </p>
-
-          <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 28px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
-            <div style="margin-bottom: 20px;">
-              <p style="color: var(--text-light); font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">InstaPay Number</p>
-              <p style="font-size: 22px; font-weight: 700; color: var(--accent-gold); word-break: break-all; font-family: monospace;">+201099885633</p>
-            </div>
-            
-            <div style="border-top: 1px solid rgba(201, 164, 106, 0.2); padding-top: 20px;">
-              <p style="color: var(--text-light); font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Amount to Send</p>
-              <p style="font-size: 28px; font-weight: 700; color: var(--accent-gold);">${total} <span style="font-size: 20px;">EGP</span></p>
-            </div>
-          </div>
-
-          <div style="background: var(--bg-gray); padding: 16px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid var(--accent-gold); text-align: left;">
-            <p style="color: var(--text-secondary); font-size: 13px; margin: 0; line-height: 1.6;">
-              <strong style="color: var(--primary-dark);">📝 What to do:</strong><br>
-              1. Transfer ${total} EGP via InstaPay to +201099885633<br>
-              2. Take a screenshot of the transaction<br>
-              3. Send it via WhatsApp to confirm your order
-            </p>
-          </div>
-
-          <button onclick="document.getElementById('payment-instructions-modal').remove()" class="btn btn-primary btn-lg" style="width: 100%; margin-bottom: 12px;">
-            Got It! Close This
-          </button>
-          
-          <p style="color: var(--text-light); font-size: 12px; margin: 0;">
-            WhatsApp window should open automatically. If not, scroll down to access WhatsApp or refresh the page.
-          </p>
-        </div>
-      `;
-
-      document.body.appendChild(modal);
     }
 
     // Add CSS for animations
@@ -613,7 +560,10 @@ I will send the payment screenshot immediately after the transfer.`;
     document.head.appendChild(style);
 
     // Load data on page load
-    window.addEventListener('load', loadOrderData);
+    window.addEventListener('load', () => {
+      console.log('Page loaded, calling loadOrderData()');
+      loadOrderData();
+    });
   </script>
 </body>
 </html>
