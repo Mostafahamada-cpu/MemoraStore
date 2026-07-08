@@ -276,7 +276,7 @@
 
       // Redirect to checkout
       setTimeout(() => {
-        window.location.href = 'checkout.html';
+        window.location.href = `checkout.html?order=${encodeURIComponent(serializedOrder)}`;
       }, 1500);
     });
   </script>
