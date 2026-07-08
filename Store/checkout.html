@@ -424,7 +424,7 @@ I will now send the payment screenshot.`;
       return message;
     }
 
-    function normalizeOrderValue(value, fieldName) {
+    function normalizeRequiredOrderValue(value, fieldName) {
       const normalizedValue = typeof value === 'string' ? value.trim() : String(value ?? '').trim();
 
       if (!normalizedValue) {
@@ -435,11 +435,15 @@ I will now send the payment screenshot.`;
       return normalizedValue;
     }
 
+    function normalizeOptionalOrderValue(value) {
+      return typeof value === 'string' ? value.trim() : String(value ?? '').trim();
+    }
+
     function buildOrderInsertPayload(orderData, product) {
-      const customerName = normalizeOrderValue(orderData.fullName, 'customer_name');
-      const whatsappNumber = normalizeOrderValue(orderData.phone, 'whatsapp_number');
-      const email = normalizeOrderValue(orderData.email, 'email');
-      const purchasedProduct = normalizeOrderValue(product?.name, 'purchased_product');
+      const customerName = normalizeRequiredOrderValue(orderData.fullName, 'customer_name');
+      const whatsappNumber = normalizeRequiredOrderValue(orderData.phone, 'whatsapp_number');
+      const email = normalizeRequiredOrderValue(orderData.email, 'email');
+      const purchasedProduct = normalizeRequiredOrderValue(product?.name, 'purchased_product');
 
       if (!customerName || !whatsappNumber || !email || !purchasedProduct) {
         return {
@@ -447,12 +451,35 @@ I will now send the payment screenshot.`;
         };
       }
 
-      return {
+      const weddingDate = normalizeOptionalOrderValue(orderData.weddingDate);
+      const totalAmount = Number(product.price);
+
+      const orderPayload = {
         customer_name: customerName,
         whatsapp_number: whatsappNumber,
         email,
-        purchased_product: purchasedProduct
+        purchased_product: purchasedProduct,
+        purchased_bundle: '',
+        preferred_language: normalizeOptionalOrderValue(orderData.language),
+        bride_name: normalizeOptionalOrderValue(orderData.brideName),
+        groom_name: normalizeOptionalOrderValue(orderData.groomName),
+        venue: normalizeOptionalOrderValue(orderData.venue),
+        color_preference: normalizeOptionalOrderValue(orderData.colorPreference),
+        music_link: normalizeOptionalOrderValue(orderData.musicLink),
+        special_requests: normalizeOptionalOrderValue(orderData.specialRequests),
+        product_category: normalizeOptionalOrderValue(product.category),
+        phone_number: whatsappNumber,
+        payment_method: 'instapay',
+        payment_status: 'Pending',
+        order_status: 'Pending',
+        total_amount: Number.isFinite(totalAmount) ? totalAmount : 0
       };
+
+      if (weddingDate) {
+        orderPayload.wedding_date = weddingDate;
+      }
+
+      return orderPayload;
     }
 
     // Process payment — save to Supabase then open WhatsApp
@@ -514,6 +541,7 @@ I will now send the payment screenshot.`;
         if (canSaveToSupabase) {
           // Insert into Supabase
           console.log('Submitting order insert to Supabase orders table...');
+          console.log('Order payload fields:', Object.keys(orderPayload));
           const { data, error } = await supabaseClient
             .from('orders')
             .insert([orderPayload])
