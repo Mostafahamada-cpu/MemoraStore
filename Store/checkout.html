@@ -424,6 +424,37 @@ I will now send the payment screenshot.`;
       return message;
     }
 
+    function normalizeOrderValue(value, fieldName) {
+      const normalizedValue = typeof value === 'string' ? value.trim() : String(value ?? '').trim();
+
+      if (!normalizedValue) {
+        console.error(`Missing required order field: ${fieldName}`, { fieldName, value });
+        return '';
+      }
+
+      return normalizedValue;
+    }
+
+    function buildOrderInsertPayload(orderData, product) {
+      const customerName = normalizeOrderValue(orderData.fullName, 'customer_name');
+      const whatsappNumber = normalizeOrderValue(orderData.phone, 'whatsapp_number');
+      const email = normalizeOrderValue(orderData.email, 'email');
+      const purchasedProduct = normalizeOrderValue(product?.name, 'purchased_product');
+
+      if (!customerName || !whatsappNumber || !email || !purchasedProduct) {
+        return {
+          error: 'Missing required order details. Please reload the checkout page and try again.'
+        };
+      }
+
+      return {
+        customer_name: customerName,
+        whatsapp_number: whatsappNumber,
+        email,
+        purchased_product: purchasedProduct
+      };
+    }
+
     // Process payment — save to Supabase then open WhatsApp
     async function proceedToPayment() {
       const orderData = getSavedOrderData() || {};
@@ -464,43 +495,50 @@ I will now send the payment screenshot.`;
       try {
         persistOrderData(orderData);
 
-        // Build the order payload matching the Supabase orders table
-        const orderPayload = {
-          customer_name: orderData.fullName,
-          email: orderData.email,
-          phone_number: orderData.phone,
-          preferred_language: orderData.language,
-          bride_name: orderData.brideName,
-          groom_name: orderData.groomName,
-          wedding_date: orderData.weddingDate || null,
-          venue: orderData.venue,
-          color_preference: orderData.colorPreference,
-          music_link: orderData.musicLink,
-          special_requests: orderData.specialRequests,
-          purchased_product: product.name,
-          product_category: product.category,
-          total_amount: total,
-          payment_method: 'instapay',
-          payment_status: 'Pending',
-          order_status: 'Pending'
-        };
+        const orderPayload = buildOrderInsertPayload(orderData, product);
 
+        if (orderPayload.error) {
+          console.error('Order insert validation failed:', {
+            orderData,
+            product,
+            error: orderPayload.error
+          });
+          showNotification(orderPayload.error, 'error');
+          loader.style.display = 'none';
+          return;
+        }
+
+        console.log('Prepared order payload for Supabase insert:', orderPayload);
+
+        // Build the order payload matching the Supabase orders table
         if (canSaveToSupabase) {
           // Insert into Supabase
+          console.log('Submitting order insert to Supabase orders table...');
           const { data, error } = await supabaseClient
             .from('orders')
             .insert([orderPayload])
             .select();
 
           if (error) {
-            console.error('Supabase error:', error);
+            console.error('Supabase orders insert failed:', {
+              error,
+              orderPayload,
+              orderData,
+              product
+            });
             showNotification(`⚠️ Saved locally, but Supabase failed: ${error.message}`, 'error');
           } else if (!data || data.length === 0) {
+            console.warn('Supabase orders insert returned no row:', {
+              data,
+              orderPayload
+            });
             showNotification('⚠️ Saved locally, but Supabase did not return a row. Opening WhatsApp...', 'error');
           } else {
+            console.log('Supabase orders insert succeeded:', data);
             showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
           }
         } else {
+          console.log('Supabase client unavailable. Skipping remote insert and opening WhatsApp.');
           showNotification('✅ Order saved locally. Opening WhatsApp...', 'success');
         }
 
