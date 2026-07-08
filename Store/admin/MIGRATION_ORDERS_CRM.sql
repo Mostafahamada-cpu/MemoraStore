@@ -27,4 +27,4 @@ alter table public.orders add constraint orders_order_status_check
 -- 3. The public checkout page (anon key) must be able to create orders
 drop policy if exists "Allow public order inserts" on public.orders;
 create policy "Allow public order inserts" on public.orders
-  for insert to anon with check (true);
+  for insert to anon, authenticated with check (true);
