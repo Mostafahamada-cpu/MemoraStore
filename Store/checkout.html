@@ -522,6 +522,13 @@ I will now send the payment screenshot.`;
       try {
         persistOrderData(orderData);
 
+        console.log('orderData:', orderData);
+        console.log('product:', product);
+        console.log('fullName:', orderData.fullName);
+        console.log('phone:', orderData.phone);
+        console.log('email:', orderData.email);
+        console.log('product name:', product?.name);
+
         const orderPayload = buildOrderInsertPayload(orderData, product);
 
         if (orderPayload.error) {
