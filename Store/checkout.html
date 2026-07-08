@@ -614,6 +614,39 @@ I will now send the payment screenshot.`;
 
         const orderPayload = buildOrderInsertPayload(orderData, product);
 
+        let queryStringOrderExists = false;
+        let sessionStorageExists = false;
+        let localStorageExists = false;
+
+        try {
+          queryStringOrderExists = !!new URLSearchParams(window.location.search).get('order');
+        } catch (error) {
+          console.warn('query string check failed:', error);
+        }
+
+        try {
+          sessionStorageExists = !!sessionStorage.getItem(ORDER_STORAGE_KEY);
+        } catch (error) {
+          console.warn('sessionStorage check failed:', error);
+        }
+
+        try {
+          localStorageExists = !!localStorage.getItem(ORDER_STORAGE_KEY);
+        } catch (error) {
+          console.warn('localStorage check failed:', error);
+        }
+
+        console.table({
+          fullName: orderData.fullName ?? '',
+          phone: orderData.phone ?? '',
+          email: orderData.email ?? '',
+          productName: product?.name ?? '',
+          orderPayload: JSON.stringify(orderPayload),
+          queryStringOrderExists,
+          sessionStorageExists,
+          localStorageExists
+        });
+
         console.log('orderPayload:', orderPayload);
 
         if (orderPayload.error) {
