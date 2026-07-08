@@ -40,13 +40,13 @@
               <span>Discount:</span>
               <span id="discount" style="color: var(--accent-gold);">-EGP 0</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light);">
+            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light); margin-bottom: 24px;">
               <span>Total:</span>
               <span id="total" style="color: var(--accent-gold);">EGP 0</span>
             </div>
 
             <!-- InstaPay Box -->
-            <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 20px; border-radius: 12px; margin-top: 24px; border: 2px solid var(--accent-gold);">
+            <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
               <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
                 <span style="font-size: 20px;">💳</span>
                 <h4 style="margin: 0;">Payment via InstaPay</h4>
@@ -61,12 +61,28 @@
               </div>
             </div>
 
-            <button class="btn btn-primary btn-full" style="margin-top: 24px;" onclick="proceedToPayment()">
+            <button class="btn btn-primary btn-full" style="margin-bottom: 12px;" onclick="proceedToPayment()">
               <span class="btn-icon">💬</span>
               Confirm via WhatsApp
             </button>
 
-            <a href="order-form.html" class="btn btn-outline btn-full" style="margin-top: 12px;">Back to Form</a>
+            <a href="order-form.html" class="btn btn-outline btn-full">Back to Form</a>
+
+            <!-- Order Status (shows after successful submission) -->
+            <div id="order-success-section" style="display: none; margin-top: 24px; padding: 20px; background: rgba(76, 175, 80, 0.1); border-radius: 12px; border: 2px solid rgba(76, 175, 80, 0.3);">
+              <div style="text-align: center; margin-bottom: 16px;">
+                <p style="font-size: 48px; margin: 0;">✅</p>
+              </div>
+              <h4 style="margin: 0 0 12px 0; color: var(--primary-dark);">Order Confirmed!</h4>
+              <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 12px;">
+                Your order has been saved to our system. Send the payment screenshot via WhatsApp to confirm.
+              </p>
+              <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; font-size: 12px;">
+                <p style="margin: 0 0 4px 0; color: var(--text-light);">Order ID:</p>
+                <p id="success-order-id" style="margin: 0; font-weight: 700; color: var(--primary-dark); font-family: monospace; word-break: break-all;"></p>
+              </div>
+              <button onclick="document.getElementById('order-success-section').style.display = 'none'" class="btn ghost" style="width: 100%; font-size: 12px;">Hide This</button>
+            </div>
           </div>
         </div>
 
@@ -209,10 +225,11 @@
   <div id="toast-root" style="position: fixed; right: 20px; bottom: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
 
   <!-- Loading Overlay -->
-  <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; display: flex; align-items: center; justify-content: center;">
-    <div style="background: white; padding: 40px; border-radius: 16px; text-align: center;">
-      <p style="font-size: 48px; margin-bottom: 16px;">⏳</p>
-      <p style="font-size: 18px; color: var(--text-primary); font-weight: 600;">Processing your order...</p>
+  <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 60px 40px; border-radius: 20px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+      <div style="font-size: 64px; margin-bottom: 24px; animation: spin 2s linear infinite;">⏳</div>
+      <p style="font-size: 20px; color: var(--text-primary); font-weight: 700; margin-bottom: 12px;">Processing your order...</p>
+      <p style="font-size: 14px; color: var(--text-secondary);">Please wait, we're saving your details</p>
     </div>
   </div>
 
@@ -395,7 +412,7 @@ I will send the payment screenshot immediately after the transfer.`;
         return;
       }
 
-      // Show loading
+      // Show loading overlay
       const loader = document.getElementById('loading-overlay');
       loader.style.display = 'flex';
 
@@ -448,6 +465,9 @@ I will send the payment screenshot immediately after the transfer.`;
 
         const orderId = data[0].id;
         
+        // Keep loading visible for 1.5 seconds for feedback
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
         // Hide loading
         loader.style.display = 'none';
 
@@ -455,34 +475,36 @@ I will send the payment screenshot immediately after the transfer.`;
         const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
         const encodedMessage = encodeURIComponent(whatsappMessage);
 
-        // Show success and instructions
-        showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
+        // Show success notification
+        showNotification('✅ Order saved successfully!', 'success');
 
-        // Display payment instructions
-        showPaymentInstructions(orderData, product, total);
+        // Show success section on page
+        document.getElementById('order-success-section').style.display = 'block';
+        document.getElementById('success-order-id').textContent = orderId;
 
-        // Open WhatsApp (slightly delayed to show success message)
+        // Display payment instructions modal (stays on same page)
+        showPaymentInstructions(orderData, product, total, orderId);
+
+        // Open WhatsApp in new tab/window
         setTimeout(() => {
           window.open(
             `https://wa.me/201099885633?text=${encodedMessage}`,
             '_blank',
             'noopener,noreferrer'
           );
-        }, 1500);
-
-        // Clear localStorage
-        localStorage.removeItem('memora-order');
+        }, 800);
 
       } catch (error) {
         loader.style.display = 'none';
         console.error('Payment error:', error);
-        showNotification(`Error: ${error.message}`, 'error');
+        showNotification(`❌ Error: ${error.message}`, 'error');
       }
     }
 
-    // Show payment instructions modal
-    function showPaymentInstructions(orderData, product, total) {
+    // Show payment instructions modal (stays on page, doesn't redirect)
+    function showPaymentInstructions(orderData, product, total, orderId) {
       const modal = document.createElement('div');
+      modal.id = 'payment-instructions-modal';
       modal.style.cssText = `
         position: fixed;
         top: 0;
@@ -495,27 +517,51 @@ I will send the payment screenshot immediately after the transfer.`;
         justify-content: center;
         z-index: 2000;
         padding: 20px;
+        animation: fadeIn 0.3s ease;
       `;
 
       modal.innerHTML = `
-        <div style="background: white; border-radius: 20px; padding: 40px; max-width: 500px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center;">
-          <p style="font-size: 48px; margin-bottom: 20px;">✅</p>
-          <h2 style="color: var(--primary-dark); margin-bottom: 16px;">Order Saved Successfully!</h2>
-          <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.8; margin-bottom: 24px;">
-            Your order has been saved. Please send the payment amount via InstaPay and share the payment screenshot through WhatsApp to confirm your order.
+        <div style="background: white; border-radius: 20px; padding: 40px; max-width: 550px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; animation: fadeIn 0.4s ease;">
+          <p style="font-size: 64px; margin-bottom: 20px;">✅</p>
+          
+          <h2 style="color: var(--primary-dark); margin-bottom: 12px; font-size: 28px;">Order Saved Successfully!</h2>
+          
+          <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; background: var(--bg-gray); padding: 12px; border-radius: 8px;">
+            Order ID: <strong style="color: var(--primary-dark);">${orderId}</strong>
           </p>
 
-          <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 24px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
-            <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">InstaPay Number:</p>
-            <p style="font-size: 20px; font-weight: 700; color: var(--accent-gold); word-break: break-all; margin-bottom: 20px;">+201099885633</p>
+          <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.8; margin-bottom: 24px;">
+            Next Step: Send the required amount via InstaPay and share the payment screenshot through WhatsApp to confirm your order.
+          </p>
+
+          <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 28px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
+            <div style="margin-bottom: 20px;">
+              <p style="color: var(--text-light); font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">InstaPay Number</p>
+              <p style="font-size: 22px; font-weight: 700; color: var(--accent-gold); word-break: break-all; font-family: monospace;">+201099885633</p>
+            </div>
             
-            <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Amount to Send:</p>
-            <p style="font-size: 24px; font-weight: 700; color: var(--accent-gold);">${total} EGP</p>
+            <div style="border-top: 1px solid rgba(201, 164, 106, 0.2); padding-top: 20px;">
+              <p style="color: var(--text-light); font-size: 11px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Amount to Send</p>
+              <p style="font-size: 28px; font-weight: 700; color: var(--accent-gold);">${total} <span style="font-size: 20px;">EGP</span></p>
+            </div>
           </div>
 
-          <button onclick="this.closest('div').parentElement.remove()" class="btn btn-primary btn-lg" style="width: 100%;">
-            Close & Go to WhatsApp
+          <div style="background: var(--bg-gray); padding: 16px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid var(--accent-gold); text-align: left;">
+            <p style="color: var(--text-secondary); font-size: 13px; margin: 0; line-height: 1.6;">
+              <strong style="color: var(--primary-dark);">📝 What to do:</strong><br>
+              1. Transfer ${total} EGP via InstaPay to +201099885633<br>
+              2. Take a screenshot of the transaction<br>
+              3. Send it via WhatsApp to confirm your order
+            </p>
+          </div>
+
+          <button onclick="document.getElementById('payment-instructions-modal').remove()" class="btn btn-primary btn-lg" style="width: 100%; margin-bottom: 12px;">
+            Got It! Close This
           </button>
+          
+          <p style="color: var(--text-light); font-size: 12px; margin: 0;">
+            WhatsApp window should open automatically. If not, scroll down to access WhatsApp or refresh the page.
+          </p>
         </div>
       `;
 
@@ -543,6 +589,24 @@ I will send the payment screenshot immediately after the transfer.`;
         to {
           transform: translateX(400px);
           opacity: 0;
+        }
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
         }
       }
     `;
