@@ -435,10 +435,10 @@ I will now send the payment screenshot.`;
       }
 
       // Validate Supabase is configured
-      if (!supabaseClient) {
-        showNotification('⚠️ Payment system not configured. Please contact support.', 'error');
+      const canSaveToSupabase = !!supabaseClient;
+      if (!canSaveToSupabase) {
+        showNotification('⚠️ Payment system not configured. Opening WhatsApp anyway.', 'error');
         console.error('Supabase not initialized. Check admin/assets/supabase-config.js');
-        return;
       }
 
       // Validate product
@@ -453,6 +453,13 @@ I will now send the payment screenshot.`;
       const total = product.price;
       const loader = document.getElementById('loading-overlay');
       loader.style.display = 'flex';
+
+      const openWhatsApp = () => {
+        const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+        const whatsappTarget = WHATSAPP_NUMBER.replace(/\D/g, '');
+        window.location.assign(`https://wa.me/${whatsappTarget}?text=${encodedMessage}`);
+      };
 
       try {
         persistOrderData(orderData);
@@ -478,41 +485,42 @@ I will now send the payment screenshot.`;
           order_status: 'Pending'
         };
 
-        // Insert into Supabase
-        const { data, error } = await supabaseClient
-          .from('orders')
-          .insert([orderPayload])
-          .select();
+        if (canSaveToSupabase) {
+          // Insert into Supabase
+          const { data, error } = await supabaseClient
+            .from('orders')
+            .insert([orderPayload])
+            .select();
 
-        if (error) {
-          console.error('Supabase error:', error);
-          throw new Error(error.message || 'Failed to save order');
-        }
-
-        if (!data || data.length === 0) {
-          throw new Error('Order was not saved properly — no data returned');
+          if (error) {
+            console.error('Supabase error:', error);
+            showNotification(`⚠️ Saved locally, but Supabase failed: ${error.message}`, 'error');
+          } else if (!data || data.length === 0) {
+            showNotification('⚠️ Saved locally, but Supabase did not return a row. Opening WhatsApp...', 'error');
+          } else {
+            showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
+          }
+        } else {
+          showNotification('✅ Order saved locally. Opening WhatsApp...', 'success');
         }
 
         // Brief delay for UX
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 800));
         loader.style.display = 'none';
 
-        // Build WhatsApp message and open
-        const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
-        const encodedMessage = encodeURIComponent(whatsappMessage);
-
-        showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
-
         setTimeout(() => {
-          const whatsappTarget = WHATSAPP_NUMBER.replace(/\D/g, '');
-          window.location.href = `https://wa.me/${whatsappTarget}?text=${encodedMessage}`;
+          openWhatsApp();
         }, 800);
 
       } catch (error) {
-        // On failure: show real error, do NOT open WhatsApp, do NOT continue
+        // On failure: show the error, but still open WhatsApp so the customer flow is not blocked
         loader.style.display = 'none';
         console.error('Checkout error:', error);
-        showNotification(`❌ Error: ${error.message}`, 'error');
+        showNotification(`⚠️ ${error.message}. Opening WhatsApp anyway...`, 'error');
+
+        setTimeout(() => {
+          openWhatsApp();
+        }, 800);
       }
     }
 
