@@ -243,6 +243,16 @@
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
       const serializedOrder = JSON.stringify(data);
+      const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+      console.groupCollapsed('Memora order-form submit diagnostics');
+      console.log('deviceType:', isMobileDevice ? 'mobile' : 'desktop');
+      console.log('userAgent:', navigator.userAgent);
+      console.log('currentUrl:', window.location.href);
+      console.log('formData entries:', Array.from(formData.entries()));
+      console.log('form data object:', data);
+      console.log('serializedOrder:', serializedOrder);
+      console.log('serializedOrder length:', serializedOrder.length);
 
       // Store form data for hosted and local file-based flows
       try {
@@ -257,8 +267,6 @@
         console.warn('sessionStorage unavailable:', error);
       }
 
-      console.log('serializedOrder before redirect:', serializedOrder);
-
       try {
         console.log('localStorage.getItem(ORDER_STORAGE_KEY):', localStorage.getItem(ORDER_STORAGE_KEY));
       } catch (error) {
@@ -270,6 +278,15 @@
       } catch (error) {
         console.warn('sessionStorage read failed before redirect:', error);
       }
+
+      const missingFields = Object.entries(data)
+        .filter(([, value]) => value === undefined || value === null || value === '')
+        .map(([fieldName]) => fieldName);
+
+      console.log('missingOrEmptyFields:', missingFields.length > 0 ? missingFields : ['none']);
+      console.groupEnd();
+
+      console.log('serializedOrder before redirect:', serializedOrder);
 
       // Show success message
       UI.showNotification('Order saved! Processing your request...', 'success');

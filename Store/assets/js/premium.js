@@ -395,6 +395,14 @@ const Form = (() => {
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
 
+      console.groupCollapsed('Memora premium.js form submit diagnostics');
+      console.log('deviceType:', /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop');
+      console.log('userAgent:', navigator.userAgent);
+      console.log('currentUrl:', window.location.href);
+      console.log('formData entries:', Array.from(formData.entries()));
+      console.log('form data object:', data);
+      console.groupEnd();
+
       // Validation
       if (!data.fullName || !data.email || !data.phone) {
         UI.showNotification('Please fill in all required fields', 'error');
@@ -403,6 +411,7 @@ const Form = (() => {
 
       // Store form data
       localStorage.setItem('memora-order', JSON.stringify(data));
+      console.log('premium.js stored memora-order:', localStorage.getItem('memora-order'));
       
       // Show success
       UI.showNotification('Order saved! Redirecting to checkout...', 'success');

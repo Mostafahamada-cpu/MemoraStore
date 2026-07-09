@@ -199,6 +199,134 @@
     const supabaseClient = supabaseUrl && supabaseKey && window.supabase?.createClient ?
       window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 
+    function decodeJwtPayload(token) {
+      if (!token || typeof token !== 'string') return null;
+
+      const parts = token.split('.');
+      if (parts.length < 2) return null;
+
+      try {
+        const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        const paddedBase64 = base64.padEnd(Math.ceil(base64.length / 4) * 4, '=');
+        return JSON.parse(atob(paddedBase64));
+      } catch (error) {
+        console.warn('Unable to decode Supabase JWT payload:', error);
+        return null;
+      }
+    }
+
+    async function logSupabaseAuthDiagnostics(stage) {
+      const diagnostics = {
+        stage,
+        configured: !!supabaseClient,
+        supabaseUrl,
+        hasAnonKey: !!supabaseKey,
+        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        userAgent: navigator.userAgent
+      };
+
+      if (!supabaseClient?.auth) {
+        console.log('Supabase auth diagnostics:', diagnostics);
+        return diagnostics;
+      }
+
+      try {
+        const sessionResult = await supabaseClient.auth.getSession();
+        const userResult = await supabaseClient.auth.getUser();
+        const session = sessionResult?.data?.session ?? null;
+        const user = userResult?.data?.user ?? null;
+        const jwtPayload = decodeJwtPayload(session?.access_token ?? null);
+
+        diagnostics.session = session
+          ? {
+              accessTokenPresent: !!session.access_token,
+              expiresAt: session.expires_at ?? null,
+              refreshTokenPresent: !!session.refresh_token,
+              providerTokenPresent: !!session.provider_token,
+              userId: session.user?.id ?? null,
+              userEmail: session.user?.email ?? null
+            }
+          : null;
+        diagnostics.currentUser = user
+          ? {
+              id: user.id ?? null,
+              email: user.email ?? null,
+              role: user.role ?? null,
+              createdAt: user.created_at ?? null,
+              lastSignInAt: user.last_sign_in_at ?? null
+            }
+          : null;
+        diagnostics.jwt = jwtPayload
+          ? {
+              role: jwtPayload.role ?? null,
+              aud: jwtPayload.aud ?? null,
+              sub: jwtPayload.sub ?? null,
+              iss: jwtPayload.iss ?? null,
+              exp: jwtPayload.exp ?? null,
+              iat: jwtPayload.iat ?? null,
+              email: jwtPayload.email ?? null,
+              appMetadataRole: jwtPayload.app_metadata?.role ?? null,
+              userMetadata: jwtPayload.user_metadata ?? null
+            }
+          : null;
+        diagnostics.sessionError = sessionResult?.error ?? null;
+        diagnostics.userError = userResult?.error ?? null;
+      } catch (error) {
+        diagnostics.authError = {
+          message: error?.message ?? String(error),
+          name: error?.name ?? null,
+          stack: error?.stack ?? null
+        };
+      }
+
+      console.log('Supabase auth diagnostics:', diagnostics);
+      return diagnostics;
+    }
+
+    function summarizeOrderPayload(orderData, product, orderPayload) {
+      const fieldEntries = Object.entries(orderPayload).map(([fieldName, value]) => ({
+        fieldName,
+        type: value === null ? 'null' : typeof value,
+        isNull: value === null,
+        isUndefined: value === undefined,
+        isEmptyString: value === '',
+        value: value
+      }));
+
+      const missingRequiredFields = [];
+      if (!orderData?.fullName) missingRequiredFields.push('orderData.fullName');
+      if (!orderData?.phone) missingRequiredFields.push('orderData.phone');
+      if (!orderData?.email) missingRequiredFields.push('orderData.email');
+      if (!orderData?.product) missingRequiredFields.push('orderData.product');
+      if (!product?.name) missingRequiredFields.push('product.name');
+
+      const sourceSummary = {
+        fullName: orderData?.fullName ?? null,
+        phone: orderData?.phone ?? null,
+        email: orderData?.email ?? null,
+        product: orderData?.product ?? null,
+        brideName: orderData?.brideName ?? null,
+        groomName: orderData?.groomName ?? null,
+        weddingDate: orderData?.weddingDate ?? null,
+        venue: orderData?.venue ?? null,
+        colorPreference: orderData?.colorPreference ?? null,
+        musicLink: orderData?.musicLink ?? null,
+        specialRequests: orderData?.specialRequests ?? null,
+        preferredLanguage: orderData?.language ?? null
+      };
+
+      const summary = {
+        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        sourceSummary,
+        payloadJson: JSON.stringify(orderPayload),
+        payloadFields: fieldEntries,
+        missingRequiredFields: missingRequiredFields.length > 0 ? missingRequiredFields : ['none']
+      };
+
+      console.log('Supabase order payload summary:', summary);
+      return summary;
+    }
+
     // Product catalog
     const productCatalog = {
       'standard': { 
@@ -594,6 +722,8 @@ I will now send the payment screenshot.`;
       const loader = document.getElementById('loading-overlay');
       loader.style.display = 'flex';
 
+      const authDiagnostics = await logSupabaseAuthDiagnostics('before insert');
+
       const openWhatsApp = () => {
         const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
         const encodedMessage = encodeURIComponent(whatsappMessage);
@@ -613,6 +743,7 @@ I will now send the payment screenshot.`;
         logOrderDebugInfo(orderData, product);
 
         const orderPayload = buildOrderInsertPayload(orderData, product);
+        const payloadSummary = summarizeOrderPayload(orderData, product, orderPayload);
 
         let queryStringOrderExists = false;
         let sessionStorageExists = false;
@@ -648,6 +779,9 @@ I will now send the payment screenshot.`;
         });
 
         console.log('orderPayload:', orderPayload);
+        console.log('orderPayload JSON:', JSON.stringify(orderPayload));
+        console.log('authDiagnostics snapshot:', authDiagnostics);
+        console.log('payloadSummary snapshot:', payloadSummary);
 
         if (orderPayload.error) {
           console.error('Order insert validation failed:', {
@@ -667,27 +801,59 @@ I will now send the payment screenshot.`;
           // Insert into Supabase
           console.log('Submitting order insert to Supabase orders table...');
           console.log('Order payload fields:', Object.keys(orderPayload));
-          const { data, error } = await supabaseClient
+          console.time('supabase-orders-insert');
+
+          const insertResponse = await supabaseClient
             .from('orders')
             .insert([orderPayload])
             .select();
 
+          console.timeEnd('supabase-orders-insert');
+
+          const { data, error } = insertResponse;
+          console.log('Supabase insert response:', {
+            data,
+            error,
+            dataLength: Array.isArray(data) ? data.length : null,
+            payloadSummary,
+            authDiagnostics
+          });
+
           if (error) {
             console.error('Supabase orders insert failed:', {
-              error,
+              errorMessage: error?.message ?? null,
+              errorDetails: error?.details ?? null,
+              errorHint: error?.hint ?? null,
+              errorCode: error?.code ?? null,
+              errorStatus: error?.status ?? null,
+              errorName: error?.name ?? null,
+              errorStack: error?.stack ?? null,
+              rawError: error,
               orderPayload,
               orderData,
-              product
+              product,
+              authDiagnostics,
+              payloadSummary,
+              supabaseUrl,
+              hasAnonKey: !!supabaseKey,
+              deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
             });
             showNotification(`⚠️ Saved locally, but Supabase failed: ${error.message}`, 'error');
           } else if (!data || data.length === 0) {
             console.warn('Supabase orders insert returned no row:', {
               data,
-              orderPayload
+              orderPayload,
+              authDiagnostics,
+              payloadSummary
             });
             showNotification('⚠️ Saved locally, but Supabase did not return a row. Opening WhatsApp...', 'error');
           } else {
-            console.log('Supabase orders insert succeeded:', data);
+            console.log('Supabase orders insert succeeded:', {
+              data,
+              insertedRow: data?.[0] ?? null,
+              authDiagnostics,
+              payloadSummary
+            });
             showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
           }
         } else {
