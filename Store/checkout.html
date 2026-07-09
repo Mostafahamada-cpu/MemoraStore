@@ -198,6 +198,153 @@
     const supabaseKey = window.MEMORA_SUPABASE?.anonKey;
     const supabaseClient = supabaseUrl && supabaseKey && window.supabase?.createClient ?
       window.supabase.createClient(supabaseUrl, supabaseKey) : null;
+    const SUPABASE_PROJECT_REF = (() => {
+      try {
+        return supabaseUrl ? new URL(supabaseUrl).hostname.split('.')[0] : null;
+      } catch (error) {
+        return null;
+      }
+    })();
+    const SUPABASE_DEBUG_STATE = {
+      fetchLogs: [],
+      authLogs: [],
+      requestContext: null
+    };
+
+    function ensureDebugPanel() {
+      let panel = document.getElementById('memora-debug-panel');
+
+      if (!panel) {
+        panel = document.createElement('pre');
+        panel.id = 'memora-debug-panel';
+        panel.style.cssText = [
+          'position:fixed',
+          'left:12px',
+          'right:12px',
+          'bottom:12px',
+          'max-height:45vh',
+          'overflow:auto',
+          'z-index:99999',
+          'background:rgba(10,10,10,0.94)',
+          'color:#f3f3f3',
+          'padding:12px',
+          'border:1px solid rgba(255,255,255,0.18)',
+          'border-radius:12px',
+          'font:12px/1.5 Menlo,Consolas,monospace',
+          'white-space:pre-wrap',
+          'box-shadow:0 12px 32px rgba(0,0,0,0.35)'
+        ].join(';');
+        document.body.appendChild(panel);
+      }
+
+      return panel;
+    }
+
+    function updateDebugPanel(label, details) {
+      const panel = ensureDebugPanel();
+      const payload = {
+        label,
+        timestamp: new Date().toISOString(),
+        supabaseUrl,
+        supabaseProjectRef: SUPABASE_PROJECT_REF,
+        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        details
+      };
+
+      panel.textContent = JSON.stringify(payload, null, 2);
+      SUPABASE_DEBUG_STATE.requestContext = payload;
+      return payload;
+    }
+
+    function safeReadStorageSnapshot() {
+      const snapshot = {
+        localStorageKeys: [],
+        sessionStorageKeys: [],
+        cookies: document.cookie || ''
+      };
+
+      try {
+        snapshot.localStorageKeys = Object.keys(localStorage).filter((key) => /sb-|supabase|auth/i.test(key));
+      } catch (error) {
+        snapshot.localStorageError = error?.message ?? String(error);
+      }
+
+      try {
+        snapshot.sessionStorageKeys = Object.keys(sessionStorage).filter((key) => /sb-|supabase|auth/i.test(key));
+      } catch (error) {
+        snapshot.sessionStorageError = error?.message ?? String(error);
+      }
+
+      return snapshot;
+    }
+
+    function normalizeHeaders(headersLike) {
+      const result = {};
+
+      if (!headersLike) return result;
+
+      try {
+        const headers = headersLike instanceof Headers ? headersLike : new Headers(headersLike);
+        headers.forEach((value, key) => {
+          result[key] = value;
+        });
+      } catch (error) {
+        result.error = error?.message ?? String(error);
+      }
+
+      return result;
+    }
+
+    async function readRequestBodyForLog(input, init) {
+      try {
+        if (input instanceof Request) {
+          return await input.clone().text();
+        }
+
+        if (init?.body instanceof Blob) {
+          return await init.body.text();
+        }
+
+        return typeof init?.body === 'string' ? init.body : init?.body ?? null;
+      } catch (error) {
+        return `<<unable to read body: ${error?.message ?? String(error)}>>`;
+      }
+    }
+
+    function installSupabaseFetchTap() {
+      if (window.__memoraFetchTapInstalled) return;
+
+      const originalFetch = window.fetch.bind(window);
+
+      window.fetch = async (input, init = {}) => {
+        const requestUrl = typeof input === 'string' ? input : input?.url ?? '';
+        const isSupabaseRequest = /supabase\.co/i.test(requestUrl);
+
+        if (isSupabaseRequest) {
+          const requestHeaders = input instanceof Request ? input.headers : init.headers;
+          const requestBody = await readRequestBodyForLog(input, init);
+          const logEntry = {
+            stage: 'outgoing-fetch',
+            requestUrl,
+            method: init.method || input?.method || 'GET',
+            headers: normalizeHeaders(requestHeaders),
+            body: requestBody,
+            authContext: SUPABASE_DEBUG_STATE.requestContext,
+            storageSnapshot: safeReadStorageSnapshot()
+          };
+
+          SUPABASE_DEBUG_STATE.fetchLogs.push(logEntry);
+          console.log('Memora Supabase fetch tap:', logEntry);
+          updateDebugPanel('Supabase fetch', logEntry);
+        }
+
+        return originalFetch(input, init);
+      };
+
+      window.__memoraFetchTapInstalled = true;
+    }
+
+    installSupabaseFetchTap();
 
     function decodeJwtPayload(token) {
       if (!token || typeof token !== 'string') return null;
@@ -216,17 +363,49 @@
     }
 
     async function logSupabaseAuthDiagnostics(stage) {
+      const authSnapshot = {
+        stage,
+        configured: !!supabaseClient,
+        supabaseUrl,
+        sameSupabaseUrlAsConfig: supabaseUrl === window.MEMORA_SUPABASE?.url,
+        hasAnonKey: !!supabaseKey,
+        sameProjectRefAsUrl: SUPABASE_PROJECT_REF,
+        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        userAgent: navigator.userAgent,
+        storageSnapshot: safeReadStorageSnapshot(),
+        localStorageOrder: null,
+        sessionStorageOrder: null
+      };
+
+      try {
+        authSnapshot.localStorageOrder = localStorage.getItem(ORDER_STORAGE_KEY);
+      } catch (error) {
+        authSnapshot.localStorageOrderError = error?.message ?? String(error);
+      }
+
+      try {
+        authSnapshot.sessionStorageOrder = sessionStorage.getItem(ORDER_STORAGE_KEY);
+      } catch (error) {
+        authSnapshot.sessionStorageOrderError = error?.message ?? String(error);
+      }
+
       const diagnostics = {
         stage,
         configured: !!supabaseClient,
         supabaseUrl,
+        supabaseProjectRef: SUPABASE_PROJECT_REF,
         hasAnonKey: !!supabaseKey,
         deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        userAgent: navigator.userAgent
+        userAgent: navigator.userAgent,
+        storageSnapshot: safeReadStorageSnapshot(),
+        localStorageOrder: authSnapshot.localStorageOrder,
+        sessionStorageOrder: authSnapshot.sessionStorageOrder
       };
 
       if (!supabaseClient?.auth) {
         console.log('Supabase auth diagnostics:', diagnostics);
+        SUPABASE_DEBUG_STATE.authLogs.push(diagnostics);
+        updateDebugPanel('Supabase auth diagnostics', diagnostics);
         return diagnostics;
       }
 
@@ -280,6 +459,8 @@
       }
 
       console.log('Supabase auth diagnostics:', diagnostics);
+      SUPABASE_DEBUG_STATE.authLogs.push(diagnostics);
+      updateDebugPanel('Supabase auth diagnostics', diagnostics);
       return diagnostics;
     }
 
@@ -737,6 +918,27 @@ I will now send the payment screenshot.`;
         console.log('NO TOKEN - USING ANON');
       }
 
+      const requestContext = {
+        supabaseUrl,
+        supabaseProjectRef: SUPABASE_PROJECT_REF,
+        authDiagnostics,
+        sessionData,
+        currentUser: authDiagnostics?.currentUser ?? null,
+        jwtRole: authDiagnostics?.jwt?.role ?? null,
+        jwtIssuer: authDiagnostics?.jwt?.iss ?? null,
+        jwtAud: authDiagnostics?.jwt?.aud ?? null,
+        jwtSub: authDiagnostics?.jwt?.sub ?? null,
+        storageSnapshot: safeReadStorageSnapshot(),
+        sameSupabaseUrlAsConfig: supabaseUrl === window.MEMORA_SUPABASE?.url,
+        sameAnonKeyAsConfig: supabaseKey === window.MEMORA_SUPABASE?.anonKey,
+        sameProjectRefAsConfig: SUPABASE_PROJECT_REF === (supabaseUrl ? new URL(supabaseUrl).hostname.split('.')[0] : null)
+      };
+
+      SUPABASE_DEBUG_STATE.requestContext = requestContext;
+      console.log('Memora request context before insert:', requestContext);
+      updateDebugPanel('Before insert', requestContext);
+      window.alert(JSON.stringify(requestContext, null, 2));
+
       const openWhatsApp = () => {
         const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
         const encodedMessage = encodeURIComponent(whatsappMessage);
@@ -816,6 +1018,17 @@ I will now send the payment screenshot.`;
           console.log('Order payload fields:', Object.keys(orderPayload));
           console.time('supabase-orders-insert');
 
+          const requestHeadersBeforeInsert = normalizeHeaders({
+            authorization: sessionData?.session?.access_token ? `Bearer ${sessionData.session.access_token}` : '<<none>>',
+            apikey: supabaseKey || '<<none>>'
+          });
+          console.log('Pre-insert request headers:', requestHeadersBeforeInsert);
+          updateDebugPanel('Pre-insert headers', {
+            requestHeadersBeforeInsert,
+            requestContext,
+            orderPayload
+          });
+
           const insertResponse = await supabaseClient
             .from('orders')
             .insert([orderPayload])
@@ -857,6 +1070,17 @@ I will now send the payment screenshot.`;
               hint: error?.hint,
               code: error?.code
             }, null, 2));
+            updateDebugPanel('Insert error', {
+              errorMessage: error?.message ?? null,
+              errorDetails: error?.details ?? null,
+              errorHint: error?.hint ?? null,
+              errorCode: error?.code ?? null,
+              requestContext,
+              orderPayload,
+              authDiagnostics,
+              sessionData,
+              fetchLogs: SUPABASE_DEBUG_STATE.fetchLogs
+            });
             showNotification(`⚠️ Saved locally, but Supabase failed: ${error.message}`, 'error');
           } else if (!data || data.length === 0) {
             console.warn('Supabase orders insert returned no row:', {
@@ -865,6 +1089,14 @@ I will now send the payment screenshot.`;
               authDiagnostics,
               payloadSummary
             });
+            updateDebugPanel('Insert returned no row', {
+              data,
+              orderPayload,
+              authDiagnostics,
+              payloadSummary,
+              requestContext,
+              fetchLogs: SUPABASE_DEBUG_STATE.fetchLogs
+            });
             showNotification('⚠️ Saved locally, but Supabase did not return a row. Opening WhatsApp...', 'error');
           } else {
             console.log('Supabase orders insert succeeded:', {
@@ -872,6 +1104,14 @@ I will now send the payment screenshot.`;
               insertedRow: data?.[0] ?? null,
               authDiagnostics,
               payloadSummary
+            });
+            updateDebugPanel('Insert success', {
+              data,
+              insertedRow: data?.[0] ?? null,
+              authDiagnostics,
+              payloadSummary,
+              requestContext,
+              fetchLogs: SUPABASE_DEBUG_STATE.fetchLogs
             });
             showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
           }
