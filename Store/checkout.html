@@ -723,6 +723,19 @@ I will now send the payment screenshot.`;
       loader.style.display = 'flex';
 
       const authDiagnostics = await logSupabaseAuthDiagnostics('before insert');
+      const { data: sessionData } = await supabaseClient.auth.getSession();
+
+      console.log('SESSION:', sessionData);
+
+      const token = sessionData?.session?.access_token;
+
+      if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('JWT PAYLOAD:', payload);
+        console.log('ROLE:', payload.role);
+      } else {
+        console.log('NO TOKEN - USING ANON');
+      }
 
       const openWhatsApp = () => {
         const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
