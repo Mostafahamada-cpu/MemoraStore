@@ -838,6 +838,12 @@ I will now send the payment screenshot.`;
               hasAnonKey: !!supabaseKey,
               deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
             });
+            window.alert(JSON.stringify({
+              message: error?.message,
+              details: error?.details,
+              hint: error?.hint,
+              code: error?.code
+            }, null, 2));
             showNotification(`⚠️ Saved locally, but Supabase failed: ${error.message}`, 'error');
           } else if (!data || data.length === 0) {
             console.warn('Supabase orders insert returned no row:', {
