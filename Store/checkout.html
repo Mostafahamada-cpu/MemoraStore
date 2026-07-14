@@ -906,7 +906,6 @@ I will now send the payment screenshot.`;
       SUPABASE_DEBUG_STATE.requestContext = requestContext;
       console.log('Memora request context before insert:', requestContext);
       updateDebugPanel('Before insert', requestContext);
-      window.alert(JSON.stringify(requestContext, null, 2));
 
       const openWhatsApp = () => {
         const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
@@ -1033,12 +1032,6 @@ I will now send the payment screenshot.`;
               hasAnonKey: !!supabaseKey,
               deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
             });
-            window.alert(JSON.stringify({
-              message: error?.message,
-              details: error?.details,
-              hint: error?.hint,
-              code: error?.code
-            }, null, 2));
             updateDebugPanel('Insert error', {
               errorMessage: error?.message ?? null,
               errorDetails: error?.details ?? null,
