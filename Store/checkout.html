@@ -211,37 +211,7 @@
       requestContext: null
     };
 
-    function ensureDebugPanel() {
-      let panel = document.getElementById('memora-debug-panel');
-
-      if (!panel) {
-        panel = document.createElement('pre');
-        panel.id = 'memora-debug-panel';
-        panel.style.cssText = [
-          'position:fixed',
-          'left:12px',
-          'right:12px',
-          'bottom:12px',
-          'max-height:45vh',
-          'overflow:auto',
-          'z-index:99999',
-          'background:rgba(10,10,10,0.94)',
-          'color:#f3f3f3',
-          'padding:12px',
-          'border:1px solid rgba(255,255,255,0.18)',
-          'border-radius:12px',
-          'font:12px/1.5 Menlo,Consolas,monospace',
-          'white-space:pre-wrap',
-          'box-shadow:0 12px 32px rgba(0,0,0,0.35)'
-        ].join(';');
-        document.body.appendChild(panel);
-      }
-
-      return panel;
-    }
-
     function updateDebugPanel(label, details) {
-      const panel = ensureDebugPanel();
       const payload = {
         label,
         timestamp: new Date().toISOString(),
@@ -251,7 +221,6 @@
         details
       };
 
-      panel.textContent = JSON.stringify(payload, null, 2);
       SUPABASE_DEBUG_STATE.requestContext = payload;
       return payload;
     }
