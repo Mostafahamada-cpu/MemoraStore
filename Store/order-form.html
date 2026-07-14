@@ -3,299 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Form - Memora</title>
+  <title>Create Your Order - Memora</title>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
   <link rel="stylesheet" href="assets/css/premium.css">
+  <style>
+    .order-shell{max-width:920px;margin:0 auto}.order-progress{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0 auto 32px}.progress-step{appearance:none;border:0;background:transparent;padding:8px 4px;color:var(--text-light);font:inherit;text-align:center;cursor:not-allowed}.progress-step:not(:disabled){cursor:pointer}.progress-number{display:grid;place-items:center;width:30px;height:30px;margin:0 auto 7px;border:1px solid var(--border-light);border-radius:50%;font-size:13px;font-weight:700;background:#fff}.progress-label{display:block;font-size:11px;line-height:1.2}.progress-step.active{color:var(--primary-dark)}.progress-step.active .progress-number{background:var(--primary-dark);border-color:var(--primary-dark);color:#fff}.progress-step.complete{color:var(--accent-gold)}.progress-step.complete .progress-number{background:var(--accent-gold);border-color:var(--accent-gold);color:#fff}.step-panel{display:none;background:#fff;padding:32px;border-radius:16px;box-shadow:0 8px 24px rgba(41,33,28,.05)}.step-panel.active{display:block;animation:stepIn .28s ease both}.step-heading{margin-bottom:8px}.step-intro{color:var(--text-secondary);margin-bottom:26px}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.product-card{overflow:hidden;border:1px solid var(--border-light);border-radius:14px;background:#fff;transition:border-color .2s,box-shadow .2s,transform .2s}.product-card.selected{border-color:var(--accent-gold);box-shadow:0 8px 20px rgba(201,164,106,.16);transform:translateY(-2px)}.product-image{height:132px;width:100%;object-fit:cover;display:block;background:var(--bg-gray)}.product-content{padding:15px}.product-content h4{color:var(--primary-dark);margin:0 0 6px}.choice-card{position:relative;display:block;border:1px solid var(--border-light);border-radius:14px;padding:18px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}.choice-card input{position:absolute;opacity:0;pointer-events:none}.choice-card:focus-within{outline:3px solid rgba(201,164,106,.35);outline-offset:2px}.choice-card.selected{border-color:var(--accent-gold);box-shadow:0 8px 20px rgba(201,164,106,.16);transform:translateY(-2px)}.choice-card strong{display:block;color:var(--primary-dark);margin-bottom:5px}.choice-meta{font-size:13px;color:var(--text-secondary);line-height:1.5}.choice-price{display:block;margin-top:12px;font-weight:700;color:var(--accent-gold)}.product-actions{display:flex;gap:8px;margin-top:14px}.product-actions .btn{flex:1;padding:9px 6px;font-size:12px}.swatches{display:flex;gap:6px;margin:12px 0}.swatch{width:27px;height:27px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.12)}.selection-review{margin-top:24px;padding:20px;border-radius:12px;background:linear-gradient(135deg,rgba(201,164,106,.12),rgba(255,255,255,.9));display:flex;justify-content:space-between;align-items:center;gap:16px}.selection-review p{margin:0;color:var(--text-secondary);font-size:14px}.selection-review strong{color:var(--primary-dark)}.form-error{min-height:20px;margin:10px 0 0;color:#b42318;font-size:13px}.step-actions{display:flex;justify-content:space-between;gap:12px;margin-top:28px}.step-actions .btn:last-child{margin-left:auto}.recap{background:var(--bg-gray);border-radius:12px;padding:18px;margin-bottom:24px}.recap-row{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.07)}.recap-row:last-child{border:0}.recap-row span{color:var(--text-secondary)}.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.summary-card{padding:18px;border:1px solid var(--border-light);border-radius:12px}.summary-card h4{margin:0 0 12px;color:var(--primary-dark)}.summary-card p{margin:4px 0;color:var(--text-secondary);font-size:14px;word-break:break-word}.summary-card .edit-step{padding:0;border:0;background:transparent;color:var(--accent-gold);font:inherit;font-weight:700;cursor:pointer}.terms-box{margin-top:18px;padding:18px;border-radius:12px;background:var(--bg-gray)}.save-status{min-height:20px;text-align:right;color:var(--text-light);font-size:12px;margin:10px 0}@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@media(max-width:760px){.product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:640px){.section{padding-left:16px;padding-right:16px}.step-panel{padding:22px 18px}.choice-grid,.summary-grid,.product-grid{grid-template-columns:1fr}.progress-label{font-size:9px}.progress-number{width:26px;height:26px;font-size:11px}.order-progress{gap:1px}.selection-review{align-items:flex-start;flex-direction:column}.step-actions{flex-wrap:wrap}.step-actions .btn{flex:1;text-align:center;min-width:120px}}@media(prefers-reduced-motion:reduce){.step-panel.active,.choice-card,.product-card{animation:none;transition:none}}
+  </style>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar" id="navbar">
-    <div class="container">
-      <div class="nav-brand">
-        <span class="nav-brand-icon">💍</span>
-        <span>Memora</span>
-      </div>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  <nav class="navbar" id="navbar"><div class="container"><div class="nav-brand"><img src="images/logo.jpeg" alt="Memora Logo" style="height:42px;width:auto;object-fit:contain;margin-right:12px;border-radius:8px"><span>Memora</span></div></div></nav>
+  <section class="section section-bg-light"><div class="container"><div class="section-header"><h2>Create Your Order</h2><p>Build your wedding invitation in a few thoughtful steps.</p></div><div class="order-shell">
+    <div class="order-progress" aria-label="Order progress">
+      <button class="progress-step" type="button" data-go-step="1"><span class="progress-number">1</span><span class="progress-label">Product</span></button><button class="progress-step" type="button" data-go-step="2"><span class="progress-number">2</span><span class="progress-label">Colors</span></button><button class="progress-step" type="button" data-go-step="3"><span class="progress-number">3</span><span class="progress-label">Your details</span></button><button class="progress-step" type="button" data-go-step="4"><span class="progress-number">4</span><span class="progress-label">Wedding details</span></button><button class="progress-step" type="button" data-go-step="5"><span class="progress-number">5</span><span class="progress-label">Review</span></button>
     </div>
-  </nav>
-
-  <!-- Form Section -->
-  <section class="section section-bg-light">
-    <div class="container">
-      <div class="section-header">
-        <h2>Create Your Order</h2>
-        <p>Tell us about your wedding and choose the perfect template</p>
-      </div>
-
-      <div style="max-width: 800px; margin: 0 auto;">
-        <form id="order-form">
-          <!-- Personal Information -->
-          <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-            <h3 style="margin-bottom: 24px;">Personal Information</h3>
-
-            <div class="grid grid-2">
-              <div class="form-group required">
-                <label class="form-label">Full Name</label>
-                <input type="text" name="fullName" class="form-input" required>
-              </div>
-
-              <div class="form-group required">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-input" required>
-              </div>
-
-              <div class="form-group required">
-                <label class="form-label">Phone Number</label>
-                <input type="tel" name="phone" class="form-input" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Language</label>
-                <select name="language" class="form-select">
-                  <option value="english">English</option>
-                  <option value="spanish">Spanish</option>
-                  <option value="french">French</option>
-                  <option value="arabic">Arabic</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- Wedding Details -->
-          <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-            <h3 style="margin-bottom: 24px;">Wedding Details</h3>
-
-            <div class="grid grid-2">
-              <div class="form-group required">
-                <label class="form-label">Bride Name</label>
-                <input type="text" name="brideName" class="form-input" required>
-              </div>
-
-              <div class="form-group required">
-                <label class="form-label">Groom Name</label>
-                <input type="text" name="groomName" class="form-input" required>
-              </div>
-
-              <div class="form-group required">
-                <label class="form-label">Wedding Date</label>
-                <input type="date" name="weddingDate" class="form-input" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Venue</label>
-                <input type="text" name="venue" class="form-input" placeholder="Location or name">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Color Preference</label>
-                <select name="colorPreference" class="form-select">
-                  <option value="">Select a color scheme</option>
-                  <option value="gold">Gold & Ivory</option>
-                  <option value="rose">Rose & Blush</option>
-                  <option value="emerald">Emerald & Gold</option>
-                  <option value="navy">Navy & Gold</option>
-                  <option value="custom">Custom / Not Sure</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Music Link (Optional)</label>
-                <input type="url" name="musicLink" class="form-input" placeholder="Spotify, YouTube, etc.">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Special Requests</label>
-              <textarea name="specialRequests" class="form-textarea" placeholder="Tell us any special requests or preferences..."></textarea>
-            </div>
-          </div>
-
-          <!-- Product Selection -->
-          <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-            <h3 style="margin-bottom: 24px;">Choose Your Product</h3>
-
-            <div class="form-radio-group">
-              <label class="form-radio">
-                <input type="radio" name="product" value="standard" onchange="updateProductFields('standard')" required>
-                <span>
-                  <strong>Modern Minimal</strong>
-                  <br>
-                  <span style="font-size: 12px; color: var(--text-light);">Modern Minimal template with RSVP - EGP 500</span>
-                </span>
-              </label>
-
-              <label class="form-radio">
-                <input type="radio" name="product" value="premium" onchange="updateProductFields('premium')" required>
-                <span>
-                  <strong>Luxury Bloom</strong>
-                  <br>
-                  <span style="font-size: 12px; color: var(--text-light);">Luxury Bloom website with advanced features - EGP 800</span>
-                </span>
-              </label>
-
-              <label class="form-radio">
-                <input type="radio" name="product" value="authentic" onchange="updateProductFields('authentic')" required>
-                <span>
-                  <strong>Authentic</strong>
-                  <br>
-                  <span style="font-size: 12px; color: var(--text-light);">Authentic premium invitation template - EGP 800</span>
-                </span>
-              </label>
-
-              <label class="form-radio">
-                <input type="radio" name="product" value="memora-essential" onchange="updateProductFields('bundle-essential')" required>
-                <span>
-                  <strong>Memora Essential</strong>
-                  <br>
-                  <span style="font-size: 12px; color: var(--text-light);">Modern Minimal + Love Card - EGP 950</span>
-                </span>
-              </label>
-
-              <label class="form-radio">
-                <input type="radio" name="product" value="memora-signature" onchange="updateProductFields('bundle-signature')" required>
-                <span>
-                  <strong>Memora Signature</strong>
-                  <br>
-                  <span style="font-size: 12px; color: var(--text-light);">Luxury Bloom + Love Card - EGP 1250</span>
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Love Card Inclusion Note -->
-          <div id="lovecard-fields" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; display: none;">
-            <h3 style="margin-bottom: 24px;">Love Card Included</h3>
-            <p style="font-size: 15px; color: var(--text-secondary);">Love Card is not sold alone. It is included only with Memora Essential and Memora Signature bundles.</p>
-          </div>
-
-          <!-- Standard Theme Selection -->
-          <div id="standard-fields" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; display: none;">
-            <h3 style="margin-bottom: 24px;">Selected Standard Theme</h3>
-            <p style="font-size: 15px; color: var(--text-secondary);">Modern Minimal — clean, modern wedding website with RSVP, music, and gallery.</p>
-          </div>
-
-          <!-- Premium Theme Selection -->
-          <div id="premium-fields" style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; display: none;">
-            <h3 style="margin-bottom: 24px;">Selected Premium Theme</h3>
-            <p style="font-size: 15px; color: var(--text-secondary);">Luxury Bloom — luxury wedding website with advanced animations and premium styling.</p>
-          </div>
-
-          <!-- Terms & Conditions -->
-          <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px; margin-bottom: 24px;">
-            <label class="form-radio" style="margin-bottom: 16px;">
-              <input type="checkbox" name="terms" required>
-              <span>
-                I agree to the <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>
-              </span>
-            </label>
-
-            <label class="form-radio">
-              <input type="checkbox" name="newsletter">
-              <span>
-                Subscribe to our newsletter for wedding planning tips and updates
-              </span>
-            </label>
-          </div>
-
-          <!-- Submit -->
-          <div style="display: flex; gap: 16px; justify-content: center;">
-            <button type="submit" class="btn btn-primary btn-lg" style="min-width: 200px;">
-              <span class="btn-icon">💳</span>
-              Proceed to Checkout
-            </button>
-            <a href="index.html" class="btn btn-outline btn-lg">Continue Shopping</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-
+    <form id="order-form" novalidate>
+      <div id="save-status" class="save-status" aria-live="polite"></div>
+      <section class="step-panel" data-step="1" aria-labelledby="step-1-title"><h3 id="step-1-title" class="step-heading">Choose your invitation</h3><p class="step-intro">Toggle the invitation you want, or open its live demo before choosing.</p><div class="product-grid" id="product-options"></div><p class="form-error" aria-live="polite"></p><div class="step-actions"><a class="btn btn-outline" href="index.html">Continue shopping</a><button class="btn btn-primary" type="button" data-next>Continue</button></div></section>
+      <section class="step-panel" data-step="2" aria-labelledby="step-2-title"><h3 id="step-2-title" class="step-heading">Choose your colors</h3><p class="step-intro">Pick the palette that feels most like your celebration.</p><div class="choice-grid" id="palette-options"></div><div class="selection-review" id="visual-review" aria-live="polite"></div><p class="form-error" aria-live="polite"></p><div class="step-actions"><button class="btn btn-outline" type="button" data-back>Back</button><button class="btn btn-primary" type="button" data-next>Continue</button></div></section>
+      <section class="step-panel" data-step="3" aria-labelledby="step-3-title"><h3 id="step-3-title" class="step-heading">Your information</h3><p class="step-intro">We’ll use these details to keep you updated.</p><div class="grid grid-2"><div class="form-group required"><label class="form-label" for="fullName">Full name</label><input id="fullName" name="fullName" class="form-input" autocomplete="name" required></div><div class="form-group required"><label class="form-label" for="email">Email</label><input id="email" type="email" name="email" class="form-input" autocomplete="email" required></div><div class="form-group required"><label class="form-label" for="phone">Phone number</label><input id="phone" type="tel" name="phone" class="form-input" autocomplete="tel" required></div><div class="form-group"><label class="form-label" for="language">Language</label><select id="language" name="language" class="form-select"><option value="english">English</option><option value="arabic">Arabic</option><option value="french">French</option><option value="spanish">Spanish</option><option value="other">Other</option></select></div></div><p class="form-error" aria-live="polite"></p><div class="step-actions"><button class="btn btn-outline" type="button" data-back>Back</button><button class="btn btn-primary" type="button" data-next>Continue</button></div></section>
+      <section class="step-panel" data-step="4" aria-labelledby="step-4-title"><h3 id="step-4-title" class="step-heading">Wedding details</h3><p class="step-intro">A few details will help make the invitation yours.</p><div class="recap" id="details-recap" aria-live="polite"></div><div class="grid grid-2"><div class="form-group required"><label class="form-label" for="brideName">Bride name</label><input id="brideName" name="brideName" class="form-input" required></div><div class="form-group required"><label class="form-label" for="groomName">Groom name</label><input id="groomName" name="groomName" class="form-input" required></div><div class="form-group required"><label class="form-label" for="weddingDate">Wedding date</label><input id="weddingDate" type="date" name="weddingDate" class="form-input" required></div><div class="form-group"><label class="form-label" for="venue">Venue</label><input id="venue" name="venue" class="form-input" placeholder="Location or name"></div><div class="form-group"><label class="form-label" for="musicLink">Music link <span style="font-weight:400">(optional)</span></label><input id="musicLink" type="url" name="musicLink" class="form-input" placeholder="Spotify, YouTube, etc."></div></div><div class="form-group"><label class="form-label" for="specialRequests">Special requests <span style="font-weight:400">(optional)</span></label><textarea id="specialRequests" name="specialRequests" class="form-textarea" placeholder="Tell us any special requests or preferences..."></textarea></div><p class="form-error" aria-live="polite"></p><div class="step-actions"><button class="btn btn-outline" type="button" data-back>Back</button><button class="btn btn-primary" type="button" data-next>Review order</button></div></section>
+      <section class="step-panel" data-step="5" aria-labelledby="step-5-title"><h3 id="step-5-title" class="step-heading">Review your order</h3><p class="step-intro">Everything looks good? Agree to the terms and continue to secure checkout.</p><div id="review-summary" class="summary-grid" aria-live="polite"></div><div class="terms-box"><label class="form-radio"><input type="checkbox" name="terms" required><span>I agree to the <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.</span></label></div><p class="form-error" aria-live="polite"></p><div class="step-actions"><button class="btn btn-outline" type="button" data-back>Back</button><button class="btn btn-primary" type="submit">Proceed to checkout</button></div></section>
+    </form>
+  </div></div></section>
   <script src="assets/js/premium.js"></script>
   <script>
-    const ORDER_STORAGE_KEY = 'memora-order';
-
-    function updateProductFields(productType) {
-      // Hide all fields
-      document.getElementById('lovecard-fields').style.display = 'none';
-      document.getElementById('standard-fields').style.display = 'none';
-      document.getElementById('premium-fields').style.display = 'none';
-
-      // Show relevant fields
-      if (productType === 'bundle-essential' || productType === 'bundle-signature') {
-        document.getElementById('lovecard-fields').style.display = 'block';
-      } else if (productType === 'standard') {
-        document.getElementById('standard-fields').style.display = 'block';
-      } else if (productType === 'premium' || productType === 'authentic') {
-        document.getElementById('premium-fields').style.display = 'block';
-      }
-    }
-
-    // Form submission
-    document.getElementById('order-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData);
-      const serializedOrder = JSON.stringify(data);
-      const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
-      console.groupCollapsed('Memora order-form submit diagnostics');
-      console.log('deviceType:', isMobileDevice ? 'mobile' : 'desktop');
-      console.log('userAgent:', navigator.userAgent);
-      console.log('currentUrl:', window.location.href);
-      console.log('formData entries:', Array.from(formData.entries()));
-      console.log('form data object:', data);
-      console.log('serializedOrder:', serializedOrder);
-      console.log('serializedOrder length:', serializedOrder.length);
-
-      // Store form data for hosted and local file-based flows
-      try {
-        localStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
-      } catch (error) {
-        console.warn('localStorage unavailable:', error);
-      }
-
-      try {
-        sessionStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
-      } catch (error) {
-        console.warn('sessionStorage unavailable:', error);
-      }
-
-      try {
-        console.log('localStorage.getItem(ORDER_STORAGE_KEY):', localStorage.getItem(ORDER_STORAGE_KEY));
-      } catch (error) {
-        console.warn('localStorage read failed before redirect:', error);
-      }
-
-      try {
-        console.log('sessionStorage.getItem(ORDER_STORAGE_KEY):', sessionStorage.getItem(ORDER_STORAGE_KEY));
-      } catch (error) {
-        console.warn('sessionStorage read failed before redirect:', error);
-      }
-
-      const missingFields = Object.entries(data)
-        .filter(([, value]) => value === undefined || value === null || value === '')
-        .map(([fieldName]) => fieldName);
-
-      console.log('missingOrEmptyFields:', missingFields.length > 0 ? missingFields : ['none']);
-      console.groupEnd();
-
-      console.log('serializedOrder before redirect:', serializedOrder);
-
-      // Show success message
-      UI.showNotification('Order saved! Processing your request...', 'success');
-
-      // Redirect to checkout
-      setTimeout(() => {
-        window.location.href = `checkout.html?order=${encodeURIComponent(serializedOrder)}`;
-      }, 1500);
-    });
+    (() => {
+      const ORDER_STORAGE_KEY = 'memora-order', DRAFT_STORAGE_KEY = 'memora-order-draft-v2';
+      const products={standard:{name:'Modern Minimal',description:'A clean wedding website with RSVP, music, and gallery.',price:500,image:'images/demo_modern_minimal.png',demo:'https://modern-minimal-delta.vercel.app/'},premium:{name:'Luxury Bloom',description:'A refined website with advanced details and premium styling.',price:800,image:'images/demo_luxury_bloom.png',demo:'https://luxury-bloom-demo.vercel.app/'},authentic:{name:'Authentic',description:'A warm, timeless premium invitation template.',price:800,image:'images/demo_royal_gold.png',demo:'https://authentic-demo-chi.vercel.app/'},'memora-essential':{name:'Memora Essential',description:'Modern Minimal plus a Love Card.',price:950,image:'images/demo_modern_minimal.png',demo:'https://modern-minimal-delta.vercel.app/'},'memora-signature':{name:'Memora Signature',description:'Luxury Bloom plus a Love Card.',price:1250,image:'images/demo_luxury_bloom.png',demo:'https://luxury-bloom-demo.vercel.app/'}};
+      const palettes={gold:{name:'Gold & Ivory',colors:['#C9A46A','#F7F1E7','#433B32']},rose:{name:'Rose & Blush',colors:['#BF7182','#F4D8D7','#6C3A46']},emerald:{name:'Emerald & Gold',colors:['#1F655A','#C7A65B','#F2EDDF']},navy:{name:'Navy & Gold',colors:['#293A59','#D4AE68','#FAF7EF']},custom:{name:'Custom / Not sure',colors:['#9D9D9D','#D9D9D9','#F5F5F5']}};
+      const form=document.getElementById('order-form'), status=document.getElementById('save-status'); let current=1, state={product:'',colorPreference:'gold'};
+      function escapeHtml(value=''){const d=document.createElement('div');d.textContent=value;return d.innerHTML}
+      function optionCard(group,key,title,body,extra=''){return `<label class="choice-card" data-choice="${group}" data-value="${key}"><input type="radio" name="${group}" value="${key}"><strong>${title}</strong>${body}${extra}</label>`}
+      function renderChoices(){document.getElementById('product-options').innerHTML=Object.entries(products).map(([id,p])=>`<article class="product-card" data-choice="product" data-value="${id}"><img class="product-image" src="${p.image}" alt="${p.name} invitation preview"><div class="product-content"><h4>${p.name}</h4><span class="choice-meta">${p.description}</span><span class="choice-price">EGP ${p.price.toLocaleString()}</span><div class="product-actions"><button class="btn btn-primary" type="button" data-select-product="${id}" aria-pressed="false">Select</button><a class="btn btn-outline" href="${p.demo}" target="_blank" rel="noopener noreferrer">Live demo</a></div></div></article>`).join('');document.getElementById('palette-options').innerHTML=Object.entries(palettes).map(([id,p])=>optionCard('colorPreference',id,p.name,`<span class="swatches">${p.colors.map(c=>`<i class="swatch" style="background:${c}"></i>`).join('')}</span>`,'')).join('')}
+      function syncOptions(){['product','colorPreference'].forEach(group=>document.querySelectorAll(`[data-choice="${group}"]`).forEach(card=>{const selected=card.dataset.value===state[group];card.classList.toggle('selected',selected);const input=card.querySelector('input');if(input)input.checked=selected;const button=card.querySelector('[data-select-product]');if(button){button.setAttribute('aria-pressed',selected);button.textContent=selected?'Selected':'Select'}}));renderVisualReview()}
+      function renderVisualReview(){const p=palettes[state.colorPreference];document.getElementById('visual-review').innerHTML=`<p><strong>Selected color palette</strong><br>${p?.name||'Choose a palette'}</p><span class="swatches">${(p?.colors||[]).map(c=>`<i class="swatch" style="background:${c}"></i>`).join('')}</span>`}
+      function getData(){const data=Object.fromEntries(new FormData(form));return {...state,...data,product:state.product,colorPreference:state.colorPreference}}
+      function saveDraft(){const payload=JSON.stringify({current,state:getData()});for(const store of [localStorage,sessionStorage])try{store.setItem(DRAFT_STORAGE_KEY,payload)}catch(e){}status.textContent='Draft saved';clearTimeout(saveDraft.timer);saveDraft.timer=setTimeout(()=>status.textContent='',1300)}
+      function restoreDraft(){let raw;for(const store of [sessionStorage,localStorage])try{raw=raw||store.getItem(DRAFT_STORAGE_KEY)}catch(e){}if(!raw)return;try{const draft=JSON.parse(raw);state={...state,...draft.state};delete state.themeSelection;Object.entries(draft.state||{}).forEach(([key,value])=>{const el=form.elements[key];if(el&&typeof el.value!=='undefined'&&key!=='terms')el.value=value});current=Math.min(Math.max(Number(draft.current)||1,1),5);status.textContent='Your saved draft has been restored.'}catch(e){}}
+      function updateRecaps(){const product=products[state.product],palette=palettes[state.colorPreference];document.getElementById('details-recap').innerHTML=`<div class="recap-row"><span>Invitation</span><strong>${product?.name||'—'}</strong></div><div class="recap-row"><span>Colors</span><strong>${palette?.name||'—'}</strong></div>`;const d=getData(), edit=n=>`<button class="edit-step" type="button" data-edit="${n}">Edit</button>`;document.getElementById('review-summary').innerHTML=`<article class="summary-card"><h4>Client information ${edit(3)}</h4><p>${escapeHtml(d.fullName||'—')}</p><p>${escapeHtml(d.email||'—')}</p><p>${escapeHtml(d.phone||'—')}</p><p>${escapeHtml(d.language||'—')}</p></article><article class="summary-card"><h4>Invitation &amp; colors ${edit(2)}</h4><p>${product?.name||'—'} · EGP ${(product?.price||0).toLocaleString()}</p><p>${palette?.name||'—'}</p></article><article class="summary-card"><h4>Wedding details ${edit(4)}</h4><p>${escapeHtml(d.brideName||'—')} &amp; ${escapeHtml(d.groomName||'—')}</p><p>${escapeHtml(d.weddingDate||'—')}</p><p>${escapeHtml(d.venue||'Venue to be confirmed')}</p></article><article class="summary-card"><h4>Price breakdown</h4><p>Invitation <strong style="float:right">EGP ${(product?.price||0).toLocaleString()}</strong></p><p style="margin-top:12px;font-weight:700;color:var(--primary-dark)">Total <strong style="float:right">EGP ${(product?.price||0).toLocaleString()}</strong></p></article>`}
+      function validate(step){const error=form.querySelector(`[data-step="${step}"] .form-error`);error.textContent='';let valid=true,message='';if(step===1&&!state.product){valid=false;message='Please select an invitation.'}if(step===2&&!state.colorPreference){valid=false;message='Please choose a color palette.'}if(step>=3){const panel=form.querySelector(`[data-step="${step}"]`);const fields=[...panel.querySelectorAll('[required]')];for(const field of fields){if(!field.checkValidity()){valid=false;message=field.validationMessage||'Please complete the required fields.';field.focus();break}}}if(!valid)error.textContent=message;return valid}
+      function showStep(next,focus=false){current=next;updateRecaps();document.querySelectorAll('.step-panel').forEach(panel=>panel.classList.toggle('active',Number(panel.dataset.step)===current));document.querySelectorAll('.progress-step').forEach(button=>{const n=Number(button.dataset.goStep);button.classList.toggle('active',n===current);button.classList.toggle('complete',n<current);button.disabled=n>current});saveDraft();if(focus)form.querySelector(`[data-step="${current}"] h3`).focus?.()}
+      renderChoices();restoreDraft();syncOptions();showStep(current);
+      form.addEventListener('change',e=>{if(['colorPreference'].includes(e.target.name)){state[e.target.name]=e.target.value;syncOptions()}saveDraft()});form.addEventListener('input',saveDraft);
+      form.addEventListener('click',e=>{const productToggle=e.target.closest('[data-select-product]'),next=e.target.closest('[data-next]'),back=e.target.closest('[data-back]'),go=e.target.closest('[data-go-step]'),edit=e.target.closest('[data-edit]');if(productToggle){state.product=productToggle.dataset.selectProduct;syncOptions();saveDraft()}if(next&&validate(current))showStep(current+1,true);if(back)showStep(current-1,true);if(go){const step=Number(go.dataset.goStep);if(step<=current)showStep(step,true)}if(edit)showStep(Number(edit.dataset.edit),true)});
+      form.addEventListener('submit',e=>{e.preventDefault();if(!validate(5))return;const data=getData();const serialized=JSON.stringify(data);try{localStorage.setItem(ORDER_STORAGE_KEY,serialized);sessionStorage.setItem(ORDER_STORAGE_KEY,serialized);localStorage.removeItem(DRAFT_STORAGE_KEY);sessionStorage.removeItem(DRAFT_STORAGE_KEY)}catch(err){}window.location.href='checkout.html'});
+    })();
   </script>
 </body>
 </html>
