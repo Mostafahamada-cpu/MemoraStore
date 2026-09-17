@@ -6,15 +6,39 @@
   <title>Checkout - Memora</title>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
   <link rel="stylesheet" href="assets/css/premium.css">
+  <script src="assets/js/i18n.js"></script>
+  <style>
+    .checkout-card { background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px; }
+    .checkout-card h3 { margin-bottom: 24px; }
+    .order-box { background: var(--bg-gray); padding: 20px; border-radius: 12px; }
+    .order-box .k { color: var(--text-light); font-size: 12px; margin-bottom: 6px; }
+    .order-box .v { font-size: 15px; color: var(--primary-dark); font-weight: 600; margin-bottom: 14px; }
+    .order-box .v:last-child { margin-bottom: 0; }
+    .summary-sticky { background: white; padding: 32px; border-radius: 16px; position: sticky; top: 100px; }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; gap: 12px; }
+    .summary-row.total { font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light); margin-bottom: 24px; }
+    .summary-line { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .summary-line .sub { font-size: 12px; color: var(--text-light); }
+    .instapay-box { background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold); }
+    .instapay-amount { background: white; padding: 16px; border-radius: 8px; margin-bottom: 12px; }
+    .toast-root { position: fixed; inset-inline-end: 20px; bottom: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; max-width: min(360px, calc(100vw - 32px)); }
+    .toast { background: rgba(52, 152, 219, 0.95); color: white; padding: 16px 24px; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); animation: toastIn 0.3s ease; }
+    .toast.success { background: rgba(76, 175, 80, 0.95); }
+    .toast.error { background: rgba(231, 76, 60, 0.95); }
+    .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; padding: 16px; }
+    .loading-overlay.show { display: flex; }
+    .loading-box { background: white; padding: 48px 32px; border-radius: 20px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    @keyframes toastIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @media (max-width: 768px) { .checkout-card, .summary-sticky { padding: 22px 18px; } .summary-sticky { position: static; } }
+  </style>
 </head>
-<body>
+<body data-i18n-doc-title="checkout.title">
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <img src="images/logo.jpeg" alt="Memora Logo" style="height: 42px; width: auto; object-fit: contain; margin-right: 12px; border-radius: 8px;">
-        <span>Memora</span>
-      </div>
+      <a class="nav-brand" href="index.html"><img src="images/logo.jpeg" alt="Memora Logo"><span>Memora</span></a>
+      <div class="nav-actions"><span class="lang-switch" data-lang-switch></span></div>
     </div>
   </nav>
 
@@ -22,1143 +46,391 @@
   <section class="section section-bg-light">
     <div class="container">
       <div class="section-header" style="margin-bottom: 40px;">
-        <h2>Checkout</h2>
-        <p>Review your order and complete payment via InstaPay</p>
+        <h2 data-i18n="checkout.title">Checkout</h2>
+        <p data-i18n="checkout.subtitle">Review your order and complete payment via InstaPay</p>
       </div>
 
       <div class="grid grid-2" style="gap: 40px; align-items: start;">
 
         <!-- Checkout Form (Left Column) -->
-        <div style="order: 1;">
+        <div>
           <form id="checkout-form">
-            <!-- Customer Information -->
-            <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-              <h3 style="margin-bottom: 24px;">Customer Information</h3>
-
-              <div class="form-group">
-                <label class="form-label required">Full Name</label>
-                <input type="text" id="fullName" name="fullName" class="form-input" required readonly>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label required">Email</label>
-                <input type="email" id="email" name="email" class="form-input" required readonly>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label required">Phone Number</label>
-                <input type="tel" id="phone" name="phone" class="form-input" required readonly>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Language</label>
-                <input type="text" id="language" name="language" class="form-input" readonly>
-              </div>
+            <div class="checkout-card">
+              <h3 data-i18n="checkout.customerInfo">Customer Information</h3>
+              <div class="form-group"><label class="form-label required" data-i18n="order.fullName">Full name</label><input type="text" id="fullName" name="fullName" class="form-input" required readonly></div>
+              <div class="form-group"><label class="form-label required" data-i18n="order.email">Email</label><input type="email" id="email" name="email" class="form-input" required readonly></div>
+              <div class="form-group"><label class="form-label required" data-i18n="order.phone">WhatsApp number</label><input type="tel" id="phone" name="phone" class="form-input" required readonly></div>
+              <div class="form-group"><label class="form-label" data-i18n="order.language">Invitation language</label><input type="text" id="language" name="language" class="form-input" readonly></div>
             </div>
 
-            <!-- Wedding Details -->
-            <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-              <h3 style="margin-bottom: 24px;">Wedding Details</h3>
-
+            <div class="checkout-card">
+              <h3 data-i18n="checkout.eventDetails">Event Details</h3>
               <div class="grid grid-2">
-                <div class="form-group">
-                  <label class="form-label">Bride Name</label>
-                  <input type="text" id="brideName" name="brideName" class="form-input" readonly>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Groom Name</label>
-                  <input type="text" id="groomName" name="groomName" class="form-input" readonly>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Wedding Date</label>
-                  <input type="date" id="weddingDate" name="weddingDate" class="form-input" readonly>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Venue</label>
-                  <input type="text" id="venue" name="venue" class="form-input" placeholder="Location or name" readonly>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Color Preference</label>
-                  <input type="text" id="colorPreference" name="colorPreference" class="form-input" readonly>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label">Music Link</label>
-                  <input type="url" id="musicLink" name="musicLink" class="form-input" readonly>
-                </div>
+                <div class="form-group"><label class="form-label" id="name1-label">Name</label><input type="text" id="name1" class="form-input" readonly></div>
+                <div class="form-group" id="name2-group"><label class="form-label" id="name2-label">Second name</label><input type="text" id="name2" class="form-input" readonly></div>
+                <div class="form-group"><label class="form-label" data-i18n="order.eventDate">Event date</label><input type="date" id="eventDate" class="form-input" readonly></div>
+                <div class="form-group"><label class="form-label" data-i18n="order.venue">Venue</label><input type="text" id="venue" class="form-input" readonly></div>
+                <div class="form-group"><label class="form-label" data-i18n="checkout.colorPreference">Colour Preference</label><input type="text" id="colorPreference" class="form-input" readonly></div>
+                <div class="form-group" id="music-group"><label class="form-label" data-i18n="order.musicLink">Music link</label><input type="url" id="musicLink" class="form-input" readonly></div>
               </div>
+              <div class="form-group"><label class="form-label" data-i18n="order.specialRequests">Special requests</label><textarea id="specialRequests" class="form-textarea" readonly></textarea></div>
+            </div>
 
-              <div class="form-group">
-                <label class="form-label">Special Requests</label>
-                <textarea name="specialRequests" id="specialRequests" class="form-textarea" readonly></textarea>
+            <div class="checkout-card">
+              <h3 data-i18n="checkout.yourOrder">Your Order</h3>
+              <div class="order-box">
+                <p class="k" data-i18n="checkout.product">Product:</p>
+                <p class="v" id="selectedProduct" data-i18n="checkout.loadingOrder">Loading order...</p>
+                <p class="k" data-i18n="checkout.category">Category:</p>
+                <p class="v" id="selectedCategory">—</p>
+                <div id="design-row" hidden><p class="k" data-i18n="checkout.design">Design:</p><p class="v" id="selectedDesign">—</p></div>
+                <p class="k" data-i18n="checkout.addons">Add-ons:</p>
+                <p class="v" id="selectedAddons">—</p>
               </div>
             </div>
 
-            <!-- Product Selection (Read-only) -->
-            <div style="background: white; padding: 32px; border-radius: 16px; margin-bottom: 24px;">
-              <h3 style="margin-bottom: 24px;">Your Order</h3>
-
-              <div style="background: var(--bg-gray); padding: 20px; border-radius: 12px;">
-                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Product:</p>
-                <p style="font-size: 16px; font-weight: 600; color: var(--primary-dark); margin-bottom: 16px;" id="selectedProduct">Loading...</p>
-                
-                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Category:</p>
-                <p style="font-size: 14px; color: var(--text-secondary);" id="selectedCategory">Loading...</p>
-              </div>
-            </div>
-
-            <!-- Terms -->
             <div style="background: var(--bg-gray); padding: 24px; border-radius: 16px;">
               <label class="form-radio">
                 <input type="checkbox" name="terms" id="terms">
-                <span>
-                  I agree to the <strong>Terms of Service</strong>, <strong>Privacy Policy</strong>, and <strong>Refund Policy</strong>
-                </span>
+                <span data-i18n="checkout.terms">I agree to the Terms of Service, Privacy Policy, and Refund Policy</span>
               </label>
             </div>
           </form>
         </div>
-        
+
         <!-- Order Summary (Right Column) -->
-        <div style="order: 2; display: flex; flex-direction: column;">
-          <div style="background: white; padding: 32px; border-radius: 16px; position: sticky; top: 100px;">
-            <h3 style="margin-bottom: 24px;">Order Summary</h3>
-
+        <div>
+          <div class="summary-sticky">
+            <h3 style="margin-bottom: 24px;" data-i18n="checkout.summary">Order Summary</h3>
             <div id="cart-items" style="margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 24px;">
-              <p style="color: var(--text-light); text-align: center; margin: 12px 0;">Loading order...</p>
+              <p style="color: var(--text-light); text-align: center; margin: 12px 0;" data-i18n="checkout.loadingOrder">Loading order...</p>
             </div>
+            <div class="summary-row"><span data-i18n="checkout.subtotal">Subtotal:</span><span id="subtotal">—</span></div>
+            <div class="summary-row"><span data-i18n="checkout.addonsTotal">Add-ons:</span><span id="addons-total" style="color: var(--accent-gold);">—</span></div>
+            <div class="summary-row total"><span data-i18n="checkout.total">Total:</span><span id="total" style="color: var(--accent-gold);">—</span></div>
+            <p id="from-note" style="font-size: 12px; margin: -12px 0 20px;" hidden data-i18n="checkout.fromNote"></p>
 
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-              <span>Subtotal:</span>
-              <span id="subtotal">EGP 0</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-              <span>Discount:</span>
-              <span id="discount" style="color: var(--accent-gold);">-EGP 0</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; padding-top: 12px; border-top: 2px solid var(--border-light); margin-bottom: 24px;">
-              <span>Total:</span>
-              <span id="total" style="color: var(--accent-gold);">EGP 0</span>
-            </div>
-
-            <!-- InstaPay Payment Box -->
-            <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--accent-gold);">
+            <div class="instapay-box">
               <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                <span style="font-size: 20px;">💳</span>
-                <h4 style="margin: 0;">Payment via InstaPay</h4>
+                <span style="font-size: 20px; color: var(--accent-gold); display: inline-flex;" data-icon="card"></span>
+                <h4 style="margin: 0;" data-i18n="checkout.instapayTitle">Payment via InstaPay</h4>
               </div>
-              <div style="background: white; padding: 16px; border-radius: 8px; margin-bottom: 12px;">
-                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;">Amount Required:</p>
-                <p style="font-size: 22px; font-weight: 700; color: var(--accent-gold);" id="instapay-amount">EGP 0</p>
+              <div class="instapay-amount">
+                <p style="color: var(--text-light); font-size: 12px; margin-bottom: 8px;" data-i18n="checkout.amountRequired">Amount Required:</p>
+                <p style="font-size: 22px; font-weight: 700; color: var(--accent-gold);" id="instapay-amount">—</p>
               </div>
-              <a href="https://ipn.eg/S/mostafa.moham1163/instapay/1JgkOq" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-full" style="margin-bottom: 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span style="font-size: 18px;">💳</span>
-                Pay with InstaPay
+              <a href="https://ipn.eg/S/mostafa.moham1163/instapay/1JgkOq" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-full" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span style="font-size: 18px; display: inline-flex;" data-icon="card"></span>
+                <span data-i18n="checkout.payInstapay">Pay with InstaPay</span>
               </a>
             </div>
 
-            <button type="submit" form="checkout-form" class="btn btn-primary btn-full" style="margin-bottom: 12px; background: #25D366; border-color: #25D366;">
-              <span class="btn-icon">💬</span>
-              Confirm via WhatsApp
+            <button type="submit" form="checkout-form" class="btn btn-primary btn-full" style="margin-bottom: 12px; background: #25D366; border-color: #25D366; color: #fff;">
+              <span class="btn-icon" data-icon="whatsapp"></span>
+              <span data-i18n="checkout.confirmWhatsApp">Confirm via WhatsApp</span>
             </button>
-
-            <a href="order-form.html" class="btn btn-outline btn-full">Back to Form</a>
+            <a href="order-form.html" class="btn btn-outline btn-full" data-i18n="checkout.backToForm">Back to Form</a>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- Status Messages -->
-  <div id="toast-root" style="position: fixed; right: 20px; bottom: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;"></div>
+  <div id="toast-root" class="toast-root"></div>
 
-  <!-- Loading Overlay -->
-  <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center;">
-    <div style="background: white; padding: 60px 40px; border-radius: 20px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-      <div style="font-size: 64px; margin-bottom: 24px; animation: spin 2s linear infinite;">⏳</div>
-      <p style="font-size: 20px; color: var(--text-primary); font-weight: 700; margin-bottom: 12px;">Processing your order...</p>
-      <p style="font-size: 14px; color: var(--text-secondary);">Please wait, we're saving your details</p>
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="loading-box">
+      <div style="font-size: 56px; margin-bottom: 24px; color: var(--accent-gold); display: flex; justify-content: center; animation: spin 2s linear infinite;" data-icon="countdown"></div>
+      <p style="font-size: 20px; color: var(--text-primary); font-weight: 700; margin-bottom: 12px;" data-i18n="checkout.processing">Processing your order...</p>
+      <p style="font-size: 14px; color: var(--text-secondary);" data-i18n="checkout.processingSub">Please wait, we’re saving your details</p>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="admin/assets/supabase-config.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/catalog.js"></script>
   <script src="assets/js/premium.js"></script>
   <script>
-    const ORDER_STORAGE_KEY = 'memora-order';
-    const WHATSAPP_NUMBER = '+201099885633';
+    (() => {
+      const ORDER_STORAGE_KEY = 'memora-order';
+      const WHATSAPP_NUMBER = Store.WHATSAPP_NUMBER;
+      const I = window.MemoraI18n;
+      const C = window.MemoraCatalog;
+      const t = (k, v) => I.t(k, v);
+      const money = (n, o) => I.money(n, o);
+      const esc = (v) => C.escapeHtml(v);
 
-    // Initialize Supabase
-    const supabaseUrl = window.MEMORA_SUPABASE?.url;
-    const supabaseKey = window.MEMORA_SUPABASE?.anonKey;
-    const supabaseClient = supabaseUrl && supabaseKey && window.supabase?.createClient ?
-      window.supabase.createClient(supabaseUrl, supabaseKey) : null;
-    const SUPABASE_PROJECT_REF = (() => {
-      try {
-        return supabaseUrl ? new URL(supabaseUrl).hostname.split('.')[0] : null;
-      } catch (error) {
-        return null;
+      const supabaseUrl = window.MEMORA_SUPABASE?.url;
+      const supabaseKey = window.MEMORA_SUPABASE?.anonKey;
+      const supabaseClient = supabaseUrl && supabaseKey && window.supabase?.createClient
+        ? window.supabase.createClient(supabaseUrl, supabaseKey)
+        : null;
+
+      let catalog = null;
+      let orderData = null;
+      let item = null;
+      let quote = null; // { base, addons: [{addon, price}], addonsTotal, total, hasFrom }
+
+      /* ── Storage ── */
+      function safeParse(value) { try { return value ? JSON.parse(value) : null; } catch (e) { return null; } }
+      function persistOrderData(data) {
+        const serialized = JSON.stringify(data);
+        try { sessionStorage.setItem(ORDER_STORAGE_KEY, serialized); } catch (e) { /* ignore */ }
+        try { localStorage.setItem(ORDER_STORAGE_KEY, serialized); } catch (e) { /* ignore */ }
       }
-    })();
-    const SUPABASE_DEBUG_STATE = {
-      fetchLogs: [],
-      authLogs: [],
-      requestContext: null
-    };
-
-    function updateDebugPanel(label, details) {
-      const payload = {
-        label,
-        timestamp: new Date().toISOString(),
-        supabaseUrl,
-        supabaseProjectRef: SUPABASE_PROJECT_REF,
-        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        details
-      };
-
-      SUPABASE_DEBUG_STATE.requestContext = payload;
-      return payload;
-    }
-
-    function safeReadStorageSnapshot() {
-      const snapshot = {
-        localStorageKeys: [],
-        sessionStorageKeys: [],
-        cookies: document.cookie || ''
-      };
-
-      try {
-        snapshot.localStorageKeys = Object.keys(localStorage).filter((key) => /sb-|supabase|auth/i.test(key));
-      } catch (error) {
-        snapshot.localStorageError = error?.message ?? String(error);
-      }
-
-      try {
-        snapshot.sessionStorageKeys = Object.keys(sessionStorage).filter((key) => /sb-|supabase|auth/i.test(key));
-      } catch (error) {
-        snapshot.sessionStorageError = error?.message ?? String(error);
-      }
-
-      return snapshot;
-    }
-
-    function normalizeHeaders(headersLike) {
-      const result = {};
-
-      if (!headersLike) return result;
-
-      try {
-        const headers = headersLike instanceof Headers ? headersLike : new Headers(headersLike);
-        headers.forEach((value, key) => {
-          result[key] = value;
-        });
-      } catch (error) {
-        result.error = error?.message ?? String(error);
-      }
-
-      return result;
-    }
-
-    async function readRequestBodyForLog(input, init) {
-      try {
-        if (input instanceof Request) {
-          return await input.clone().text();
+      function getSavedOrderData() {
+        const queryValue = new URLSearchParams(window.location.search).get('order');
+        const fromQuery = safeParse(queryValue);
+        if (fromQuery) {
+          persistOrderData(fromQuery);
+          try { window.history.replaceState({}, '', 'checkout.html'); } catch (e) { /* ignore */ }
+          return fromQuery;
         }
-
-        if (init?.body instanceof Blob) {
-          return await init.body.text();
-        }
-
-        return typeof init?.body === 'string' ? init.body : init?.body ?? null;
-      } catch (error) {
-        return `<<unable to read body: ${error?.message ?? String(error)}>>`;
-      }
-    }
-
-    function installSupabaseFetchTap() {
-      if (window.__memoraFetchTapInstalled) return;
-
-      const originalFetch = window.fetch.bind(window);
-
-      window.fetch = async (input, init = {}) => {
-        const requestUrl = typeof input === 'string' ? input : input?.url ?? '';
-        const isSupabaseRequest = /supabase\.co/i.test(requestUrl);
-
-        if (isSupabaseRequest) {
-          const requestHeaders = input instanceof Request ? input.headers : init.headers;
-          const requestBody = await readRequestBodyForLog(input, init);
-          const logEntry = {
-            stage: 'outgoing-fetch',
-            requestUrl,
-            method: init.method || input?.method || 'GET',
-            headers: normalizeHeaders(requestHeaders),
-            body: requestBody,
-            authContext: SUPABASE_DEBUG_STATE.requestContext,
-            storageSnapshot: safeReadStorageSnapshot()
-          };
-
-          SUPABASE_DEBUG_STATE.fetchLogs.push(logEntry);
-          console.log('Memora Supabase fetch tap:', logEntry);
-          updateDebugPanel('Supabase fetch', logEntry);
-        }
-
-        return originalFetch(input, init);
-      };
-
-      window.__memoraFetchTapInstalled = true;
-    }
-
-    installSupabaseFetchTap();
-
-    function decodeJwtPayload(token) {
-      if (!token || typeof token !== 'string') return null;
-
-      const parts = token.split('.');
-      if (parts.length < 2) return null;
-
-      try {
-        const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-        const paddedBase64 = base64.padEnd(Math.ceil(base64.length / 4) * 4, '=');
-        return JSON.parse(atob(paddedBase64));
-      } catch (error) {
-        console.warn('Unable to decode Supabase JWT payload:', error);
-        return null;
-      }
-    }
-
-    async function logSupabaseAuthDiagnostics(stage) {
-      const authSnapshot = {
-        stage,
-        configured: !!supabaseClient,
-        supabaseUrl,
-        sameSupabaseUrlAsConfig: supabaseUrl === window.MEMORA_SUPABASE?.url,
-        hasAnonKey: !!supabaseKey,
-        sameProjectRefAsUrl: SUPABASE_PROJECT_REF,
-        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        userAgent: navigator.userAgent,
-        storageSnapshot: safeReadStorageSnapshot(),
-        localStorageOrder: null,
-        sessionStorageOrder: null
-      };
-
-      try {
-        authSnapshot.localStorageOrder = localStorage.getItem(ORDER_STORAGE_KEY);
-      } catch (error) {
-        authSnapshot.localStorageOrderError = error?.message ?? String(error);
+        let saved = null;
+        try { saved = safeParse(sessionStorage.getItem(ORDER_STORAGE_KEY)); } catch (e) { /* ignore */ }
+        if (!saved) { try { saved = safeParse(localStorage.getItem(ORDER_STORAGE_KEY)); } catch (e) { /* ignore */ } }
+        return saved;
       }
 
-      try {
-        authSnapshot.sessionStorageOrder = sessionStorage.getItem(ORDER_STORAGE_KEY);
-      } catch (error) {
-        authSnapshot.sessionStorageOrderError = error?.message ?? String(error);
+      /* ── UI ── */
+      function showNotification(message, type = 'info') {
+        const root = document.getElementById('toast-root');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        root.appendChild(toast);
+        setTimeout(() => toast.remove(), 4500);
       }
 
-      const diagnostics = {
-        stage,
-        configured: !!supabaseClient,
-        supabaseUrl,
-        supabaseProjectRef: SUPABASE_PROJECT_REF,
-        hasAnonKey: !!supabaseKey,
-        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        userAgent: navigator.userAgent,
-        storageSnapshot: safeReadStorageSnapshot(),
-        localStorageOrder: authSnapshot.localStorageOrder,
-        sessionStorageOrder: authSnapshot.sessionStorageOrder
-      };
-
-      if (!supabaseClient?.auth) {
-        console.log('Supabase auth diagnostics:', diagnostics);
-        SUPABASE_DEBUG_STATE.authLogs.push(diagnostics);
-        updateDebugPanel('Supabase auth diagnostics', diagnostics);
-        return diagnostics;
+      function computeQuote() {
+        const included = new Set(item.includedAddons || []);
+        const addons = (orderData.addons || [])
+          .map((slug) => catalog.getAddon(slug))
+          .filter((a) => a && a.pricingType !== 'free' && !included.has(a.slug));
+        const addonsTotal = addons.reduce((sum, a) => sum + a.price, 0);
+        return { base: item.price, addons, addonsTotal, total: item.price + addonsTotal, hasFrom: addons.some((a) => a.pricingType === 'from') };
       }
 
-      try {
-        const sessionResult = await supabaseClient.auth.getSession();
-        const userResult = await supabaseClient.auth.getUser();
-        const session = sessionResult?.data?.session ?? null;
-        const user = userResult?.data?.user ?? null;
-        const jwtPayload = decodeJwtPayload(session?.access_token ?? null);
-
-        diagnostics.session = session
-          ? {
-              accessTokenPresent: !!session.access_token,
-              expiresAt: session.expires_at ?? null,
-              refreshTokenPresent: !!session.refresh_token,
-              providerTokenPresent: !!session.provider_token,
-              userId: session.user?.id ?? null,
-              userEmail: session.user?.email ?? null
-            }
-          : null;
-        diagnostics.currentUser = user
-          ? {
-              id: user.id ?? null,
-              email: user.email ?? null,
-              role: user.role ?? null,
-              createdAt: user.created_at ?? null,
-              lastSignInAt: user.last_sign_in_at ?? null
-            }
-          : null;
-        diagnostics.jwt = jwtPayload
-          ? {
-              role: jwtPayload.role ?? null,
-              aud: jwtPayload.aud ?? null,
-              sub: jwtPayload.sub ?? null,
-              iss: jwtPayload.iss ?? null,
-              exp: jwtPayload.exp ?? null,
-              iat: jwtPayload.iat ?? null,
-              email: jwtPayload.email ?? null,
-              appMetadataRole: jwtPayload.app_metadata?.role ?? null,
-              userMetadata: jwtPayload.user_metadata ?? null
-            }
-          : null;
-        diagnostics.sessionError = sessionResult?.error ?? null;
-        diagnostics.userError = userResult?.error ?? null;
-      } catch (error) {
-        diagnostics.authError = {
-          message: error?.message ?? String(error),
-          name: error?.name ?? null,
-          stack: error?.stack ?? null
-        };
+      function eventLabels() {
+        const labels = t(`order.names.${orderData.eventType || 'default'}`);
+        return Array.isArray(labels) ? labels : t('order.names.default');
       }
 
-      console.log('Supabase auth diagnostics:', diagnostics);
-      SUPABASE_DEBUG_STATE.authLogs.push(diagnostics);
-      updateDebugPanel('Supabase auth diagnostics', diagnostics);
-      return diagnostics;
-    }
+      function fill(id, value) { const el = document.getElementById(id); if (el) el.value = value || ''; }
 
-    function summarizeOrderPayload(orderData, product, orderPayload) {
-      const fieldEntries = Object.entries(orderPayload).map(([fieldName, value]) => ({
-        fieldName,
-        type: value === null ? 'null' : typeof value,
-        isNull: value === null,
-        isUndefined: value === undefined,
-        isEmptyString: value === '',
-        value: value
-      }));
+      function render() {
+        if (!orderData || !item) return;
+        quote = computeQuote();
+        const labels = eventLabels();
+        const category = catalog.getCategory(item.category);
 
-      const missingRequiredFields = [];
-      if (!orderData?.fullName) missingRequiredFields.push('orderData.fullName');
-      if (!orderData?.phone) missingRequiredFields.push('orderData.phone');
-      if (!orderData?.email) missingRequiredFields.push('orderData.email');
-      if (!orderData?.product) missingRequiredFields.push('orderData.product');
-      if (!product?.name) missingRequiredFields.push('product.name');
+        fill('fullName', orderData.fullName);
+        fill('email', orderData.email);
+        fill('phone', orderData.phone);
+        const langKeys = { english: 'order.langEnglish', arabic: 'order.langArabic', 'arabic+english': 'order.langBoth', other: 'order.langOther' };
+        fill('language', langKeys[orderData.language] ? t(langKeys[orderData.language]) : orderData.language);
+        fill('name1', orderData.name1);
+        fill('name2', orderData.name2);
+        fill('eventDate', orderData.eventDate);
+        fill('venue', orderData.venue);
+        fill('colorPreference', t(`order.palettes.${orderData.colorPreference}`));
+        fill('musicLink', orderData.musicLink);
+        fill('specialRequests', orderData.specialRequests);
+        document.getElementById('name1-label').textContent = labels[0];
+        document.getElementById('name2-label').textContent = labels[1];
+        document.getElementById('name2-group').style.display = orderData.name2 ? '' : 'none';
+        document.getElementById('music-group').style.display = orderData.musicLink ? '' : 'none';
 
-      const sourceSummary = {
-        fullName: orderData?.fullName ?? null,
-        phone: orderData?.phone ?? null,
-        email: orderData?.email ?? null,
-        product: orderData?.product ?? null,
-        brideName: orderData?.brideName ?? null,
-        groomName: orderData?.groomName ?? null,
-        weddingDate: orderData?.weddingDate ?? null,
-        venue: orderData?.venue ?? null,
-        colorPreference: orderData?.colorPreference ?? null,
-        musicLink: orderData?.musicLink ?? null,
-        specialRequests: orderData?.specialRequests ?? null,
-        preferredLanguage: orderData?.language ?? null
-      };
+        document.getElementById('selectedProduct').textContent = C.nameOf(item);
+        document.getElementById('selectedCategory').textContent = category ? C.nameOf(category) : item.category;
+        const designRow = document.getElementById('design-row');
+        designRow.hidden = !(orderData.design && item.designs && item.designs.length > 1);
+        document.getElementById('selectedDesign').textContent = orderData.design || '—';
+        document.getElementById('selectedAddons').textContent = quote.addons.length ? quote.addons.map((a) => C.nameOf(a)).join(' · ') : t('order.none');
 
-      const summary = {
-        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        sourceSummary,
-        payloadJson: JSON.stringify(orderPayload),
-        payloadFields: fieldEntries,
-        missingRequiredFields: missingRequiredFields.length > 0 ? missingRequiredFields : ['none']
-      };
-
-      console.log('Supabase order payload summary:', summary);
-      return summary;
-    }
-
-    // Product catalog
-    const productCatalog = {
-      'standard': { 
-        name: 'Modern Minimal', 
-        price: 500,
-        category: 'Standard'
-      },
-      'premium': { 
-        name: 'Luxury Bloom', 
-        price: 800,
-        category: 'Premium'
-      },
-      'authentic': { 
-        name: 'Authentic', 
-        price: 800,
-        category: 'Premium'
-      },
-      'memora-essential': { 
-        name: 'Memora Essential', 
-        price: 950,
-        category: 'Bundle'
-      },
-      'memora-signature': { 
-        name: 'Memora Signature', 
-        price: 1250,
-        category: 'Bundle'
-      },
-    };
-
-    function safeParseOrderData(value) {
-      if (!value) return null;
-
-      try {
-        return JSON.parse(value);
-      } catch (error) {
-        console.warn('Unable to parse saved order data:', error);
-        return null;
-      }
-    }
-
-    function persistOrderData(orderData) {
-      const serializedOrder = JSON.stringify(orderData);
-
-      try {
-        sessionStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
-      } catch (error) {
-        console.warn('sessionStorage unavailable:', error);
+        document.getElementById('cart-items').innerHTML = `
+          <div class="summary-line"><div><div style="font-weight: 600;">${esc(C.nameOf(item))}${orderData.design && item.designs.length > 1 ? ` · ${esc(orderData.design)}` : ''}</div><div class="sub">${esc(t('checkout.qty'))}</div></div><div style="font-weight: 600;">${esc(money(quote.base))}</div></div>
+          ${quote.addons.map((a) => `<div class="summary-line"><div><div>${esc(a.icon)} ${esc(C.nameOf(a))}</div>${a.pricingType === 'from' ? `<div class="sub">${esc(t('common.from'))}</div>` : ''}</div><div>${esc(money(a.price, { plus: true }))}</div></div>`).join('')}`;
+        document.getElementById('subtotal').textContent = money(quote.base);
+        document.getElementById('addons-total').textContent = money(quote.addonsTotal, { plus: quote.addonsTotal > 0 });
+        document.getElementById('total').textContent = money(quote.total);
+        document.getElementById('instapay-amount').textContent = money(quote.total);
+        document.getElementById('from-note').hidden = !quote.hasFrom;
       }
 
-      try {
-        localStorage.setItem(ORDER_STORAGE_KEY, serializedOrder);
-      } catch (error) {
-        console.warn('localStorage unavailable:', error);
-      }
-    }
-
-    function logSavedOrderData(source, orderData) {
-      const debugValues = {
-        source,
-        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        fullName: orderData?.fullName ?? null,
-        phone: orderData?.phone ?? null,
-        email: orderData?.email ?? null,
-        product: orderData?.product ?? null
-      };
-
-      console.log('getSavedOrderData() debug:', debugValues);
-      return orderData;
-    }
-
-    function getSavedOrderData() {
-      const queryValue = new URLSearchParams(window.location.search).get('order');
-
-      if (queryValue) {
-        const parsedQueryOrder = safeParseOrderData(queryValue);
-
-        if (parsedQueryOrder) {
-          persistOrderData(parsedQueryOrder);
-          try {
-            window.history.replaceState({}, '', 'checkout.html');
-          } catch (error) {
-            console.warn('Unable to clear checkout query string:', error);
-          }
-          const result = logSavedOrderData('query-string', parsedQueryOrder);
-          console.log('getSavedOrderData() result:', result);
-          return result;
-        }
-      }
-
-      try {
-        const sessionOrder = safeParseOrderData(sessionStorage.getItem(ORDER_STORAGE_KEY));
-        if (sessionOrder) {
-          const result = logSavedOrderData('sessionStorage', sessionOrder);
-          console.log('getSavedOrderData() result:', result);
-          return result;
-        }
-      } catch (error) {
-        console.warn('sessionStorage read unavailable:', error);
-      }
-
-      try {
-        const localOrder = safeParseOrderData(localStorage.getItem(ORDER_STORAGE_KEY));
-        if (localOrder) {
-          const result = logSavedOrderData('localStorage', localOrder);
-          console.log('getSavedOrderData() result:', result);
-          return result;
-        }
-        const result = logSavedOrderData('none', null);
-        console.log('getSavedOrderData() result:', result);
-        return result;
-      } catch (error) {
-        console.warn('localStorage read unavailable:', error);
-        const result = logSavedOrderData('error', null);
-        console.log('getSavedOrderData() result:', result);
-        return null;
-      }
-    }
-
-    // Load order data from localStorage (saved by order-form.html)
-    function loadOrderData() {
-      const orderData = getSavedOrderData() || {};
-
-      console.log('loadOrderData() returned:', {
-        deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-        fullName: orderData.fullName ?? null,
-        phone: orderData.phone ?? null,
-        email: orderData.email ?? null,
-        product: orderData.product ?? null
-      });
-
-      if (Object.keys(orderData).length > 0) {
-        persistOrderData(orderData);
-      }
-      
-      // Check if we have required data
-      if (!orderData || !orderData.product || !orderData.fullName) {
-        showNotification('⚠️ No order data found. Please fill out the order form first.', 'error');
-        setTimeout(() => { window.location.href = 'order-form.html'; }, 2000);
-        return;
-      }
-
-      // Populate customer information fields
-      document.getElementById('fullName').value = orderData.fullName || '';
-      document.getElementById('email').value = orderData.email || '';
-      document.getElementById('phone').value = orderData.phone || '';
-      document.getElementById('language').value = orderData.language || 'english';
-      document.getElementById('brideName').value = orderData.brideName || '';
-      document.getElementById('groomName').value = orderData.groomName || '';
-      document.getElementById('weddingDate').value = orderData.weddingDate || '';
-      document.getElementById('venue').value = orderData.venue || '';
-      document.getElementById('colorPreference').value = orderData.colorPreference || '';
-      document.getElementById('musicLink').value = orderData.musicLink || '';
-      document.getElementById('specialRequests').value = orderData.specialRequests || '';
-
-      // Get product info from catalog using the stored product key
-      const productKey = orderData.product;
-      const product = productCatalog[productKey];
-      
-      if (product) {
-        document.getElementById('selectedProduct').textContent = product.name;
-        document.getElementById('selectedCategory').textContent = `Category: ${product.category}`;
-        updateCartDisplay(product);
-      } else {
-        document.getElementById('selectedProduct').textContent = 'Unknown product';
-        document.getElementById('selectedCategory').textContent = 'Please go back and select a product';
-        showNotification('⚠️ Product not found. Please go back and select a product.', 'error');
-      }
-    }
-
-    // Update the order summary sidebar with product details
-    function updateCartDisplay(product) {
-      const cartContainer = document.getElementById('cart-items');
-      const subtotal = product.price;
-      const discount = 0;
-      const total = subtotal - discount;
-
-      cartContainer.innerHTML = `
-        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-          <div>
-            <div style="font-weight: 600;">${product.name}</div>
-            <div style="font-size: 12px; color: var(--text-light);">Qty: 1</div>
-          </div>
-          <div style="font-weight: 600; text-align: right;">EGP ${subtotal.toFixed(2)}</div>
-        </div>
-      `;
-
-      document.getElementById('subtotal').textContent = `EGP ${subtotal.toFixed(2)}`;
-      document.getElementById('discount').textContent = `-EGP ${discount.toFixed(2)}`;
-      document.getElementById('total').textContent = `EGP ${total.toFixed(2)}`;
-      document.getElementById('instapay-amount').textContent = `EGP ${total.toFixed(2)}`;
-    }
-
-    // Show notification toast
-    function showNotification(message, type = 'info') {
-      const root = document.getElementById('toast-root');
-      const toast = document.createElement('div');
-      
-      const bgColor = {
-        success: 'rgba(76, 175, 80, 0.95)',
-        error: 'rgba(231, 76, 60, 0.95)',
-        info: 'rgba(52, 152, 219, 0.95)'
-      }[type] || 'rgba(52, 152, 219, 0.95)';
-
-      toast.style.cssText = `
-        background: ${bgColor};
-        color: white;
-        padding: 16px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        animation: slideIn 0.3s ease;
-      `;
-      
-      toast.textContent = message;
-      root.appendChild(toast);
-
-      setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
-    }
-
-    // Generate WhatsApp confirmation message (matches required template)
-    function generateWhatsAppMessage(orderData, product, total) {
-      const formatDate = (dateStr) => {
-        if (!dateStr) return 'Not specified';
-        const date = new Date(dateStr);
-        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-      };
-
-      const message = `Hello Memora Team 👋
-
-I have completed the InstaPay payment.
-
-Customer:
-${orderData.fullName || 'Not provided'}
-
-Phone:
-${orderData.phone || 'Not provided'}
-
-Email:
-${orderData.email || 'Not provided'}
-
-Bride:
-${orderData.brideName || 'Not provided'}
-
-Groom:
-${orderData.groomName || 'Not provided'}
-
-Wedding Date:
-${formatDate(orderData.weddingDate)}
-
-Product:
-${product.name}
-
-Amount Paid:
-${total} EGP
-
-I will now send the payment screenshot.`;
-
-      return message;
-    }
-
-    function normalizeRequiredOrderValue(value, fieldName) {
-      const normalizedValue = typeof value === 'string' ? value.trim() : String(value ?? '').trim();
-
-      if (!normalizedValue) {
-        console.error(`Missing required order field: ${fieldName}`, { fieldName, value });
-        return '';
-      }
-
-      return normalizedValue;
-    }
-
-    function normalizeOptionalOrderValue(value) {
-      return typeof value === 'string' ? value.trim() : String(value ?? '').trim();
-    }
-
-    function logOrderDebugInfo(orderData, product) {
-      const queryValue = new URLSearchParams(window.location.search).get('order');
-      const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
-      const debugInfo = {
-        deviceType: isMobileDevice ? 'mobile' : 'desktop',
-        userAgent: navigator.userAgent,
-        queryStringOrderPresent: !!queryValue,
-        localStorageOrderPresent: false,
-        sessionStorageOrderPresent: false,
-        orderData: {
-          fullName: orderData?.fullName ?? null,
-          phone: orderData?.phone ?? null,
-          email: orderData?.email ?? null,
-          product: orderData?.product ?? null
-        },
-        productName: product?.name ?? null
-      };
-
-      try {
-        debugInfo.localStorageOrderPresent = !!localStorage.getItem(ORDER_STORAGE_KEY);
-      } catch (error) {
-        console.warn('localStorage read failed while debugging order data:', error);
-      }
-
-      try {
-        debugInfo.sessionStorageOrderPresent = !!sessionStorage.getItem(ORDER_STORAGE_KEY);
-      } catch (error) {
-        console.warn('sessionStorage read failed while debugging order data:', error);
-      }
-
-      const missingFields = [];
-
-      if (!orderData?.fullName) missingFields.push('orderData.fullName');
-      if (!orderData?.phone) missingFields.push('orderData.phone');
-      if (!orderData?.email) missingFields.push('orderData.email');
-      if (!product?.name) missingFields.push('product?.name');
-
-      debugInfo.missingFields = missingFields.length > 0 ? missingFields : ['none'];
-
-      console.log('Checkout order debug info:', debugInfo);
-      return debugInfo;
-    }
-
-    function buildOrderInsertPayload(orderData, product) {
-      const customerName = normalizeRequiredOrderValue(orderData.fullName, 'customer_name');
-      const whatsappNumber = normalizeRequiredOrderValue(orderData.phone, 'whatsapp_number');
-      const email = normalizeRequiredOrderValue(orderData.email, 'email');
-      const purchasedProduct = normalizeRequiredOrderValue(product?.name, 'purchased_product');
-
-      if (!customerName || !whatsappNumber || !email || !purchasedProduct) {
-        return {
-          error: 'Missing required order details. Please reload the checkout page and try again.'
-        };
-      }
-
-      const weddingDate = normalizeOptionalOrderValue(orderData.weddingDate);
-      const totalAmount = Number(product.price);
-
-      const orderPayload = {
-        customer_name: customerName,
-        whatsapp_number: whatsappNumber,
-        email,
-        purchased_product: purchasedProduct,
-        purchased_bundle: '',
-        preferred_language: normalizeOptionalOrderValue(orderData.language),
-        bride_name: normalizeOptionalOrderValue(orderData.brideName),
-        groom_name: normalizeOptionalOrderValue(orderData.groomName),
-        venue: normalizeOptionalOrderValue(orderData.venue),
-        color_preference: normalizeOptionalOrderValue(orderData.colorPreference),
-        music_link: normalizeOptionalOrderValue(orderData.musicLink),
-        special_requests: normalizeOptionalOrderValue(orderData.specialRequests),
-        product_category: normalizeOptionalOrderValue(product.category),
-        phone_number: whatsappNumber,
-        payment_method: 'instapay',
-        payment_status: 'Pending',
-        order_status: 'Pending',
-        total_amount: Number.isFinite(totalAmount) ? totalAmount : 0
-      };
-
-      if (weddingDate) {
-        orderPayload.wedding_date = weddingDate;
-      }
-
-      return orderPayload;
-    }
-
-    // Process payment — save to Supabase then open WhatsApp
-    async function proceedToPayment() {
-      const orderData = getSavedOrderData() || {};
-
-      // Validate terms checkbox
-      if (!document.getElementById('terms').checked) {
-        showNotification('Please agree to the terms and conditions', 'error');
-        return;
-      }
-
-      // Validate Supabase is configured
-      const canSaveToSupabase = !!supabaseClient;
-      if (!canSaveToSupabase) {
-        showNotification('⚠️ Payment system not configured. Opening WhatsApp anyway.', 'error');
-        console.error('Supabase not initialized. Check admin/assets/supabase-config.js');
-      }
-
-      // Validate product
-      const productKey = orderData.product;
-      const product = productCatalog[productKey];
-
-      if (!product) {
-        showNotification(`❌ Product not found. Please go back and select a product.`, 'error');
-        return;
-      }
-
-      const total = product.price;
-      const loader = document.getElementById('loading-overlay');
-      loader.style.display = 'flex';
-
-      const authDiagnostics = await logSupabaseAuthDiagnostics('before insert');
-      const { data: sessionData } = await supabaseClient.auth.getSession();
-
-      console.log('SESSION:', sessionData);
-
-      const token = sessionData?.session?.access_token;
-
-      if (token) {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        console.log('JWT PAYLOAD:', payload);
-        console.log('ROLE:', payload.role);
-      } else {
-        console.log('NO TOKEN - USING ANON');
-      }
-
-      const requestContext = {
-        supabaseUrl,
-        supabaseProjectRef: SUPABASE_PROJECT_REF,
-        authDiagnostics,
-        sessionData,
-        currentUser: authDiagnostics?.currentUser ?? null,
-        jwtRole: authDiagnostics?.jwt?.role ?? null,
-        jwtIssuer: authDiagnostics?.jwt?.iss ?? null,
-        jwtAud: authDiagnostics?.jwt?.aud ?? null,
-        jwtSub: authDiagnostics?.jwt?.sub ?? null,
-        storageSnapshot: safeReadStorageSnapshot(),
-        sameSupabaseUrlAsConfig: supabaseUrl === window.MEMORA_SUPABASE?.url,
-        sameAnonKeyAsConfig: supabaseKey === window.MEMORA_SUPABASE?.anonKey,
-        sameProjectRefAsConfig: SUPABASE_PROJECT_REF === (supabaseUrl ? new URL(supabaseUrl).hostname.split('.')[0] : null)
-      };
-
-      SUPABASE_DEBUG_STATE.requestContext = requestContext;
-      console.log('Memora request context before insert:', requestContext);
-      updateDebugPanel('Before insert', requestContext);
-
-      const openWhatsApp = () => {
-        const whatsappMessage = generateWhatsAppMessage(orderData, product, total);
-        const encodedMessage = encodeURIComponent(whatsappMessage);
-        const whatsappTarget = WHATSAPP_NUMBER.replace(/\D/g, '');
-        window.location.assign(`https://wa.me/${whatsappTarget}?text=${encodedMessage}`);
-      };
-
-      try {
-        persistOrderData(orderData);
-
-        console.log('orderData:', orderData);
-        console.log('product:', product);
-        console.log('fullName:', orderData.fullName);
-        console.log('phone:', orderData.phone);
-        console.log('email:', orderData.email);
-        console.log('product name:', product?.name);
-        logOrderDebugInfo(orderData, product);
-
-        const orderPayload = buildOrderInsertPayload(orderData, product);
-        const payloadSummary = summarizeOrderPayload(orderData, product, orderPayload);
-
-        let queryStringOrderExists = false;
-        let sessionStorageExists = false;
-        let localStorageExists = false;
-
-        try {
-          queryStringOrderExists = !!new URLSearchParams(window.location.search).get('order');
-        } catch (error) {
-          console.warn('query string check failed:', error);
-        }
-
-        try {
-          sessionStorageExists = !!sessionStorage.getItem(ORDER_STORAGE_KEY);
-        } catch (error) {
-          console.warn('sessionStorage check failed:', error);
-        }
-
-        try {
-          localStorageExists = !!localStorage.getItem(ORDER_STORAGE_KEY);
-        } catch (error) {
-          console.warn('localStorage check failed:', error);
-        }
-
-        console.table({
-          fullName: orderData.fullName ?? '',
-          phone: orderData.phone ?? '',
-          email: orderData.email ?? '',
-          productName: product?.name ?? '',
-          orderPayload: JSON.stringify(orderPayload),
-          queryStringOrderExists,
-          sessionStorageExists,
-          localStorageExists
-        });
-
-        console.log('orderPayload:', orderPayload);
-        console.log('orderPayload JSON:', JSON.stringify(orderPayload));
-        console.log('authDiagnostics snapshot:', authDiagnostics);
-        console.log('payloadSummary snapshot:', payloadSummary);
-
-        if (orderPayload.error) {
-          console.error('Order insert validation failed:', {
-            orderData,
-            product,
-            error: orderPayload.error
-          });
-          showNotification(orderPayload.error, 'error');
-          loader.style.display = 'none';
+      function loadOrder() {
+        orderData = getSavedOrderData();
+        if (!orderData || !orderData.product || !orderData.fullName) {
+          showNotification(t('checkout.errNoOrder'), 'error');
+          setTimeout(() => { window.location.href = 'order-form.html'; }, 2000);
           return;
         }
+        persistOrderData(orderData);
+        item = catalog.getItem(orderData.product);
+        if (!item) {
+          document.getElementById('selectedProduct').textContent = t('checkout.unknownProduct');
+          document.getElementById('selectedCategory').textContent = t('checkout.goBack');
+          showNotification(t('checkout.errProduct'), 'error');
+          return;
+        }
+        render();
+      }
 
-        console.log('Prepared order payload for Supabase insert:', orderPayload);
+      /* ── WhatsApp ── */
+      function whatsappMessage() {
+        const ar = I.lang === 'ar';
+        const formatDate = (d) => (d ? new Date(d).toLocaleDateString(ar ? 'ar-EG-u-nu-latn' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : (ar ? 'غير محدد' : 'Not specified'));
+        const labels = eventLabels();
+        const addonsText = quote.addons.length ? quote.addons.map((a) => `${C.nameOf(a)} (${money(a.price, { plus: true })})`).join(', ') : t('order.none');
+        const lines = ar ? [
+          'مرحباً فريق ميمورا 👋', '', 'لقد أتممت الدفع عبر إنستاباي.', '',
+          `العميل:\n${orderData.fullName}`, `الهاتف:\n${orderData.phone}`, `البريد:\n${orderData.email}`,
+          `${labels[0]}:\n${orderData.name1 || '-'}`, orderData.name2 ? `${labels[1]}:\n${orderData.name2}` : null,
+          `تاريخ المناسبة:\n${formatDate(orderData.eventDate)}`,
+          `المنتج:\n${C.nameOf(item)}${orderData.design && item.designs.length > 1 ? ` — ${orderData.design}` : ''}`,
+          item.kind === 'bundle' ? `تشمل الباقة:\n${item.items.map((p) => C.nameOf(p)).join('، ')}` : null,
+          `الإضافات:\n${addonsText}`,
+          `المبلغ المدفوع:\n${money(quote.total)}${quote.hasFrom ? ' (يشمل سعراً مبدئياً للأنيميشن المخصص)' : ''}`,
+          '', 'سأرسل الآن صورة إيصال الدفع.',
+        ] : [
+          'Hello Memora Team 👋', '', 'I have completed the InstaPay payment.', '',
+          `Customer:\n${orderData.fullName}`, `Phone:\n${orderData.phone}`, `Email:\n${orderData.email}`,
+          `${labels[0]}:\n${orderData.name1 || '-'}`, orderData.name2 ? `${labels[1]}:\n${orderData.name2}` : null,
+          `Event Date:\n${formatDate(orderData.eventDate)}`,
+          `Product:\n${C.nameOf(item)}${orderData.design && item.designs.length > 1 ? ` — ${orderData.design}` : ''}`,
+          item.kind === 'bundle' ? `Bundle includes:\n${item.items.map((p) => C.nameOf(p)).join(', ')}` : null,
+          `Add-ons:\n${addonsText}`,
+          `Amount Paid:\n${quote.total} EGP${quote.hasFrom ? ' (includes starting price for custom animation)' : ''}`,
+          '', 'I will now send the payment screenshot.',
+        ];
+        return lines.filter((l) => l !== null).join('\n');
+      }
 
-        // Build the order payload matching the Supabase orders table
-        if (canSaveToSupabase) {
-          // Insert into Supabase
-          console.log('Submitting order insert to Supabase orders table...');
-          console.log('Order payload fields:', Object.keys(orderPayload));
-          console.time('supabase-orders-insert');
+      function openWhatsApp() {
+        window.location.assign(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage())}`);
+      }
 
-          const requestHeadersBeforeInsert = normalizeHeaders({
-            authorization: sessionData?.session?.access_token ? `Bearer ${sessionData.session.access_token}` : '<<none>>',
-            apikey: supabaseKey || '<<none>>'
-          });
-          console.log('Pre-insert request headers:', requestHeadersBeforeInsert);
-          updateDebugPanel('Pre-insert headers', {
-            requestHeadersBeforeInsert,
-            requestContext,
-            orderPayload
-          });
+      /* ── Supabase insert ── */
+      const clean = (v) => (typeof v === 'string' ? v.trim() : String(v ?? '').trim());
+      const coupleEvents = ['wedding', 'engagement', 'henna', 'bachelorette', 'bundle'];
 
-          const insertResponse = await supabaseClient
-            .from('orders')
-            .insert([orderPayload])
-            .select();
+      function buildOrderInsertPayload() {
+        const customerName = clean(orderData.fullName);
+        const phone = clean(orderData.phone);
+        const email = clean(orderData.email);
+        if (!customerName || !phone || !email) return { error: t('order.errRequired') };
+        const isCouple = coupleEvents.includes(orderData.eventType) || item.kind === 'bundle';
+        const eventNames = [clean(orderData.name1), clean(orderData.name2)].filter(Boolean).join(isCouple ? ' & ' : ' — ');
+        const categoryName = (catalog.getCategory(item.category) || {}).name;
+        const payload = {
+          order_type: 'standard',
+          customer_name: customerName,
+          whatsapp_number: phone,
+          phone_number: phone,
+          email,
+          preferred_language: clean(orderData.language),
+          purchased_product: item.name.en,
+          purchased_bundle: item.kind === 'bundle' ? item.name.en : '',
+          product_slug: item.slug,
+          product_category: categoryName ? categoryName.en : item.category,
+          selected_design: clean(orderData.design),
+          selected_addons: quote.addons.map((a) => a.slug),
+          base_price: quote.base,
+          addons_total: quote.addonsTotal,
+          total_amount: quote.total,
+          event_type: clean(orderData.eventType),
+          event_names: eventNames,
+          bride_name: isCouple ? clean(orderData.name1) : '',
+          groom_name: isCouple ? clean(orderData.name2) : '',
+          venue: clean(orderData.venue),
+          color_preference: clean(orderData.colorPreference),
+          music_link: clean(orderData.musicLink),
+          special_requests: clean(orderData.specialRequests) + (quote.hasFrom ? `${orderData.specialRequests ? '\n' : ''}[Custom animation: starting price, to be quoted]` : ''),
+          payment_method: 'instapay',
+          payment_status: 'Pending',
+          order_status: 'Pending',
+        };
+        if (clean(orderData.eventDate)) {
+          payload.event_date = clean(orderData.eventDate);
+          if (isCouple) payload.wedding_date = clean(orderData.eventDate);
+        }
+        return payload;
+      }
 
-          console.timeEnd('supabase-orders-insert');
+      const LEGACY_COLUMNS = ['customer_name', 'whatsapp_number', 'email', 'purchased_product', 'purchased_bundle', 'payment_status', 'order_status', 'total_amount', 'phone_number', 'preferred_language', 'bride_name', 'groom_name', 'wedding_date', 'venue', 'color_preference', 'music_link', 'special_requests', 'product_category', 'payment_method'];
+      function legacyPayload(payload) {
+        const legacy = {};
+        LEGACY_COLUMNS.forEach((k) => { if (payload[k] !== undefined) legacy[k] = payload[k]; });
+        const extras = [];
+        if (payload.selected_design) extras.push(`Design: ${payload.selected_design}`);
+        if (payload.selected_addons && payload.selected_addons.length) extras.push(`Add-ons: ${payload.selected_addons.join(', ')} (EGP ${payload.addons_total})`);
+        if (payload.event_type) extras.push(`Event: ${payload.event_type}${payload.event_names ? ` — ${payload.event_names}` : ''}${payload.event_date ? ` — ${payload.event_date}` : ''}`);
+        legacy.special_requests = [payload.special_requests, ...extras].filter(Boolean).join('\n');
+        return legacy;
+      }
 
-          const { data, error } = insertResponse;
-          console.log('Supabase insert response:', {
-            data,
-            error,
-            dataLength: Array.isArray(data) ? data.length : null,
-            payloadSummary,
-            authDiagnostics
-          });
+      async function proceedToPayment() {
+        if (!document.getElementById('terms').checked) return showNotification(t('checkout.errTerms'), 'error');
+        if (!item || !quote) return showNotification(t('checkout.errProduct'), 'error');
 
-          if (error) {
-            console.error('Supabase orders insert failed:', {
-              errorMessage: error?.message ?? null,
-              errorDetails: error?.details ?? null,
-              errorHint: error?.hint ?? null,
-              errorCode: error?.code ?? null,
-              errorStatus: error?.status ?? null,
-              errorName: error?.name ?? null,
-              errorStack: error?.stack ?? null,
-              rawError: error,
-              orderPayload,
-              orderData,
-              product,
-              authDiagnostics,
-              payloadSummary,
-              supabaseUrl,
-              hasAnonKey: !!supabaseKey,
-              deviceType: /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
-            });
-            updateDebugPanel('Insert error', {
-              errorMessage: error?.message ?? null,
-              errorDetails: error?.details ?? null,
-              errorHint: error?.hint ?? null,
-              errorCode: error?.code ?? null,
-              requestContext,
-              orderPayload,
-              authDiagnostics,
-              sessionData,
-              fetchLogs: SUPABASE_DEBUG_STATE.fetchLogs
-            });
-            showNotification(`⚠️ Saved locally, but Supabase failed: ${error.message}`, 'error');
-          } else if (!data || data.length === 0) {
-            console.warn('Supabase orders insert returned no row:', {
-              data,
-              orderPayload,
-              authDiagnostics,
-              payloadSummary
-            });
-            updateDebugPanel('Insert returned no row', {
-              data,
-              orderPayload,
-              authDiagnostics,
-              payloadSummary,
-              requestContext,
-              fetchLogs: SUPABASE_DEBUG_STATE.fetchLogs
-            });
-            showNotification('⚠️ Saved locally, but Supabase did not return a row. Opening WhatsApp...', 'error');
-          } else {
-            console.log('Supabase orders insert succeeded:', {
-              data,
-              insertedRow: data?.[0] ?? null,
-              authDiagnostics,
-              payloadSummary
-            });
-            updateDebugPanel('Insert success', {
-              data,
-              insertedRow: data?.[0] ?? null,
-              authDiagnostics,
-              payloadSummary,
-              requestContext,
-              fetchLogs: SUPABASE_DEBUG_STATE.fetchLogs
-            });
-            showNotification('✅ Order saved successfully! Opening WhatsApp...', 'success');
+        const loader = document.getElementById('loading-overlay');
+        loader.classList.add('show');
+        const finish = (delay = 800) => { loader.classList.remove('show'); setTimeout(openWhatsApp, delay); };
+
+        try {
+          persistOrderData(orderData);
+          const payload = buildOrderInsertPayload();
+          if (payload.error) { loader.classList.remove('show'); return showNotification(payload.error, 'error'); }
+
+          if (!supabaseClient) {
+            console.error('Supabase not initialized. Check admin/assets/supabase-config.js');
+            showNotification(t('checkout.notConfigured'), 'error');
+            return finish();
           }
-        } else {
-          console.log('Supabase client unavailable. Skipping remote insert and opening WhatsApp.');
-          showNotification('✅ Order saved locally. Opening WhatsApp...', 'success');
-        }
 
-        // Brief delay for UX
-        await new Promise(resolve => setTimeout(resolve, 800));
-        loader.style.display = 'none';
-
-        setTimeout(() => {
-          openWhatsApp();
-        }, 800);
-
-      } catch (error) {
-        // On failure: show the error, but still open WhatsApp so the customer flow is not blocked
-        loader.style.display = 'none';
-        console.error('Checkout error:', error);
-        showNotification(`⚠️ ${error.message}. Opening WhatsApp anyway...`, 'error');
-
-        setTimeout(() => {
-          openWhatsApp();
-        }, 800);
-      }
-    }
-
-    document.getElementById('checkout-form').addEventListener('submit', (event) => {
-      event.preventDefault();
-      proceedToPayment();
-    });
-
-    // Add CSS for animations
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideIn {
-        from {
-          transform: translateX(400px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
+          // No .select(): anon users may insert orders but must never read them back (RLS), so RETURNING would be rejected.
+          let { error } = await supabaseClient.from('orders').insert([payload]);
+          if (error && /column|schema cache/i.test(error.message || '')) {
+            // MIGRATION_CATALOG_V2.sql not applied yet: retry with the legacy column set so the order is never lost.
+            console.warn('Orders table is missing catalog v2 columns; retrying with legacy payload. Run admin/MIGRATION_CATALOG_V2.sql.');
+            const legacy = legacyPayload(payload);
+            ({ error } = await supabaseClient.from('orders').insert([legacy]));
+          }
+          if (error) {
+            console.error('Supabase orders insert failed:', error.message, error.code);
+            showNotification(t('checkout.savedButFailed', { error: error.message }), 'error');
+          } else {
+            showNotification(t('checkout.saved'), 'success');
+          }
+          await new Promise((r) => setTimeout(r, 800));
+          finish();
+        } catch (error) {
+          console.error('Checkout error:', error);
+          showNotification(`⚠️ ${error.message}`, 'error');
+          finish();
         }
       }
-      @keyframes slideOut {
-        from {
-          transform: translateX(0);
-          opacity: 1;
-        }
-        to {
-          transform: translateX(400px);
-          opacity: 0;
-        }
-      }
-      @keyframes spin {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: scale(0.9);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-    `;
-    document.head.appendChild(style);
 
-    // Load data on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      loadOrderData();
-    });
-    // Fallback if DOM is already loaded
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      setTimeout(loadOrderData, 1);
-    }
+      document.getElementById('checkout-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        proceedToPayment();
+      });
+
+      I.onChange(render);
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = UI.icon(el.getAttribute('data-icon')); });
+        try {
+          catalog = await C.load();
+        } catch (error) {
+          console.error('Memora catalog failed to load:', error);
+          showNotification(t('common.loadError'), 'error');
+          return;
+        }
+        loadOrder();
+      });
+    })();
   </script>
 </body>
 </html>

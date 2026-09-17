@@ -6,363 +6,259 @@
   <title>Product - Memora</title>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
   <link rel="stylesheet" href="assets/css/premium.css">
+  <script src="assets/js/i18n.js"></script>
+  <style>
+    .product-hero-image { border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: white; box-shadow: var(--shadow-lg); }
+    .product-hero-image img { width: 100%; height: 100%; object-fit: cover; }
+    .product-hero-image .card-placeholder span { font-size: 120px; }
+    .product-price-box { background: var(--bg-white); padding: 20px; border-radius: 12px; margin-bottom: 24px; }
+    .product-price { font-size: 36px; font-weight: 700; color: var(--accent-gold); font-family: var(--font-display); }
+    .product-cta { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+    .product-cta .btn { flex: 1; min-width: 160px; }
+    .product-features { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .product-features li { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; font-size: 15px; }
+    .product-features li::before { content: '✓'; color: var(--accent-gold); font-weight: 700; min-width: 20px; }
+    .design-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .included-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .included-item { display: flex; align-items: center; gap: 14px; padding: 16px; border: 1px solid var(--border-light); border-radius: 12px; background: var(--bg-white); }
+    .included-item .icon { font-size: 28px; color: var(--accent-gold); display: inline-flex; }
+    .addon-glyph { font-size: 18px; color: var(--accent-gold); display: inline-flex; }
+    .included-item strong { display: block; }
+    .included-item span { font-size: 13px; color: var(--text-muted); }
+    .addon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .addon-tile { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid var(--border-light); border-radius: 12px; background: var(--bg-white); font-size: 14px; }
+    .addon-tile .addon-name { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+    .perk { text-align: center; padding: 24px; }
+    .perk .perk-icon { font-size: 34px; margin-bottom: 16px; color: var(--accent-gold); display: flex; justify-content: center; }
+    .perk h4 { margin-bottom: 12px; }
+    .perk p { font-size: 14px; }
+    .not-found { padding: 80px 24px; text-align: center; }
+  </style>
 </head>
 <body>
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <img src="images/logo.jpeg" alt="Memora Logo" style="height: 42px; width: auto; object-fit: contain; margin-right: 12px; border-radius: 8px;">
+      <a class="nav-brand" href="index.html">
+        <img src="images/logo.jpeg" alt="Memora Logo">
         <span>Memora</span>
-      </div>
+      </a>
       <div class="nav-links" id="nav-links">
-        <a href="index.html">Back to Store</a>
+        <a href="index.html" data-i18n="nav.backToStore">Back to Store</a>
+        <a href="index.html#pricing" data-i18n="nav.pricing">Pricing</a>
       </div>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <div class="nav-right"><span class="lang-switch" data-lang-switch></span><button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span>
         <span></span>
         <span></span>
-      </button>
+      </button></div>
     </div>
   </nav>
 
-  <!-- Product Hero -->
-  <section class="section section-bg-light">
-    <div class="container">
-      <div class="grid grid-2" style="align-items: center; gap: 40px;">
-        <!-- Product Image -->
-        <div>
-          <div id="product-image" style="border-radius: 16px; overflow: hidden; aspect-ratio: 4/3; background: white; box-shadow: var(--shadow-lg);">
-            <img src="" alt="Product" style="width: 100%; height: 100%; object-fit: cover;">
-          </div>
-        </div>
+  <main id="product-root">
+    <section class="section section-bg-light">
+      <div class="container"><p class="catalog-loading" data-i18n="common.loading">Loading…</p></div>
+    </section>
+  </main>
 
-        <!-- Product Info -->
-        <div>
-          <div id="product-badges" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;"></div>
-          
-          <h1 id="product-name" style="margin-bottom: 16px;"></h1>
-          
-          <p id="product-description" style="font-size: 18px; margin-bottom: 24px;"></p>
-
-          <div style="background: var(--bg-white); padding: 20px; border-radius: 12px; margin-bottom: 24px;">
-            <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px;">
-              <span style="font-size: 36px; font-weight: 700; color: var(--accent-gold);" id="product-price">$0</span>
-              <span style="font-size: 14px; color: var(--text-light);">one-time purchase</span>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 14px;">✓ Lifetime access • ✓ Future updates • ✓ Email support</p>
-          </div>
-
-          <div style="display: flex; gap: 12px; margin-bottom: 32px;">
-            <a id="live-demo-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg" style="flex: 1;">Live Demo</a>
-            <button class="btn btn-primary btn-lg" onclick="buyNow()" style="flex: 1;">Buy Now</button>
-          </div>
-
-          <ul id="product-features" style="list-style: none; display: flex; flex-direction: column; gap: 12px;"></ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Included Features -->
-  <section class="section section-bg-white">
-    <div class="container">
-      <h2 style="margin-bottom: 32px; text-align: center;">What's Included</h2>
-
-      <div class="grid grid-3">
-        <div style="text-align: center; padding: 24px;">
-          <div style="font-size: 40px; margin-bottom: 16px;">🎨</div>
-          <h4 style="margin-bottom: 12px;">Professional Design</h4>
-          <p style="color: var(--text-secondary); font-size: 14px;">Carefully crafted by our design team with modern aesthetics</p>
-        </div>
-
-        <div style="text-align: center; padding: 24px;">
-          <div style="font-size: 40px; margin-bottom: 16px;">📱</div>
-          <h4 style="margin-bottom: 12px;">Fully Responsive</h4>
-          <p style="color: var(--text-secondary); font-size: 14px;">Works perfectly on all devices: desktop, tablet, and mobile</p>
-        </div>
-
-        <div style="text-align: center; padding: 24px;">
-          <div style="font-size: 40px; margin-bottom: 16px;">✨</div>
-          <h4 style="margin-bottom: 12px;">Smooth Animations</h4>
-          <p style="color: var(--text-secondary); font-size: 14px;">Beautiful transitions and interactive elements</p>
-        </div>
-
-        <div style="text-align: center; padding: 24px;">
-          <div style="font-size: 40px; margin-bottom: 16px;">⚙️</div>
-          <h4 style="margin-bottom: 12px;">Easy Customization</h4>
-          <p style="color: var(--text-secondary); font-size: 14px;">Change colors, fonts, and content without coding</p>
-        </div>
-
-        <div style="text-align: center; padding: 24px;">
-          <div style="font-size: 40px; margin-bottom: 16px;">🔧</div>
-          <h4 style="margin-bottom: 12px;">Technical Support</h4>
-          <p style="color: var(--text-secondary); font-size: 14px;">Email support and documentation included</p>
-        </div>
-
-        <div style="text-align: center; padding: 24px;">
-          <div style="font-size: 40px; margin-bottom: 16px;">♾️</div>
-          <h4 style="margin-bottom: 12px;">Lifetime Updates</h4>
-          <p style="color: var(--text-secondary); font-size: 14px;">Free updates and new features forever</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Table -->
-  <section class="section section-bg-light">
-    <div class="container">
-      <h2 style="margin-bottom: 32px; text-align: center;">Feature Comparison</h2>
-
-      <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="background: white; border-bottom: 2px solid var(--border-color);">
-              <th style="text-align: left; padding: 16px; font-weight: 600;">Feature</th>
-              <th style="text-align: center; padding: 16px; font-weight: 600;">Included</th>
-            </tr>
-          </thead>
-          <tbody id="features-table">
-            <!-- Features loaded by JavaScript -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- Responsive Preview -->
-  <section class="section section-bg-white">
-    <div class="container">
-      <h2 style="margin-bottom: 32px; text-align: center;">Responsive Preview</h2>
-
-      <div class="grid grid-3" style="gap: 24px;">
-        <div style="border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <div style="background: var(--bg-gray); padding: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Desktop View</div>
-          <div style="aspect-ratio: 16/9; background: white; display: flex; align-items: center; justify-content: center; color: var(--text-light);">🖥️ 1920px</div>
-        </div>
-
-        <div style="border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <div style="background: var(--bg-gray); padding: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Tablet View</div>
-          <div style="aspect-ratio: 4/3; background: white; display: flex; align-items: center; justify-content: center; color: var(--text-light);">📱 768px</div>
-        </div>
-
-        <div style="border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <div style="background: var(--bg-gray); padding: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--text-secondary);">Mobile View</div>
-          <div style="aspect-ratio: 2/3; background: white; display: flex; align-items: center; justify-content: center; color: var(--text-light);">📱 375px</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section section-bg-light">
-    <div class="container">
-      <h2 style="margin-bottom: 32px; text-align: center;">Frequently Asked Questions</h2>
-
-      <div style="max-width: 800px; margin: 0 auto;">
-        <details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
-            Can I customize this template?
-            <span style="font-size: 20px;">+</span>
-          </summary>
-          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
-            Yes! All our templates come with comprehensive customization options. You can change colors, fonts, images, text, and more without any coding knowledge.
-          </p>
-        </details>
-
-        <details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
-            How do I get support?
-            <span style="font-size: 20px;">+</span>
-          </summary>
-          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
-            We provide email support for all customers. Premium customers also get priority support and video tutorials.
-          </p>
-        </details>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Related Products -->
-  <section class="section section-bg-white">
-    <div class="container">
-      <h2 style="margin-bottom: 32px; text-align: center;">You Might Also Like</h2>
-
-      <div class="grid grid-3" id="related-products">
-        <!-- Related products loaded by JavaScript -->
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section section-bg-light">
-    <div class="container">
-      <div style="text-align: center; background: white; padding: 64px 24px; border-radius: 24px;">
-        <h2 style="margin-bottom: 16px;">Ready to Order?</h2>
-        <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
-          Join hundreds of happy couples who have created their perfect wedding website.
-        </p>
-        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-          <button class="btn btn-primary btn-lg" onclick="buyNow()">Buy Now</button>
-          <a href="index.html" class="btn btn-secondary btn-lg">Browse More</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <script src="admin/assets/supabase-config.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/catalog.js"></script>
   <script src="assets/js/premium.js"></script>
   <script>
-    // Load product data from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+    (() => {
+      const slug = new URLSearchParams(window.location.search).get('id');
+      const root = document.getElementById('product-root');
+      let catalog = null;
 
-    // Product database
-    const products = {
-      'luxury-bloom': {
-        name: 'Luxury Bloom',
-        price: 800,
-        type: 'premium',
-        category: 'Premium',
-        image: 'images/demo_luxury_bloom.png',
-        demo: 'https://luxury-bloom-demo.vercel.app/',
-        description: 'Elegance meets luxury with animated gold accents and premium features. Perfect for couples looking for sophistication and style.',
-        badges: ['Premium', 'Bestseller'],
-        features: [
-          '🎨 Premium Gold Design',
-          '✨ Advanced Animations',
-          '🎵 Music Integration',
-          '📸 Full Photo Gallery',
-          '📱 Fully Responsive',
-          '✓ RSVP System',
-          '🔧 Full Customization',
-          '💬 Priority Support',
-          '⚡ Fast Loading',
-          '🔒 SSL Secure'
-        ]
-      },
-      'modern-minimal': {
-        name: 'Modern Minimal',
-        price: 500,
-        type: 'standard',
-        category: 'Standard',
-        image: 'images/demo_modern_minimal.png',
-        demo: 'https://modern-minimal-delta.vercel.app/',
-        description: 'Clean, contemporary design with powerful animations. Perfect for minimalist couples who appreciate simplicity and elegance.',
-        badges: ['Standard'],
-        features: [
-          '🎨 Minimalist Design',
-          '✨ Smooth Animations',
-          '📱 Mobile Optimized',
-          '✓ RSVP System',
-          '📸 Photo Gallery',
-          '🎵 Music Support',
-          '⚡ Fast Loading',
-          '🔒 Secure',
-          '💬 Contact Form',
-          '📊 Analytics Ready'
-        ]
-      },
-      'authentic': {
-        name: 'Authentic',
-        price: 800,
-        type: 'premium',
-        category: 'Premium',
-        image: 'images/demo_royal_gold.png',
-        demo: 'https://authentic-demo-chi.vercel.app/',
-        description: 'Elegant authentic wedding invitation with timeless design. Perfect for couples who appreciate sophisticated simplicity.',
-        badges: ['Premium', 'New'],
-        features: [
-          'Timeless Design',
-          'Professional Layout',
-          'Photo Gallery',
-          'Couple Story',
-          'Fully Responsive',
-          'RSVP System',
-          'Venue Details',
-          'Guest Messages',
-          'Fast Loading',
-          'SSL Secure'
-        ]
-      }    };
+      const esc = (v) => window.MemoraCatalog.escapeHtml(v);
+      const t = (k, v) => window.MemoraI18n.t(k, v);
+      const money = (n, o) => window.MemoraI18n.money(n, o);
 
-    const product = products[productId];
-
-    if (!product) {
-      document.body.innerHTML = '<h1 style="padding: 50px; text-align: center;">Product not found</h1>';
-    } else {
-      // Load product data
-      document.title = `${product.name} - Memora`;
-      
-      document.getElementById('product-name').textContent = product.name;
-      document.getElementById('product-description').textContent = product.description;
-      document.getElementById('product-price').textContent = `EGP ${product.price}`;
-      document.getElementById('product-image').querySelector('img').src = product.image;
-      document.getElementById('live-demo-btn').href = product.demo;
-
-      // Load badges
-      const badgesContainer = document.getElementById('product-badges');
-      product.badges.forEach(badge => {
-        const badgeEl = document.createElement('span');
-        badgeEl.className = `badge badge-${badge.toLowerCase() === 'premium' ? 'gold' : badge.toLowerCase() === 'bestseller' ? 'rose' : 'emerald'}`;
-        badgeEl.textContent = badge;
-        badgesContainer.appendChild(badgeEl);
-      });
-
-      // Load features
-      const featuresContainer = document.getElementById('product-features');
-      product.features.slice(0, 6).forEach(feature => {
-        const li = document.createElement('li');
-        li.style.cssText = 'display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; font-size: 15px;';
-        li.innerHTML = `
-          <span style="color: var(--accent-gold); font-weight: 700; min-width: 20px;">✓</span>
-          <span>${feature}</span>
-        `;
-        featuresContainer.appendChild(li);
-      });
-
-      // Load features table
-      const tableContainer = document.getElementById('features-table');
-      product.features.forEach(feature => {
-        const row = document.createElement('tr');
-        row.style.borderBottom = '1px solid ' + 'var(--border-light)';
-        row.innerHTML = `
-          <td style="text-align: left; padding: 16px;">${feature}</td>
-          <td style="text-align: center; padding: 16px; color: var(--accent-gold); font-weight: 700;">✓</td>
-        `;
-        tableContainer.appendChild(row);
-      });
-
-      // Load related products
-      const relatedContainer = document.getElementById('related-products');
-      const otherProducts = Object.entries(products)
-        .filter(([id]) => id !== productId)
-        .slice(0, 3);
-
-      otherProducts.forEach(([id, prod]) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="card-image">
-            <img src="${prod.image}" alt="${prod.name}">
-          </div>
-          <div class="card-content">
-            <h4 class="card-title">${prod.name}</h4>
-            <div class="card-meta" style="border-bottom: none; padding-bottom: 0;">
-            <div class="card-price">EGP ${prod.price}</div>
-            </div>
-            <a href="product.html?id=${id}" class="btn btn-primary btn-full" style="margin-top: 12px;">View Details</a>
-          </div>
-        `;
-        relatedContainer.appendChild(card);
-      });
-    }
-
-    function buyNow() {
-      if (product) {
-        Store.buyNow(product.name);
+      function notFound() {
+        root.innerHTML = `<section class="section section-bg-light"><div class="container not-found"><h1>${esc(t('product.notFound'))}</h1><p style="margin: 16px 0 24px;">${esc(t('checkout.goBack'))}</p><a href="index.html" class="btn btn-primary">${esc(t('product.backHome'))}</a></div></section>`;
       }
-    }
+
+      function badges(item) {
+        const C = window.MemoraCatalog;
+        const list = [];
+        if (item.tier || item.kind === 'bundle' || item.type === 'custom') list.push(UI.tierBadge(item));
+        if (item.badge === 'bestseller') list.push(`<span class="badge badge-rose">${esc(t('common.badge.bestseller'))}</span>`);
+        if (item.badge === 'new') list.push(`<span class="badge badge-emerald">${esc(t('common.badge.new'))}</span>`);
+        if (item.badge === 'best-value') list.push(`<span class="badge badge-gold">${esc(t('common.badge.bestValue'))}</span>`);
+        return list.join('');
+      }
+
+      function designsSection(item) {
+        if (!item.designs || !item.designs.length) return '';
+        return `
+          <section class="section section-bg-white">
+            <div class="container">
+              <h2 style="margin-bottom: 32px; text-align: center;">${esc(t('product.designsTitle'))}</h2>
+              <div class="design-grid">
+                ${item.designs.map((d) => `
+                  <article class="card">
+                    <div class="card-image">${d.image_url ? `<img src="${esc(d.image_url)}" alt="${esc(d.name)}">` : window.MemoraCatalog.imageMarkup(item, d.name)}</div>
+                    <div class="card-content">
+                      <h4 class="card-title">${esc(d.name)}</h4>
+                      ${d.product ? `<p class="card-description">${esc(window.MemoraCatalog.nameOf(catalog.getProduct(d.product)))}</p>` : ''}
+                      <div class="card-actions">
+                        ${d.demo_url ? `<a href="${esc(d.demo_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">${esc(t('common.liveDemo'))}</a>` : ''}
+                        <a href="order-form.html?product=${encodeURIComponent(item.slug)}&design=${encodeURIComponent(d.name)}" class="btn btn-primary btn-sm">${esc(t('common.orderNow'))}</a>
+                      </div>
+                    </div>
+                  </article>`).join('')}
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function includedSection(item) {
+        if (item.kind !== 'bundle' || !item.items.length) return '';
+        const C = window.MemoraCatalog;
+        return `
+          <section class="section section-bg-white">
+            <div class="container">
+              <h2 style="margin-bottom: 32px; text-align: center;">${esc(t('product.includedProducts'))}</h2>
+              <div class="included-list">
+                ${item.items.map((p) => `<a class="included-item" href="product.html?id=${encodeURIComponent(p.slug)}"><span class="icon">${UI.icon(UI.iconFor(p))}</span><div><strong>${esc(C.nameOf(p))}</strong><span>${esc(money(p.price))} ${esc(t('common.individually'))}</span></div></a>`).join('')}
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function addonsSection(item) {
+        if (item.type === 'custom' || !catalog.addons.length) return '';
+        const C = window.MemoraCatalog;
+        const included = new Set(item.includedAddons || []);
+        const value = (a) => {
+          if (included.has(a.slug) || a.pricingType === 'free') return `<span class="price-pill free">${esc(included.has(a.slug) ? t('common.included') : t('common.free'))}</span>`;
+          if (a.pricingType === 'from') return `<span class="price-pill from">${esc(t('common.from'))} ${esc(money(a.price, { plus: true }))}</span>`;
+          return `<span class="price-pill">${esc(money(a.price, { plus: true }))}</span>`;
+        };
+        return `
+          <section class="section section-bg-light">
+            <div class="container">
+              <h2 style="margin-bottom: 8px; text-align: center;">${esc(t('product.availableAddons'))}</h2>
+              <p style="text-align: center; margin-bottom: 32px;">${esc(t('product.addonsNote'))}</p>
+              <div class="addon-grid">
+                ${catalog.addons.map((a) => `<div class="addon-tile"><span class="addon-name"><span class="addon-glyph">${UI.icon(UI.iconFor(a))}</span>${esc(C.nameOf(a))}</span>${value(a)}</div>`).join('')}
+              </div>
+            </div>
+          </section>`;
+      }
+
+      function relatedSection(item) {
+        const C = window.MemoraCatalog;
+        const pool = catalog.sellable().filter((p) => p.slug !== item.slug);
+        const sameCategory = pool.filter((p) => p.category === item.category);
+        const related = [...sameCategory, ...pool.filter((p) => p.category !== item.category)].slice(0, 3);
+        if (!related.length) return '';
+        return `
+          <section class="section section-bg-white">
+            <div class="container">
+              <h2 style="margin-bottom: 32px; text-align: center;">${esc(t('sections.relatedTitle'))}</h2>
+              <div class="grid grid-3">
+                ${related.map((p) => `
+                  <article class="card">
+                    <a class="card-image" href="product.html?id=${encodeURIComponent(p.slug)}">${C.imageMarkup(p)}</a>
+                    <div class="card-content">
+                      <h4 class="card-title">${esc(C.nameOf(p))}</h4>
+                      <div class="card-meta" style="border-bottom: none; padding-bottom: 0;"><div class="card-price">${esc(C.priceLabel(p))}</div></div>
+                      <a href="product.html?id=${encodeURIComponent(p.slug)}" class="btn btn-primary btn-full" style="margin-top: 12px;">${esc(t('common.viewDetails'))}</a>
+                    </div>
+                  </article>`).join('')}
+              </div>
+            </div>
+          </section>`;
+      }
+
+      let rendered = false;
+      function render() {
+        if (!catalog) return;
+        const item = catalog.getItem(slug);
+        if (!item) return notFound();
+        const C = window.MemoraCatalog;
+        const name = C.nameOf(item);
+        const isCustom = item.type === 'custom';
+        const orderHref = isCustom ? 'custom-order.html' : `order-form.html?product=${encodeURIComponent(item.slug)}`;
+        const features = C.featuresOf(item);
+        document.title = `${name} - Memora`;
+
+        root.innerHTML = `
+          <section class="section section-bg-light">
+            <div class="container">
+              <div class="grid grid-2" style="align-items: center; gap: 40px;">
+                <div class="product-hero-image">${C.imageMarkup(item, name)}</div>
+                <div>
+                  <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">${badges(item)}</div>
+                  <h1 style="margin-bottom: 16px;">${esc(name)}</h1>
+                  <p style="font-size: 18px; margin-bottom: 24px;">${esc(C.descOf(item))}</p>
+                  <div class="product-price-box">
+                    <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+                      <span class="product-price">${esc(C.priceLabel(item))}</span>
+                      ${item.kind === 'bundle' && item.compareTotal > item.price ? `<s style="color: var(--text-light);">${esc(money(item.compareTotal))}</s><span class="price-pill free">${esc(t('common.youSave'))} ${esc(money(item.savings))}</span>` : `<span style="font-size: 14px; color: var(--text-light);">${esc(isCustom ? '' : t('product.oneTimePurchase'))}</span>`}
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 14px;">${esc(isCustom ? t('product.customPricingNote') : t('product.perks'))}</p>
+                  </div>
+                  <div class="product-cta">
+                    ${item.demo && item.designs.length < 2 ? `<a href="${esc(item.demo)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">${esc(t('common.liveDemo'))}</a>` : ''}
+                    <a href="${orderHref}" class="btn btn-primary btn-lg">${esc(isCustom ? t('common.requestQuote') : t('common.orderNow'))}</a>
+                    <button type="button" class="btn btn-secondary btn-lg" data-ask-whatsapp="${esc(item.name.en)}">${esc(t('common.askWhatsApp'))}</button>
+                  </div>
+                  ${features.length ? `<ul class="product-features">${features.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          ${designsSection(item)}
+          ${includedSection(item)}
+
+          <section class="section section-bg-white">
+            <div class="container">
+              <h2 style="margin-bottom: 32px; text-align: center;">${esc(t('product.includedTitle'))}</h2>
+              <div class="grid grid-3">
+                ${[['palette', 1], ['device', 2], ['background-animation', 3], ['our-story', 4], ['whatsapp', 5], ['infinity', 6]].map(([key, n]) => `<div class="perk"><div class="perk-icon">${UI.icon(key)}</div><h4>${esc(t(`product.perk${n}Title`))}</h4><p>${esc(t(`product.perk${n}Text`))}</p></div>`).join('')}
+              </div>
+            </div>
+          </section>
+
+          ${addonsSection(item)}
+          ${relatedSection(item)}
+
+          <section class="section section-bg-light">
+            <div class="container">
+              <div style="text-align: center; background: white; padding: 64px 24px; border-radius: 24px;">
+                <h2 style="margin-bottom: 16px;">${esc(t('product.readyTitle'))}</h2>
+                <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">${esc(t('product.readySub'))}</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                  <a href="${orderHref}" class="btn btn-primary btn-lg">${esc(isCustom ? t('common.requestQuote') : t('common.orderNow'))}</a>
+                  <a href="index.html" class="btn btn-secondary btn-lg">${esc(t('product.browseMore'))}</a>
+                </div>
+              </div>
+            </div>
+          </section>`;
+        if (!rendered) window.scrollTo({ top: 0 });
+        rendered = true;
+      }
+
+      root.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-ask-whatsapp]');
+        if (button) Store.buyNow(button.dataset.askWhatsapp);
+      });
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          catalog = await window.MemoraCatalog.load();
+          render();
+        } catch (error) {
+          console.error('Memora catalog failed to load:', error);
+          root.innerHTML = `<section class="section"><div class="container"><p class="empty-state">${esc(t('common.loadError'))}</p></div></section>`;
+        }
+      });
+      window.MemoraI18n.onChange(render);
+    })();
   </script>
 </body>
 </html>

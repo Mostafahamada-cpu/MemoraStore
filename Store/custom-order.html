@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Invitation - Memora</title>
+  <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  <link rel="stylesheet" href="assets/css/premium.css">
+  <script src="assets/js/i18n.js"></script>
+  <style>
+    .custom-shell { max-width: 880px; margin: 0 auto; }
+    .custom-intro { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; background: linear-gradient(135deg, rgba(201, 164, 106, .12), rgba(212, 107, 120, .08)); border: 1px solid rgba(201, 164, 106, .35); border-radius: 20px; padding: 28px; margin-bottom: 28px; }
+    .custom-intro .price { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--accent-gold); line-height: 1.1; text-align: center; }
+    .custom-intro .price small { display: block; font-family: var(--font-body); font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    .panel { background: #fff; padding: 28px; border-radius: 16px; box-shadow: 0 8px 24px rgba(41, 33, 28, .05); margin-bottom: 20px; }
+    .panel h3 { font-size: 22px; margin-bottom: 6px; }
+    .panel .intro { font-size: 14px; margin-bottom: 20px; }
+    .feature-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .feature-card { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border: 1px solid var(--border-light); border-radius: 14px; cursor: pointer; background: #fff; transition: border-color .2s, box-shadow .2s; }
+    .feature-card.selected { border-color: var(--accent-gold); box-shadow: 0 6px 16px rgba(201, 164, 106, .14); }
+    .feature-card input { width: 18px; height: 18px; accent-color: var(--accent-gold); flex-shrink: 0; }
+    .feature-card .icon { font-size: 22px; color: var(--accent-gold); display: inline-flex; }
+    .feature-card .text { flex: 1; min-width: 0; }
+    .feature-card .text strong { display: block; font-size: 14px; color: var(--primary-dark); }
+    .feature-card .text span { display: block; font-size: 12px; color: var(--text-muted); }
+    .feature-card .price-pill { font-size: 12px; white-space: nowrap; }
+    .form-error { min-height: 20px; margin: 10px 0 0; color: #b42318; font-size: 13px; }
+    .terms-box { padding: 18px; border-radius: 12px; background: var(--bg-gray); margin-bottom: 20px; }
+    .submit-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; }
+    .toast-root { position: fixed; inset-inline-end: 20px; bottom: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; max-width: min(360px, calc(100vw - 32px)); }
+    .toast { background: rgba(52, 152, 219, .95); color: #fff; padding: 16px 24px; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+    .toast.success { background: rgba(76, 175, 80, .95); }
+    .toast.error { background: rgba(231, 76, 60, .95); }
+    @media (max-width: 640px) { .custom-intro { grid-template-columns: minmax(0, 1fr); padding: 20px; } .feature-list { grid-template-columns: minmax(0, 1fr); } .feature-card { flex-wrap: wrap; } .feature-card .text { flex-basis: 60%; } .panel { padding: 22px 18px; } .submit-row .btn { flex: 1; } }
+  </style>
+</head>
+<body data-i18n-doc-title="custom.title">
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a class="nav-brand" href="index.html"><img src="images/logo.jpeg" alt="Memora Logo"><span>Memora</span></a>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html" data-i18n="nav.backToStore">Back to Store</a>
+        <a href="index.html#pricing" data-i18n="nav.pricing">Pricing</a>
+      </div>
+      <div class="nav-right"><span class="lang-switch" data-lang-switch></span><button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button></div>
+    </div>
+  </nav>
+
+  <section class="section section-bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="custom.title">Request a Custom Invitation</h2>
+        <p data-i18n="custom.subtitle">Tell us about your event and the experience you imagine. Starting from 800 EGP — we quote the final price after reviewing your request.</p>
+      </div>
+
+      <div class="custom-shell">
+        <div class="custom-intro">
+          <div>
+            <span class="badge badge-gold" data-i18n="common.badge.custom">Custom</span>
+            <h3 style="margin-top: 10px;" data-i18n="sections.customTitle">Custom Invitation</h3>
+            <p style="font-size: 14px;" data-i18n="sections.customNote">800 EGP is the starting price. The final price depends on the sections, animations and complexity you request.</p>
+          </div>
+          <div class="price"><small data-i18n="custom.startingPrice">Starting from</small><span id="custom-price">EGP 800</span></div>
+        </div>
+
+        <form id="custom-form" novalidate>
+          <div class="panel">
+            <h3 data-i18n="custom.eventSection">Your event</h3>
+            <div class="grid grid-2">
+              <div class="form-group required"><label class="form-label" for="eventType" data-i18n="custom.eventType">Event type</label><input id="eventType" name="eventType" class="form-input" required data-i18n-placeholder="custom.eventTypePlaceholder"></div>
+              <div class="form-group"><label class="form-label" for="eventDate" data-i18n="custom.eventDate">Event date</label><input id="eventDate" type="date" name="eventDate" class="form-input"></div>
+              <div class="form-group"><label class="form-label" for="eventNames" data-i18n="custom.eventNames">Names on the invitation</label><input id="eventNames" name="eventNames" class="form-input" data-i18n-placeholder="custom.eventNamesPlaceholder"></div>
+              <div class="form-group"><label class="form-label" for="language" data-i18n="custom.language">Invitation language</label>
+                <select id="language" name="language" class="form-select">
+                  <option value="english" data-i18n="order.langEnglish">English</option>
+                  <option value="arabic" data-i18n="order.langArabic">Arabic</option>
+                  <option value="arabic+english" data-i18n="order.langBoth">Arabic &amp; English</option>
+                  <option value="other" data-i18n="order.langOther">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3 data-i18n="custom.styleSection">Style &amp; design</h3>
+            <div class="form-group required"><label class="form-label" for="style" data-i18n="custom.style">Preferred style / design</label><textarea id="style" name="style" class="form-textarea" required data-i18n-placeholder="custom.stylePlaceholder" style="min-height: 90px;"></textarea></div>
+            <div class="form-group"><label class="form-label" for="colors" data-i18n="custom.colors">Colours</label><input id="colors" name="colors" class="form-input" data-i18n-placeholder="custom.colorsPlaceholder"></div>
+          </div>
+
+          <div class="panel">
+            <h3 data-i18n="custom.featuresSection">Sections &amp; features</h3>
+            <p class="intro" data-i18n="custom.featuresIntro">Tick everything you want included. Add-on prices are listed for reference — the final quote covers everything.</p>
+            <div class="feature-list" id="feature-list"></div>
+            <div class="form-group"><label class="form-label" for="specialSections" data-i18n="custom.specialSections">Any special sections?</label><input id="specialSections" name="specialSections" class="form-input" data-i18n-placeholder="custom.specialPlaceholder"></div>
+            <div class="form-group"><label class="form-label" for="customAnimation" data-i18n="custom.customAnimation">Custom animation ideas</label><textarea id="customAnimation" name="customAnimation" class="form-textarea" data-i18n-placeholder="custom.customAnimationPlaceholder" style="min-height: 80px;"></textarea></div>
+            <div class="form-group"><label class="form-label" for="requirements" data-i18n="custom.requirements">Additional requirements</label><textarea id="requirements" name="requirements" class="form-textarea" data-i18n-placeholder="custom.requirementsPlaceholder" style="min-height: 80px;"></textarea></div>
+          </div>
+
+          <div class="panel">
+            <h3 data-i18n="custom.contactSection">Contact details</h3>
+            <div class="grid grid-2">
+              <div class="form-group required"><label class="form-label" for="fullName" data-i18n="custom.name">Your name</label><input id="fullName" name="fullName" class="form-input" autocomplete="name" required></div>
+              <div class="form-group required"><label class="form-label" for="phone" data-i18n="custom.whatsapp">WhatsApp number</label><input id="phone" type="tel" name="phone" class="form-input" autocomplete="tel" required></div>
+              <div class="form-group"><label class="form-label" for="email" data-i18n="custom.email">Email</label><input id="email" type="email" name="email" class="form-input" autocomplete="email"></div>
+            </div>
+          </div>
+
+          <div class="terms-box"><label class="form-radio"><input type="checkbox" name="agree" id="agree"><span data-i18n="custom.agree">I understand that 800 EGP is the starting price and the final price depends on the requested complexity.</span></label></div>
+          <p class="form-error" id="form-error" aria-live="polite"></p>
+          <div class="submit-row">
+            <a href="index.html" class="btn btn-outline" data-i18n="nav.backToStore">Back to Store</a>
+            <button class="btn btn-primary btn-lg" type="submit" id="submit-btn" style="background: #25D366; border-color: #25D366; color: #fff;"><span class="btn-icon" data-icon="whatsapp"></span><span data-i18n="custom.submit">Send Request via WhatsApp</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast-root" class="toast-root"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin/assets/supabase-config.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/catalog.js"></script>
+  <script src="assets/js/premium.js"></script>
+  <script>
+    (() => {
+      const I = window.MemoraI18n;
+      const C = window.MemoraCatalog;
+      const t = (k, v) => I.t(k, v);
+      const esc = (v) => C.escapeHtml(v);
+      const money = (n, o) => I.money(n, o);
+      const form = document.getElementById('custom-form');
+      const supabaseUrl = window.MEMORA_SUPABASE?.url;
+      const supabaseKey = window.MEMORA_SUPABASE?.anonKey;
+      const supabaseClient = supabaseUrl && supabaseKey && window.supabase?.createClient ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
+      let catalog = null;
+      let selectedFeatures = [];
+
+      function toast(message, type = 'info') {
+        const el = document.createElement('div');
+        el.className = `toast ${type}`;
+        el.textContent = message;
+        document.getElementById('toast-root').appendChild(el);
+        setTimeout(() => el.remove(), 4500);
+      }
+
+      function renderFeatures() {
+        const list = document.getElementById('feature-list');
+        list.innerHTML = catalog.addons.map((a) => {
+          const price = a.pricingType === 'free' ? `<span class="price-pill free">${esc(t('common.free'))}</span>`
+            : a.pricingType === 'from' ? `<span class="price-pill from">${esc(t('common.from'))} ${esc(money(a.price, { plus: true }))}</span>`
+            : `<span class="price-pill">${esc(money(a.price, { plus: true }))}</span>`;
+          return `<label class="feature-card${selectedFeatures.includes(a.slug) ? ' selected' : ''}" data-feature="${esc(a.slug)}">
+            <input type="checkbox" name="features" value="${esc(a.slug)}" ${selectedFeatures.includes(a.slug) ? 'checked' : ''}>
+            <span class="icon">${UI.icon(UI.iconFor(a))}</span>
+            <span class="text"><strong>${esc(C.nameOf(a))}</strong><span>${esc(C.descOf(a))}</span></span>
+            ${price}
+          </label>`;
+        }).join('');
+        const custom = catalog.customProduct();
+        document.getElementById('custom-price').textContent = money(custom ? custom.price : 800);
+      }
+
+      form.addEventListener('change', (e) => {
+        if (e.target.name === 'features') {
+          selectedFeatures = e.target.checked ? [...new Set([...selectedFeatures, e.target.value])] : selectedFeatures.filter((s) => s !== e.target.value);
+          e.target.closest('.feature-card').classList.toggle('selected', e.target.checked);
+        }
+      });
+
+      function whatsappMessage(d, featureNames) {
+        const ar = I.lang === 'ar';
+        const custom = catalog.customProduct();
+        const line = (label, value) => (value ? `${label}:\n${value}` : null);
+        const lines = ar ? [
+          t('custom.whatsappIntro'), '',
+          line('الاسم', d.fullName), line('الواتساب', d.phone), line('البريد', d.email), '',
+          line('نوع المناسبة', d.eventType), line('تاريخ المناسبة', d.eventDate), line('الأسماء', d.eventNames), line('اللغة', d.language),
+          line('الأسلوب', d.style), line('الألوان', d.colors),
+          line('الأقسام المطلوبة', featureNames.join('، ')), line('أقسام خاصة', d.specialSections), line('أنيميشن مخصص', d.customAnimation), line('متطلبات إضافية', d.requirements),
+          '', `أفهم أن السعر يبدأ من ${money(custom ? custom.price : 800)} والسعر النهائي حسب التعقيد.`,
+        ] : [
+          t('custom.whatsappIntro'), '',
+          line('Name', d.fullName), line('WhatsApp', d.phone), line('Email', d.email), '',
+          line('Event type', d.eventType), line('Event date', d.eventDate), line('Names', d.eventNames), line('Language', d.language),
+          line('Style', d.style), line('Colours', d.colors),
+          line('Requested sections', featureNames.join(', ')), line('Special sections', d.specialSections), line('Custom animation', d.customAnimation), line('Additional requirements', d.requirements),
+          '', `I understand pricing starts from ${money(custom ? custom.price : 800)} and the final price depends on complexity.`,
+        ];
+        return lines.filter((l) => l !== null).join('\n');
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const error = document.getElementById('form-error');
+        error.textContent = '';
+        for (const field of form.querySelectorAll('[required]')) {
+          if (!field.checkValidity()) { error.textContent = field.validity.valueMissing ? t('custom.errRequired') : t('order.errInvalid'); field.focus(); return; }
+        }
+        if (!document.getElementById('agree').checked) { error.textContent = t('custom.errAgree'); return; }
+
+        const d = Object.fromEntries(new FormData(form));
+        delete d.features; delete d.agree;
+        Object.keys(d).forEach((k) => { d[k] = String(d[k] || '').trim(); });
+        const featureNames = selectedFeatures.map((s) => catalog.getAddon(s)).filter(Boolean).map((a) => a.name.en);
+        const custom = catalog.customProduct();
+        const button = document.getElementById('submit-btn');
+        button.disabled = true;
+        button.querySelector('span:last-child').textContent = t('custom.sending');
+
+        const details = {
+          event_type: d.eventType, event_date: d.eventDate, names: d.eventNames, language: d.language,
+          style: d.style, colors: d.colors, requested_features: selectedFeatures, requested_feature_names: featureNames,
+          special_sections: d.specialSections, custom_animation: d.customAnimation, requirements: d.requirements,
+          starting_price: custom ? custom.price : 800, submitted_lang: I.lang,
+        };
+        const summary = [
+          `Style: ${d.style}`, d.colors && `Colours: ${d.colors}`, featureNames.length && `Sections: ${featureNames.join(', ')}`,
+          d.specialSections && `Special sections: ${d.specialSections}`, d.customAnimation && `Custom animation: ${d.customAnimation}`, d.requirements && `Requirements: ${d.requirements}`,
+        ].filter(Boolean).join('\n');
+
+        const payload = {
+          order_type: 'custom',
+          customer_name: d.fullName, whatsapp_number: d.phone, phone_number: d.phone, email: d.email || '',
+          preferred_language: d.language,
+          purchased_product: custom ? custom.name.en : 'Custom Invitation', product_slug: custom ? custom.slug : 'custom-invitation', product_category: 'Custom',
+          event_type: d.eventType, event_names: d.eventNames, selected_addons: selectedFeatures,
+          color_preference: d.colors, special_requests: summary, custom_details: details,
+          base_price: custom ? custom.price : 800, total_amount: 0, addons_total: 0,
+          payment_method: 'instapay', payment_status: 'Pending', order_status: 'Pending',
+        };
+        if (d.eventDate) payload.event_date = d.eventDate;
+
+        const openWhatsApp = () => window.location.assign(`https://wa.me/${Store.WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage(d, featureNames))}`);
+
+        try {
+          if (supabaseClient) {
+            let { error: dbError } = await supabaseClient.from('orders').insert([payload]);
+            if (dbError && /column|schema cache|order_type/i.test(dbError.message || '')) {
+              // Catalog v2 migration not applied yet: store the request in the legacy columns instead.
+              console.warn('Orders table is missing catalog v2 columns; saving custom request with legacy columns. Run admin/MIGRATION_CATALOG_V2.sql.');
+              const legacy = {
+                customer_name: d.fullName, whatsapp_number: d.phone, phone_number: d.phone, email: d.email || '', preferred_language: d.language,
+                purchased_product: 'Custom Invitation', product_category: 'Custom', color_preference: d.colors,
+                special_requests: `[CUSTOM REQUEST] Event: ${d.eventType}${d.eventDate ? ` — ${d.eventDate}` : ''}${d.eventNames ? ` — ${d.eventNames}` : ''}\n${summary}`,
+                total_amount: 0, payment_method: 'instapay', payment_status: 'Pending', order_status: 'Pending',
+              };
+              ({ error: dbError } = await supabaseClient.from('orders').insert([legacy]));
+            }
+            if (dbError) { console.error('Custom request insert failed:', dbError); toast(t('checkout.savedButFailed', { error: dbError.message }), 'error'); }
+            else toast(t('custom.saved'), 'success');
+          } else {
+            toast(t('custom.savedLocal'), 'success');
+          }
+        } catch (err) {
+          console.error('Custom request error:', err);
+          toast(`⚠️ ${err.message}`, 'error');
+        }
+        try { sessionStorage.setItem('memora-thanks', 'custom'); } catch (err) { /* ignore */ }
+        setTimeout(openWhatsApp, 900);
+      });
+
+      I.onChange(renderFeatures);
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = UI.icon(el.getAttribute('data-icon')); });
+        try { catalog = await C.load(); } catch (err) { console.error(err); toast(t('common.loadError'), 'error'); return; }
+        renderFeatures();
+      });
+    })();
+  </script>
+</body>
+</html>

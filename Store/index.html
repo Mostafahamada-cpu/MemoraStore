@@ -3,394 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Memora — Premium wedding invitation websites and digital love cards. Professional designs crafted for your special day.">
-  <title>Memora — Premium Wedding Websites & Love Cards</title>
+  <meta name="description" content="Memora — Premium digital invitation websites for weddings, engagements, henna nights, birthdays and more. Professional designs crafted for your special day.">
+  <title>Memora — Premium Digital Invitations</title>
   <link rel="stylesheet" href="assets/css/premium.css">
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  <script src="assets/js/i18n.js"></script>
 </head>
 <body>
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <img src="images/logo.jpeg" alt="Memora Logo" style="height: 42px; width: auto; object-fit: contain; margin-right: 12px; border-radius: 8px;">
+      <a class="nav-brand" href="index.html">
+        <img src="images/logo.jpeg" alt="Memora Logo">
         <span>Memora</span>
-      </div>
+      </a>
 
       <div class="nav-links" id="nav-links">
-        <a href="#featured">Featured</a>
-        <a href="#themes">Themes</a>
-        <a href="#bundles">Bundles</a>
-        <a href="#faq">FAQ</a>
-        <a href="order-form.html" class="btn btn-primary btn-sm">Start Order</a>
+        <a href="#wedding" data-i18n="nav.wedding">Wedding</a>
+        <a href="#moments" data-i18n="nav.moments">More Moments</a>
+        <a href="#bundles" data-i18n="nav.bundles">Bundles</a>
+        <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+        <a href="#faq" data-i18n="nav.faq">FAQ</a>
+        <a href="order-form.html" class="btn btn-primary btn-sm" data-i18n="nav.startOrder">Start Order</a>
       </div>
 
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <div class="nav-right"><span class="lang-switch" data-lang-switch></span><button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span>
         <span></span>
         <span></span>
-      </button>
+      </button></div>
     </div>
   </nav>
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-particles" id="hero-particles"></div>
-    
     <div class="container">
       <div class="hero-content">
         <img src="images/logo.jpeg" alt="Memora Logo" class="hero-logo">
-        <span class="hero-badge">✨ Premium Digital Invitations</span>
-        
+        <span class="hero-badge" data-i18n="hero.badge">✨ Premium Digital Invitations</span>
         <h1 class="hero-title">
-          Your Love Story,<br>
-          <span class="highlight">Beautifully Digital</span>
+          <span data-i18n="hero.title1">Your Love Story,</span><br>
+          <span class="highlight" data-i18n="hero.title2">Beautifully Digital</span>
         </h1>
-        
-        <p class="hero-description">
-          Create stunning wedding invitation websites and personalized love cards. 
-          Professional designs, instant delivery, and lifetime access. 
-          Make your special day unforgettable.
+        <p class="hero-description" data-i18n="hero.description">
+          Premium invitation websites for weddings, engagements, henna nights and every moment in between. Handcrafted designs, instant delivery, lifetime access.
         </p>
-        
         <div class="hero-cta">
-          <a href="#featured" class="btn btn-primary btn-lg">
-            <span class="btn-icon">✓</span>
-            Explore Designs
+          <a href="#wedding" class="btn btn-primary btn-lg">
+            <span class="btn-icon" data-icon="wedding"></span>
+            <span data-i18n="hero.explore">Explore Designs</span>
           </a>
-          <a href="order-form.html" class="btn btn-secondary btn-lg">Start Your Order</a>
+          <a href="order-form.html" class="btn btn-secondary btn-lg" data-i18n="hero.start">Start Your Order</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Section -->
-  <section class="section section-bg-white" id="featured">
+  <!-- Category navigation -->
+  <nav class="category-nav" id="category-nav" aria-label="Browse by occasion">
+    <div class="container">
+      <div class="category-nav-scroll">
+        <a href="#wedding" class="cat-link active" data-cat="wedding"><span class="cat-icon" data-icon="wedding"></span><span data-i18n="nav.wedding">Wedding</span></a>
+        <a href="#moments" class="cat-link" data-cat="moments"><span class="cat-icon" data-icon="date"></span><span data-i18n="nav.moments">Other Occasions</span></a>
+        <a href="#bundles" class="cat-link" data-cat="bundles"><span class="cat-icon" data-icon="bundle"></span><span data-i18n="nav.bundles">Bundles</span></a>
+        <a href="#custom" class="cat-link" data-cat="custom"><span class="cat-icon" data-icon="custom"></span><span data-i18n="common.badge.custom">Custom</span></a>
+        <a href="#pricing" class="cat-link" data-cat="pricing"><span class="cat-icon" data-icon="tag"></span><span data-i18n="nav.pricing">Pricing</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Wedding (flagship) -->
+  <section class="section section-bg-white section-wedding" id="wedding">
     <div class="container">
       <div class="section-header">
-        <h2>Featured Collections</h2>
-        <p>Our most popular and highly-rated designs, handpicked just for you</p>
+        <span class="section-eyebrow" data-i18n="sections.weddingEyebrow">Our signature collection</span>
+        <h2 data-i18n="sections.weddingTitle">Wedding Invitations</h2>
+        <p data-i18n="sections.weddingSub">Our flagship invitation websites. Choose Standard or Premium, then the design you love.</p>
       </div>
-
-      <div class="grid grid-3">
-        <!-- Featured Card 1 -->
-        <div class="card animate-on-scroll">
-          <div class="card-image">
-            <img src="images/demo_luxury_bloom.png" alt="Luxury Bloom">
-            <span class="card-badge bestseller">Bestseller</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Luxury Bloom</h3>
-            <span class="badge badge-gold">Premium</span>
-            <p class="card-description">Elegance meets luxury with animated gold accents and premium features</p>
-            <ul class="featured-card-features">
-              <li>Animated Gold Accents</li>
-              <li>Advanced Customization</li>
-              <li>Premium Support</li>
-              <li>Lifetime Updates</li>
-            </ul>
-            <div class="card-meta" style="border-bottom: none; padding-bottom: 0;">
-              <div>
-                <div class="card-price">EGP 800</div>
-                <div class="card-price-label">one-time</div>
-              </div>
-            </div>
-            <div class="card-actions">
-              <a href="https://luxury-bloom-demo.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Live Demo</a>
-              <button class="btn btn-primary btn-sm" onclick="Store.buyNow('Luxury Bloom')">Buy Now</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Featured Card 2 -->
-        <div class="card animate-on-scroll">
-          <div class="card-image">
-            <img src="images/demo_modern_minimal.png" alt="Modern Minimal">
-            <span class="card-badge bestseller">Bestseller</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Modern Minimal</h3>
-            <span class="badge badge-rose">Standard</span>
-            <p class="card-description">Clean design with powerful animations and responsive experience.</p>
-            <ul class="featured-card-features">
-              <li>Minimalist Design</li>
-              <li>Responsive Layout</li>
-              <li>Music Support</li>
-              <li>RSVP System</li>
-            </ul>
-            <div class="card-meta" style="border-bottom: none; padding-bottom: 0;">
-              <div>
-                <div class="card-price">EGP 500</div>
-                <div class="card-price-label">one-time</div>
-              </div>
-            </div>
-            <div class="card-actions">
-              <a href="https://modern-minimal-delta.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Live Demo</a>
-              <button class="btn btn-primary btn-sm" onclick="Store.buyNow('Modern Minimal')">Buy Now</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Featured Card 3 -->
-        <div class="card animate-on-scroll">
-          <div class="card-image">
-            <img src="images/demo_royal_gold.png" alt="Authentic">
-            <span class="card-badge premium">New</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Authentic</h3>
-            <span class="badge badge-gold">Premium</span>
-            <p class="card-description">A refined invitation template with timeless styling, story sections, gallery, and RSVP flow.</p>
-            <ul class="featured-card-features">
-              <li>Timeless Design</li>
-              <li>Photo Gallery</li>
-              <li>Couple Story</li>
-              <li>RSVP System</li>
-            </ul>
-            <div class="card-meta" style="border-bottom: none; padding-bottom: 0;">
-              <div>
-                <div class="card-price">EGP 800</div>
-                <div class="card-price-label">one-time</div>
-              </div>
-            </div>
-            <div class="card-actions">
-              <a href="https://authentic-demo-chi.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Live Demo</a>
-              <button class="btn btn-primary btn-sm" onclick="Store.buyNow('Authentic')">Buy Now</button>
-            </div>
-          </div>
-        </div>
+      <div class="wedding-grid" id="wedding-grid">
+        <p class="catalog-loading" data-i18n="common.loading">Loading…</p>
       </div>
     </div>
   </section>
 
-  <!-- Search & Filter Section -->
-  <section class="section section-bg-gray">
-    <div class="container">
-      <div style="max-width: 600px; margin: 0 auto 32px;">
-        <input type="text" id="search-input" class="form-input" placeholder="Search themes, features, styles..." style="font-size: 16px; padding: 14px 20px;">
-      </div>
-
-      <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 32px;">
-        <button data-filter="all" class="btn btn-primary active">All Templates</button>
-        <button data-filter="standard" class="btn btn-outline">Standard (EGP 500)</button>
-        <button data-filter="premium" class="btn btn-outline">Premium (EGP 800)</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- All Themes Section -->
-  <section class="section section-bg-white" id="themes">
+  <!-- Other Occasions -->
+  <section class="section section-bg-light" id="moments">
     <div class="container">
       <div class="section-header">
-        <h2>Browse All Templates</h2>
-        <p>Choose from our collection of professionally-designed wedding websites</p>
+        <h2 data-i18n="sections.momentsTitle">Other Occasions</h2>
+        <p data-i18n="sections.momentsSub">Elegant digital invitations for engagements, henna nights, birthdays and more.</p>
       </div>
-
-      <div class="grid grid-3" id="products-grid">
-        <!-- Products loaded by JavaScript -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Standard Themes Section -->
-  <section class="section section-bg-light">
-    <div class="container">
-      <div class="section-header">
-        <h2>Standard Themes</h2>
-        <p>Beautiful, modern designs at an affordable price</p>
-      </div>
-
-      <div class="grid grid-3">
-        <div class="card animate-on-scroll">
-          <div class="card-image">
-            <img src="images/demo_modern_minimal.png" alt="Modern Minimal">
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Modern Minimal</h3>
-            <p class="card-description">Clean, contemporary design perfect for minimalist couples.</p>
-            <div class="card-meta">
-              <div class="card-price">EGP 500</div>
-            </div>
-            <div class="card-actions">
-              <a href="product.html?id=modern-minimal" class="btn btn-primary btn-full">View Details</a>
-            </div>
-          </div>
-        </div>
+      <div class="occasion-grid" id="moments-grid">
+        <p class="catalog-loading" data-i18n="common.loading">Loading…</p>
       </div>
     </div>
   </section>
 
-  <!-- Premium Themes Section -->
-  <section class="section section-bg-white">
-    <div class="container">
-      <div class="section-header">
-        <h2>Premium Themes</h2>
-        <p>Exclusive luxury designs with advanced features and personalized support</p>
-      </div>
-
-      <div class="grid grid-3">
-        <div class="card animate-on-scroll">
-          <div class="card-image">
-            <img src="images/demo_luxury_bloom.png" alt="Luxury Bloom">
-            <span class="card-badge premium">Premium</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Luxury Bloom</h3>
-            <p class="card-description">Elegance meets luxury with animated gold accents and premium features.</p>
-            <div class="card-meta">
-              <div class="card-price">EGP 800</div>
-            </div>
-            <div class="card-actions">
-              <a href="product.html?id=luxury-bloom" class="btn btn-primary btn-full">View Details</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="card animate-on-scroll">
-          <div class="card-image">
-            <img src="images/demo_royal_gold.png" alt="Authentic">
-            <span class="card-badge premium">Premium</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Authentic</h3>
-            <p class="card-description">A refined invitation template with timeless styling, story sections, gallery, and RSVP flow.</p>
-            <div class="card-meta">
-              <div class="card-price">EGP 800</div>
-            </div>
-            <div class="card-actions">
-              <a href="product.html?id=authentic" class="btn btn-primary btn-full">View Details</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Love Card Inclusion Section -->
-  <section class="section section-bg-light" id="love-cards">
-    <div class="container">
-      <div class="section-header">
-        <h2>Love Card</h2>
-        <p>Love Card is included exclusively inside Memora bundles.</p>
-      </div>
-
-      <div class="grid grid-1">
-        <div class="card animate-on-scroll">
-          <div class="card-image">
-            <img src="images/love_card_design.png" alt="Love Card">
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">NFC Love Card</h3>
-            <p class="card-description">A premium NFC card linked to a wedding website with gallery, love story, music, countdown, quiz, reminders, and messages.</p>
-            <ul class="featured-card-features">
-              <li>NFC Website Link</li>
-              <li>Photo Gallery</li>
-              <li>Love Story & Future Dreams</li>
-              <li>Music, Countdown & Messages</li>
-            </ul>
-            <div class="card-meta">
-              <div class="card-price">Bundle Exclusive</div>
-            </div>
-            <div class="card-actions">
-              <a href="https://love-card-sable.vercel.app/" target="_blank" class="btn btn-outline btn-sm">Live Demo</a>
-              <a href="#bundles" class="btn btn-primary btn-sm">View Bundles</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bundles Section -->
+  <!-- Bundles -->
   <section class="section section-bg-white" id="bundles">
     <div class="container">
       <div class="section-header">
-        <h2>Special Bundles</h2>
-        <p>Get more value with our curated bundle packages</p>
+        <h2 data-i18n="sections.bundlesTitle">Bundles</h2>
+        <p data-i18n="sections.bundlesSub">Combine invitations and get a better price on the total.</p>
       </div>
+      <div class="bundle-grid" id="bundles-grid">
+        <p class="catalog-loading" data-i18n="common.loading">Loading…</p>
+      </div>
+    </div>
+  </section>
 
-      <div class="grid grid-2">
-        <!-- Bundle 1 -->
-        <div class="card animate-on-scroll">
-          <div class="card-image" style="position: relative;">
-            <img src="images/Essential_Bundle_image.jpeg" alt="Memora Essential bundle image">
-            <span style="position: absolute; bottom: 16px; left: 14px; background: rgba(255, 255, 255, 0.92); color: var(--primary-dark); padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);">Memora Essential</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Memora Essential</h3>
-            <p class="card-description">Modern Minimal invitation with the Love Card included.</p>
-            
-            <div style="background: rgba(46, 204, 113, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
-              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Bundle Price</div>
-              <div style="font-size: 28px; font-weight: 700; color: var(--accent-gold);">EGP 950</div>
-              <div style="font-size: 12px; color: var(--text-muted);">
-                Includes two digital experiences
-              </div>
-            </div>
-
-            <ul style="list-style: none; margin-bottom: 16px; font-size: 14px;">
-              <li style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Modern Minimal</span>
-              </li>
-              <li style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Love Card</span>
-              </li>
-              <li style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Lifetime Access</span>
-              </li>
-              <li style="display: flex; gap: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Email Support</span>
-              </li>
-            </ul>
-
-            <button class="btn btn-primary btn-full" onclick="Store.buyNow('Memora Essential')">Buy Now</button>
-          </div>
+  <!-- Price List -->
+  <section class="section section-bg-gray" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-i18n="sections.pricingTitle">Price List</h2>
+        <p data-i18n="sections.pricingSub">Simple, transparent pricing. Pick a base invitation, then add only the extras you want.</p>
+      </div>
+      <div class="price-panels">
+        <div class="price-panel animate-on-scroll">
+          <span class="price-tag" data-i18n="sections.baseTitle">Base Invitations</span>
+          <h3 data-i18n="sections.baseTitle">Base Invitations</h3>
+          <p data-i18n="sections.baseSub">The price of the invitation itself. Location and countdown are always included.</p>
+          <div id="price-list-base"></div>
         </div>
+        <div class="price-panel animate-on-scroll">
+          <span class="price-tag alt" data-i18n="sections.addonsTitle">Optional Add-ons</span>
+          <h3 data-i18n="sections.addonsTitle">Optional Add-ons</h3>
+          <p data-i18n="sections.addonsSub">Add any of these to any invitation. Free items are included at no cost.</p>
+          <div id="price-list-addons"></div>
+          <div class="price-note" data-i18n="product.addonsNote">Add-ons are selected in the order form. Prices are added to the base price.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Bundle 2 -->
-        <div class="card animate-on-scroll">
-          <div class="card-image" style="position: relative;">
-            <img src="images/Signutare_Bundle_Image.jpeg" alt="Memora Signature bundle image">
-            <span style="position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, var(--accent-gold) 0%, #d9b975 100%); color: var(--primary-dark); padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;">BEST VALUE</span>
-            <span style="position: absolute; bottom: 16px; left: 14px; background: rgba(255, 255, 255, 0.92); color: var(--primary-dark); padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);">Memora Signature</span>
-          </div>
-          <div class="card-content">
-            <h3 class="card-title">Memora Signature</h3>
-            <p class="card-description">Luxury Bloom invitation with the Love Card included.</p>
-            
-            <div style="background: linear-gradient(135deg, rgba(201, 164, 106, 0.15) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center; border: 1px solid var(--accent-gold);">
-              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Bundle Price</div>
-              <div style="font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-rose) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">EGP 1250</div>
-              <div style="font-size: 12px; color: var(--text-muted);">
-                Includes two digital experiences
-              </div>
-            </div>
-
-            <ul style="list-style: none; margin-bottom: 16px; font-size: 14px;">
-              <li style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Luxury Bloom</span>
-              </li>
-              <li style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Love Card</span>
-              </li>
-              <li style="display: flex; gap: 8px; margin-bottom: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Lifetime Access + Updates</span>
-              </li>
-              <li style="display: flex; gap: 8px;">
-                <span style="color: var(--accent-gold);">✓</span>
-                <span>Priority Support</span>
-              </li>
-            </ul>
-
-            <button class="btn btn-primary btn-full" onclick="Store.buyNow('Memora Signature')">Buy Now</button>
-          </div>
+  <!-- Custom Invitation -->
+  <section class="section section-bg-white" id="custom">
+    <div class="container">
+      <div class="custom-banner animate-on-scroll">
+        <div class="custom-banner-icon" data-icon="custom" aria-hidden="true"></div>
+        <div>
+          <span class="section-eyebrow" data-i18n="sections.customEyebrow">Bespoke service</span>
+          <h2 data-i18n="sections.customTitle">Custom Invitation</h2>
+          <p class="custom-lead" data-i18n="sections.customSub">Tell us what you imagine. We’ll build it around your story.</p>
+          <p style="margin-top: 12px; font-size: 14px;" data-i18n="sections.customNote">800 EGP is the starting price. The final price depends on the sections, animations and complexity you request.</p>
+        </div>
+        <div class="custom-banner-aside">
+          <div class="custom-price"><small data-i18n="common.from">Starting from</small><span id="custom-price-value">EGP 800</span></div>
+          <a href="custom-order.html" class="btn btn-primary btn-lg" data-i18n="common.requestQuote">Create Your Custom Invitation</a>
         </div>
       </div>
     </div>
@@ -400,50 +161,26 @@
   <section class="section section-bg-light" id="faq">
     <div class="container">
       <div class="section-header">
-        <h2>Frequently Asked Questions</h2>
-        <p>Find answers to common questions about our templates and services</p>
+        <h2 data-i18n="sections.faqTitle">Frequently Asked Questions</h2>
+        <p data-i18n="sections.faqSub">Find answers to common questions about our invitations and services</p>
       </div>
 
       <div style="max-width: 800px; margin: 0 auto;">
-        <details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
-            How do I customize my template?
-            <span style="font-size: 20px;">+</span>
-          </summary>
-          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
-            All our templates come with easy customization options. You can change colors, fonts, images, and text directly through the template interface. No coding knowledge required!
-          </p>
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q1">How do I customise my invitation?</span><span style="font-size: 20px;">+</span></summary>
+          <p data-i18n="faq.a1">After you order, we personalise names, dates, colours, location and any add-ons you selected. You review it before it goes live — no coding needed.</p>
         </details>
-
-<details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
-            How long will I have access?
-            <span style="font-size: 20px;">+</span>
-          </summary>
-          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
-            You get lifetime access to your purchased templates. We're always adding new features and updates at no additional cost.
-          </p>
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q2">What is included in the base price?</span><span style="font-size: 20px;">+</span></summary>
+          <p data-i18n="faq.a2">The invitation design, your event details, the location and a live countdown. Music, gallery, our story, RSVP and animations are optional add-ons with clear prices.</p>
         </details>
-
-        <details style="margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
-            Do I need a domain name?
-            <span style="font-size: 20px;">+</span>
-          </summary>
-          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
-            You can use your own domain or we can provide a free subdomain. The choice is yours! We include complete setup instructions.
-          </p>
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q3">How long will I have access?</span><span style="font-size: 20px;">+</span></summary>
+          <p data-i18n="faq.a3">You get lifetime access to your invitation website. Updates and fixes are included at no extra cost.</p>
         </details>
-
-        <details style="border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden;">
-          <summary style="padding: 20px; cursor: pointer; background: var(--bg-white); font-weight: 600; display: flex; justify-content: space-between; align-items: center;">
-            What payment methods do you accept?
-            <span style="font-size: 20px;">+</span>
-          </summary>
-          <p style="padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); color: var(--text-secondary);">
-            We currently accept InstaPay payments.
-After payment, simply send your payment screenshot via WhatsApp and our team will activate your order immediately.
-          </p>
+        <details class="faq-item">
+          <summary><span data-i18n="faq.q4">What payment methods do you accept?</span><span style="font-size: 20px;">+</span></summary>
+          <p data-i18n="faq.a4">We currently accept InstaPay. After payment, send your payment screenshot via WhatsApp and our team will activate your order.</p>
         </details>
       </div>
     </div>
@@ -453,23 +190,23 @@ After payment, simply send your payment screenshot via WhatsApp and our team wil
   <section class="section section-bg-white">
     <div class="container">
       <div style="text-align: center; background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 64px 24px; border-radius: 24px;">
-        <h2 style="margin-bottom: 16px;">Ready to Create Your Dream Wedding Website?</h2>
-        <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">
-          Choose from our premium collection of templates and start your personalized wedding website today.
+        <h2 style="margin-bottom: 16px;" data-i18n="sections.ctaTitle">Ready to Create Your Invitation?</h2>
+        <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;" data-i18n="sections.ctaSub">
+          Choose an invitation, customise it with add-ons, and we will bring it to life.
         </p>
         <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
           <a href="order-form.html" class="btn btn-primary btn-lg">
-            <span class="btn-icon">🎨</span>
-            Start Your Order
+            <span class="btn-icon" data-icon="arrow"></span>
+            <span data-i18n="hero.start">Start Your Order</span>
           </a>
-          <a href="#featured" class="btn btn-secondary btn-lg">Explore More</a>
+          <a href="#wedding" class="btn btn-secondary btn-lg" data-i18n="sections.ctaExplore">Explore More</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer style="background: var(--primary-dark); color: var(--primary-light); padding: 64px 24px 24px;">
+  <footer class="site-footer">
     <div class="container">
       <div class="grid grid-4">
         <div>
@@ -477,45 +214,110 @@ After payment, simply send your payment screenshot via WhatsApp and our team wil
             <span style="font-size: 24px;">💍</span>
             <span style="font-size: 20px; font-weight: 700;">Memora</span>
           </div>
-          <p style="color: var(--text-light); font-size: 14px;">
-            Premium wedding invitation websites and digital love cards for your special day.
-          </p>
+          <p class="footer-text" data-i18n="footer.tagline">Premium digital invitations for weddings and every moment worth celebrating.</p>
         </div>
-
         <div>
-          <h6 style="color: white; margin-bottom: 16px;">Products</h6>
-          <ul style="display: flex; flex-direction: column; gap: 8px;">
-            <li><a href="#themes" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">Wedding Themes</a></li>
-            <li><a href="#love-cards" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">Love Cards</a></li>
-            <li><a href="#bundles" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">Bundles</a></li>
+          <h6 data-i18n="footer.products">Products</h6>
+          <ul class="footer-links">
+            <li><a href="#wedding" data-i18n="nav.wedding">Wedding</a></li>
+            <li><a href="#moments" data-i18n="nav.moments">More Moments</a></li>
+            <li><a href="#bundles" data-i18n="nav.bundles">Bundles</a></li>
+            <li><a href="custom-order.html" data-i18n="sections.customTitle">Custom Invitation</a></li>
           </ul>
         </div>
-
         <div>
-          <h6 style="color: white; margin-bottom: 16px;">Support</h6>
-          <ul style="display: flex; flex-direction: column; gap: 8px;">
-            <li><a href="#faq" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">FAQ</a></li>
-            <li><a href="mailto:support@memora.com" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">Contact Us</a></li>
-            <li><a href="#" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">Terms & Privacy</a></li>
+          <h6 data-i18n="footer.support">Support</h6>
+          <ul class="footer-links">
+            <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+            <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
+            <li><a href="https://wa.me/201099885633" target="_blank" rel="noopener noreferrer" data-i18n="footer.whatsapp">WhatsApp</a></li>
           </ul>
         </div>
-
         <div>
-          <h6 style="color: white; margin-bottom: 16px;">Connect</h6>
-          <ul style="display: flex; gap: 12px;">
-            <li><a href="https://tiktok.com/@memora471" target="_blank" rel="noopener noreferrer" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">TikTok</a></li>
-            <li><a href="https://www.instagram.com/memora.egy?igsh=dm5ocmhuYmdmZzhs" target="_blank" rel="noopener noreferrer" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">Instagram</a></li>
-            <li><a href="https://facebook.com/share/1HBhQS62LC/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style="color: var(--text-light); font-size: 14px; transition: color 0.3s;">Facebook</a></li>
+          <h6 data-i18n="footer.connect">Connect</h6>
+          <ul class="footer-links" style="flex-direction: row; gap: 12px;">
+            <li><a href="https://tiktok.com/@memora471" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+            <li><a href="https://www.instagram.com/memora.egy?igsh=dm5ocmhuYmdmZzhs" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="https://facebook.com/share/1HBhQS62LC/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Facebook</a></li>
           </ul>
         </div>
       </div>
-
-      <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; padding-top: 24px; text-align: center; color: var(--text-light); font-size: 14px;">
-        <p>&copy; 2024 Memora. All rights reserved. Made with 💍 for love.</p>
+      <div class="footer-bottom">
+        <p data-i18n="footer.rights">© 2026 Memora. All rights reserved. Made with 💍 for love.</p>
       </div>
     </div>
   </footer>
 
+  <style>
+    .faq-item { margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; background: var(--bg-white); }
+    .faq-item summary { padding: 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 12px; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item p { padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); padding-top: 16px; color: var(--text-secondary); }
+    .site-footer { background: var(--primary-dark); color: var(--primary-light); padding: 64px 24px 24px; }
+    .site-footer h6 { color: white; margin-bottom: 16px; }
+    .footer-text { color: var(--text-light); font-size: 14px; }
+    .footer-links { display: flex; flex-direction: column; gap: 8px; }
+    .footer-links a { color: var(--text-light); font-size: 14px; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--accent-gold); }
+    .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; padding-top: 24px; text-align: center; color: var(--text-light); font-size: 14px; }
+    .footer-bottom p { color: var(--text-light); }
+  </style>
+
+  <script src="admin/assets/supabase-config.js"></script>
+  <script src="assets/js/icons.js"></script>
+  <script src="assets/js/catalog.js"></script>
   <script src="assets/js/premium.js"></script>
+  <script>
+    (() => {
+      let catalog = null;
+
+      function renderHome() {
+        if (!catalog) return;
+        const I = window.MemoraI18n;
+        UI.renderCards(catalog.productsIn('wedding'), document.getElementById('wedding-grid'), UI.weddingCard);
+        UI.renderCards(catalog.productsIn('moments'), document.getElementById('moments-grid'), UI.productCard);
+        UI.renderCards(catalog.bundles, document.getElementById('bundles-grid'), UI.bundleCard);
+        UI.renderPriceList(catalog, document.getElementById('price-list-base'), document.getElementById('price-list-addons'));
+        const custom = catalog.customProduct();
+        const customPrice = document.getElementById('custom-price-value');
+        if (customPrice) customPrice.textContent = I.money(custom ? custom.price : 800);
+        const customSection = document.getElementById('custom');
+        if (customSection) customSection.style.display = custom ? '' : 'none';
+      }
+
+      function showLoadError() {
+        ['wedding-grid', 'moments-grid', 'bundles-grid'].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = `<p class="empty-state">${UI.esc(window.MemoraI18n.t('common.loadError'))}</p>`;
+        });
+      }
+
+      function initCategoryNav() {
+        document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = UI.icon(el.getAttribute('data-icon')); });
+        const links = [...document.querySelectorAll('.cat-link')];
+        const sections = links.map((l) => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+        if (!('IntersectionObserver' in window) || !sections.length) return;
+        const setActive = (id) => links.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+        const observer = new IntersectionObserver((entries) => {
+          const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) setActive(visible.target.id);
+        }, { rootMargin: '-35% 0px -55% 0px', threshold: [0, 0.1, 0.5] });
+        sections.forEach((sec) => observer.observe(sec));
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        initCategoryNav();
+        try {
+          catalog = await window.MemoraCatalog.load();
+          renderHome();
+        } catch (error) {
+          console.error('Memora catalog failed to load:', error);
+          showLoadError();
+        }
+      });
+
+      window.MemoraI18n.onChange(renderHome);
+    })();
+  </script>
 </body>
 </html>
