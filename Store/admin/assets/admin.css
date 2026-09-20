@@ -304,3 +304,9 @@ tr:hover td { background: rgba(255, 255, 255, 0.035); }
   .global-search, .profile-menu { grid-column: 1 / -1; }
   .form-grid, .stats-grid { grid-template-columns: 1fr; }
 }
+
+/* Money Tracker sync indicator (beside the payment status pill) */
+.sync-dot { display: inline-block; margin-left: 6px; font-size: 12px; line-height: 1; vertical-align: middle; cursor: help; }
+.sync-dot.warn { opacity: 0.55; }
+.sync-dot.bad { filter: drop-shadow(0 0 4px rgba(224, 102, 102, 0.6)); }
+.row-actions .btn.sync-retry { border-color: rgba(201, 164, 106, 0.45); }
