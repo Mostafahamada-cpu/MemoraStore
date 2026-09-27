@@ -1,0 +1,69 @@
+/* Gender Reveal — baby pink & baby blue (Memora Standard template theme) */
+:root {
+    --color-cream: #FDFBFF;
+    --color-ivory: #FFFFFF;
+    --color-blush: #FCE4EC;
+    --color-rose: #F48FB1;
+    --color-rose-dark: #E07A9B;
+    --color-gold: #F48FB1;
+    --color-gold-light: #A9D6EA;
+    --color-gold-dark: #E07A9B;
+    --color-accent: #7EC8E3;
+    --color-accent-dark: #5BA9D6;
+    --color-charcoal: #2F3446;
+    --color-charcoal-light: #4F566B;
+    --color-taupe: #8A90A8;
+    --color-envelope-body: #A9D6EA;
+    --color-envelope-flap: #F4B6C7;
+    --color-envelope-inner: #FDFBFF;
+}
+#envelope-wrapper { background: linear-gradient(135deg, #FCE4EC 0%, #FDFBFF 50%, #DDF1FA 100%); }
+.petal:nth-child(even) { color: var(--color-accent); }
+#hero::before { content: '♥'; color: var(--color-accent); opacity: 0.07; }
+#hero::after { content: '♥'; color: var(--color-rose); opacity: 0.07; }
+#hero { background:
+    radial-gradient(ellipse at 20% 50%, rgba(126, 200, 227, 0.28) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(244, 143, 177, 0.26) 0%, transparent 50%),
+    linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 50%, var(--color-blush) 100%); }
+#groom-name { color: var(--color-accent-dark); }
+#bride-name { color: var(--color-rose-dark); }
+.ampersand { color: var(--color-charcoal-light); }
+.countdown-card::before, .detail-card::before, .ornament-divider .line { background: linear-gradient(90deg, var(--color-accent), var(--color-rose)); }
+#countdown-section { background: linear-gradient(180deg, #DDF1FA 0%, var(--color-cream) 100%); }
+#groom-initial { color: var(--color-accent-dark); }
+#bride-initial { color: var(--color-rose-dark); }
+
+/* --- Photo section (added for the occasion demos) --- */
+#photo-section {
+    padding: 40px 30px 80px;
+    background: linear-gradient(180deg, var(--color-blush) 0%, var(--color-cream) 100%);
+}
+.photo-frame {
+    width: min(100%, 380px);
+    margin: 0 auto;
+    padding: 12px;
+    background: var(--color-white);
+    border-radius: 200px 200px 24px 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10), 0 4px 14px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+}
+.photo-frame img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 190px 190px 16px 16px;
+}
+.photo-caption {
+    margin-top: 22px;
+    font-family: var(--font-script);
+    font-size: 2rem;
+    color: var(--color-gold-dark);
+}
+/* The monogram + closing line sit directly in <main> in the no-RSVP variant: keep them centred. */
+.couple-monogram { padding-top: 40px; }
+.closing-footer { text-align: center; padding: 0 20px 50px; }
+@media (max-width: 480px) {
+    #photo-section { padding: 20px 20px 60px; }
+    .photo-caption { font-size: 1.6rem; }
+}

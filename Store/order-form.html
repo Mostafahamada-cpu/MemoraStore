@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Your Order - Memora</title>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap">
   <link rel="stylesheet" href="assets/css/premium.css">
   <script src="assets/js/i18n.js"></script>
   <style>
@@ -252,7 +255,8 @@
       let state = { product: '', design: '', colorPreference: 'gold', addons: [] };
 
       /* ── Helpers ── */
-      const selectedItem = () => (catalog && state.product ? catalog.getItem(state.product) : null);
+      // getOrderable: bundle-only products (Love NFC Card) are never orderable on their own.
+      const selectedItem = () => (catalog && state.product ? catalog.getOrderable(state.product) : null);
       const eventTypeOf = (item) => {
         if (!item) return 'default';
         if (item.kind === 'bundle') return (item.eventTypes && item.eventTypes[0]) || 'default';
@@ -285,7 +289,7 @@
           <h4 class="product-group-title">${esc(g.title)}</h4>
           ${g.items.map((p) => `
             <article class="product-card" data-choice="product" data-value="${esc(p.slug)}">
-              ${p.image ? `<img class="product-image" src="${esc(p.image)}" alt="${esc(C.nameOf(p))}">` : `<div class="product-image">${C.imageMarkup(p)}</div>`}
+              ${p.image ? C.pictureMarkup(p.image, C.nameOf(p), { cls: 'product-image', sizes: '(max-width: 640px) 90vw, 280px' }) : `<div class="product-image">${C.imageMarkup(p)}</div>`}
               <div class="product-content">
                 <h4>${esc(C.nameOf(p))}</h4>
                 <span class="choice-meta">${esc(C.descOf(p))}</span>
@@ -313,7 +317,7 @@
         container.innerHTML = designsOf(item).map((d) => `
           <label class="design-card" data-choice="design" data-value="${esc(d.name)}">
             <input type="radio" name="design" value="${esc(d.name)}" style="position:absolute;opacity:0;pointer-events:none;">
-            ${d.image_url ? `<img src="${esc(d.image_url)}" alt="${esc(d.name)}">` : `<div class="product-image">${C.imageMarkup(item, d.name)}</div>`}
+            ${d.image_url ? C.pictureMarkup(d.image_url, d.name, { sizes: '(max-width: 640px) 90vw, 420px' }) : `<div class="product-image">${C.imageMarkup(item, d.name)}</div>`}
             <div class="design-body"><strong>${esc(d.name)}</strong>${d.demo_url ? `<a href="${esc(d.demo_url)}" target="_blank" rel="noopener noreferrer">${esc(t('common.liveDemo'))} ↗</a>` : ''}</div>
           </label>`).join('');
       }
@@ -449,11 +453,14 @@
       function applyQueryPreselection() {
         const params = new URLSearchParams(location.search);
         const product = params.get('product');
-        if (product && catalog.getItem(product)) {
+        if (product && catalog.getOrderable(product)) {
           state.product = product;
           const design = params.get('design');
-          state.design = design && designsOf(catalog.getItem(product)).some((d) => d.name === design) ? design : '';
-          state.addons = state.addons.filter((slug) => catalog.getAddon(slug));
+          state.design = design && designsOf(catalog.getOrderable(product)).some((d) => d.name === design) ? design : '';
+          // ?addons=music,gallery (homepage price builder): only real, paid catalog add-ons are kept.
+          state.addons = params.has('addons')
+            ? [...new Set(params.get('addons').split(',').map((slug) => slug.trim()))].filter((slug) => { const a = catalog.getAddon(slug); return a && a.pricingType !== 'free'; })
+            : state.addons.filter((slug) => catalog.getAddon(slug));
           current = 1;
           return true;
         }
@@ -594,7 +601,7 @@
           return;
         }
         const restored = restoreDraft();
-        if (state.product && !catalog.getItem(state.product)) state = { product: '', design: '', colorPreference: 'gold', addons: [] };
+        if (state.product && !catalog.getOrderable(state.product)) state = { product: '', design: '', colorPreference: 'gold', addons: [] };
         applyQueryPreselection();
         renderAll();
         showStep(current);

@@ -38,6 +38,17 @@
     card: '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/>',
     home: '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z"/>',
     party: '<path d="M5 20l3.5-11 7.5 7.5z"/><path d="M9.5 8.5c1.5-1.5 3-1.5 4.5 0M13 5l1-2M17 8l2-1M16 12l2 1"/>',
+    play: '<circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/>',
+    external: '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+    share: '<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9s1.3-6.4 3.8-9z"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    sparkle: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+    'chevron-left': '<path d="M15 5l-7 7 7 7"/>',
+    'chevron-right': '<path d="M9 5l7 7-7 7"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    equals: '<path d="M5 9h14M5 15h14"/>',
   };
 
   const byEvent = { wedding: 'wedding', engagement: 'engagement', henna: 'henna', birthday: 'birthday', 'gender-reveal': 'gender-reveal', bachelorette: 'bachelorette', date: 'date', custom: 'custom', bundle: 'bundle' };

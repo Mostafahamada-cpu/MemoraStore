@@ -1,0 +1,59 @@
+/* Henna Night — terracotta, burgundy & warm gold (Memora Standard template theme) */
+:root {
+    --color-cream: #FBF3E8;
+    --color-ivory: #FFFAF3;
+    --color-blush: #F3E0CC;
+    --color-rose: #B8573E;
+    --color-rose-dark: #8E3A2A;
+    --color-gold: #D4A24C;
+    --color-gold-light: #EED39A;
+    --color-gold-dark: #A9782E;
+    --color-charcoal: #3B1F1A;
+    --color-charcoal-light: #5C3A33;
+    --color-taupe: #8F6B5A;
+    --color-envelope-body: #B9634C;
+    --color-envelope-flap: #9E4E3B;
+    --color-envelope-inner: #FBF3E8;
+}
+#envelope-wrapper { background: linear-gradient(135deg, #FBF3E8 0%, #F3E0CC 45%, #E3B98A 100%); }
+#hero::before, #hero::after { content: '❁'; opacity: 0.06; }
+#hero { background:
+    radial-gradient(ellipse at 20% 50%, rgba(212, 162, 76, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(184, 87, 62, 0.16) 0%, transparent 50%),
+    linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 50%, var(--color-blush) 100%); }
+.name { color: var(--color-rose-dark); }
+
+/* --- Photo section (added for the occasion demos) --- */
+#photo-section {
+    padding: 40px 30px 80px;
+    background: linear-gradient(180deg, var(--color-blush) 0%, var(--color-cream) 100%);
+}
+.photo-frame {
+    width: min(100%, 380px);
+    margin: 0 auto;
+    padding: 12px;
+    background: var(--color-white);
+    border-radius: 200px 200px 24px 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10), 0 4px 14px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+}
+.photo-frame img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 190px 190px 16px 16px;
+}
+.photo-caption {
+    margin-top: 22px;
+    font-family: var(--font-script);
+    font-size: 2rem;
+    color: var(--color-gold-dark);
+}
+/* The monogram + closing line sit directly in <main> in the no-RSVP variant: keep them centred. */
+.couple-monogram { padding-top: 40px; }
+.closing-footer { text-align: center; padding: 0 20px 50px; }
+@media (max-width: 480px) {
+    #photo-section { padding: 20px 20px 60px; }
+    .photo-caption { font-size: 1.6rem; }
+}

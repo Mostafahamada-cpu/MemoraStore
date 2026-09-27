@@ -1,0 +1,62 @@
+/* Birthday — playful pastels: pink, sunshine yellow & sky blue (Memora Standard template theme) */
+:root {
+    --color-cream: #FFFBF2;
+    --color-ivory: #FFFEFA;
+    --color-blush: #FFE9EF;
+    --color-rose: #FF7A9E;
+    --color-rose-dark: #E0567E;
+    --color-gold: #FFC145;
+    --color-gold-light: #FFE29A;
+    --color-gold-dark: #E0A020;
+    --color-accent: #6EC1E4;
+    --color-charcoal: #2E2A3A;
+    --color-charcoal-light: #4C4760;
+    --color-taupe: #8A7F9E;
+    --color-envelope-body: #FFB3C6;
+    --color-envelope-flap: #FF8FAE;
+    --color-envelope-inner: #FFFBF2;
+}
+#envelope-wrapper { background: linear-gradient(135deg, #FFFBF2 0%, #FFE9EF 45%, #DDF1FA 100%); }
+#hero::before, #hero::after { content: '★'; opacity: 0.06; }
+#hero { background:
+    radial-gradient(ellipse at 20% 50%, rgba(255, 193, 69, 0.28) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(110, 193, 228, 0.22) 0%, transparent 50%),
+    linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 50%, var(--color-blush) 100%); }
+.ampersand { font-family: var(--font-serif); font-style: italic; font-size: 1.6rem; color: var(--color-taupe); letter-spacing: 2px; }
+#bride-name { color: var(--color-rose-dark); }
+.heart-icon { animation: none; }
+
+/* --- Photo section (added for the occasion demos) --- */
+#photo-section {
+    padding: 40px 30px 80px;
+    background: linear-gradient(180deg, var(--color-blush) 0%, var(--color-cream) 100%);
+}
+.photo-frame {
+    width: min(100%, 380px);
+    margin: 0 auto;
+    padding: 12px;
+    background: var(--color-white);
+    border-radius: 200px 200px 24px 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10), 0 4px 14px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+}
+.photo-frame img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 190px 190px 16px 16px;
+}
+.photo-caption {
+    margin-top: 22px;
+    font-family: var(--font-script);
+    font-size: 2rem;
+    color: var(--color-gold-dark);
+}
+/* The monogram + closing line sit directly in <main> in the no-RSVP variant: keep them centred. */
+.couple-monogram { padding-top: 40px; }
+.closing-footer { text-align: center; padding: 0 20px 50px; }
+@media (max-width: 480px) {
+    #photo-section { padding: 20px 20px 60px; }
+    .photo-caption { font-size: 1.6rem; }
+}

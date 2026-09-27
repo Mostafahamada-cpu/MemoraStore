@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product - Memora</title>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap">
   <link rel="stylesheet" href="assets/css/premium.css">
   <script src="assets/js/i18n.js"></script>
   <style>
@@ -25,6 +28,8 @@
     .addon-glyph { font-size: 18px; color: var(--accent-gold); display: inline-flex; }
     .included-item strong { display: block; }
     .included-item span { font-size: 13px; color: var(--text-muted); }
+    .included-item.is-exclusive { border-color: rgba(212, 107, 120, 0.4); background: rgba(212, 107, 120, 0.05); }
+    .included-item.is-exclusive .icon { color: var(--accent-rose); }
     .addon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
     .addon-tile { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid var(--border-light); border-radius: 12px; background: var(--bg-white); font-size: 14px; }
     .addon-tile .addon-name { display: flex; align-items: center; gap: 10px; font-weight: 600; }
@@ -37,23 +42,32 @@
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="navbar" id="navbar">
+  <header class="navbar" id="navbar">
     <div class="container">
       <a class="nav-brand" href="index.html">
-        <img src="images/logo.jpeg" alt="Memora Logo">
+        <img src="images/logo.jpeg" alt="Memora" width="40" height="40">
         <span>Memora</span>
       </a>
-      <div class="nav-links" id="nav-links">
-        <a href="index.html" data-i18n="nav.backToStore">Back to Store</a>
-        <a href="index.html#pricing" data-i18n="nav.pricing">Pricing</a>
+      <nav class="nav-links" id="nav-links" aria-label="Main" data-i18n-aria="nav.main">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="index.html#wedding" data-i18n="nav.wedding">Wedding</a>
+        <a href="index.html#moments" data-i18n="nav.occasions">Occasions</a>
+        <a href="index.html#bundles" data-i18n="nav.bundles">Bundles</a>
+        <a href="index.html#addons" data-i18n="nav.addons">Add-ons</a>
+        <a href="index.html#faq" data-i18n="nav.faq">FAQ</a>
+        <a href="order-form.html" class="btn btn-primary nav-menu-cta" data-i18n="nav.startOrder">Start Order</a>
+      </nav>
+      <div class="nav-right">
+        <span class="lang-switch" data-lang-switch></span>
+        <a href="order-form.html" class="btn btn-primary btn-sm nav-cta" data-i18n="nav.startOrder">Start Order</a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" data-i18n-aria="nav.menu" aria-controls="nav-links" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
-      <div class="nav-right"><span class="lang-switch" data-lang-switch></span><button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button></div>
     </div>
-  </nav>
+  </header>
 
   <main id="product-root">
     <section class="section section-bg-light">
@@ -91,23 +105,17 @@
 
       function designsSection(item) {
         if (!item.designs || !item.designs.length) return '';
+        // Bundles list their items' designs: order the bundle, but show which product each design belongs to.
+        const card = (d) => {
+          const owner = item.kind === 'bundle' ? catalog.getProduct(d.product) : item;
+          return owner ? UI.designCard(owner, d, owner.designs.length > 1, item) : '';
+        };
         return `
           <section class="section section-bg-white">
             <div class="container">
               <h2 style="margin-bottom: 32px; text-align: center;">${esc(t('product.designsTitle'))}</h2>
-              <div class="design-grid">
-                ${item.designs.map((d) => `
-                  <article class="card">
-                    <div class="card-image">${d.image_url ? `<img src="${esc(d.image_url)}" alt="${esc(d.name)}">` : window.MemoraCatalog.imageMarkup(item, d.name)}</div>
-                    <div class="card-content">
-                      <h4 class="card-title">${esc(d.name)}</h4>
-                      ${d.product ? `<p class="card-description">${esc(window.MemoraCatalog.nameOf(catalog.getProduct(d.product)))}</p>` : ''}
-                      <div class="card-actions">
-                        ${d.demo_url ? `<a href="${esc(d.demo_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">${esc(t('common.liveDemo'))}</a>` : ''}
-                        <a href="order-form.html?product=${encodeURIComponent(item.slug)}&design=${encodeURIComponent(d.name)}" class="btn btn-primary btn-sm">${esc(t('common.orderNow'))}</a>
-                      </div>
-                    </div>
-                  </article>`).join('')}
+              <div class="product-designs">
+                ${item.designs.map(card).join('')}
               </div>
             </div>
           </section>`;
@@ -121,14 +129,29 @@
             <div class="container">
               <h2 style="margin-bottom: 32px; text-align: center;">${esc(t('product.includedProducts'))}</h2>
               <div class="included-list">
-                ${item.items.map((p) => `<a class="included-item" href="product.html?id=${encodeURIComponent(p.slug)}"><span class="icon">${UI.icon(UI.iconFor(p))}</span><div><strong>${esc(C.nameOf(p))}</strong><span>${esc(money(p.price))} ${esc(t('common.individually'))}</span></div></a>`).join('')}
+                ${item.items.map((p) => `<a class="included-item${p.bundleOnly ? ' is-exclusive' : ''}" href="product.html?id=${encodeURIComponent(p.slug)}"><span class="icon">${UI.icon(UI.iconFor(p))}</span><div><strong>${esc(C.nameOf(p))}</strong><span>${p.bundleOnly ? `${esc(t('common.included'))} · ${esc(t('common.bundleExclusive'))}` : `${esc(money(p.price))} ${esc(t('common.individually'))}`}</span></div></a>`).join('')}
               </div>
             </div>
           </section>`;
       }
 
+      // Bundle-only products (Love NFC Card): show where the card can be bought instead of add-ons.
+      function availableInSection(item) {
+        if (!item.bundleOnly) return '';
+        const bundles = catalog.bundlesWith(item.slug);
+        if (!bundles.length) return '';
+        return `
+          <section class="section section-bg-light" id="available-in">
+            <div class="container">
+              <h2 style="margin-bottom: 8px; text-align: center;">${esc(t('product.availableIn'))}</h2>
+              <p style="text-align: center; margin-bottom: 32px;">${esc(t('product.bundleOnlyNote'))}</p>
+              <div class="bundle-grid">${bundles.map((b, i) => UI.bundleCard(b, i)).join('')}</div>
+            </div>
+          </section>`;
+      }
+
       function addonsSection(item) {
-        if (item.type === 'custom' || !catalog.addons.length) return '';
+        if (item.type === 'custom' || item.bundleOnly || !catalog.addons.length) return '';
         const C = window.MemoraCatalog;
         const included = new Set(item.includedAddons || []);
         const value = (a) => {
@@ -149,25 +172,18 @@
       }
 
       function relatedSection(item) {
-        const C = window.MemoraCatalog;
-        const pool = catalog.sellable().filter((p) => p.slug !== item.slug);
+        // Same kind as the page (products suggest products, bundles suggest bundles), same category first.
+        const isBundle = item.kind === 'bundle';
+        const pool = catalog.sellable().filter((p) => p.slug !== item.slug && (p.kind === 'bundle') === isBundle);
         const sameCategory = pool.filter((p) => p.category === item.category);
-        const related = [...sameCategory, ...pool.filter((p) => p.category !== item.category)].slice(0, 3);
+        const related = [...sameCategory, ...pool.filter((p) => p.category !== item.category)].slice(0, isBundle ? 2 : 3);
         if (!related.length) return '';
         return `
           <section class="section section-bg-white">
             <div class="container">
               <h2 style="margin-bottom: 32px; text-align: center;">${esc(t('sections.relatedTitle'))}</h2>
-              <div class="grid grid-3">
-                ${related.map((p) => `
-                  <article class="card">
-                    <a class="card-image" href="product.html?id=${encodeURIComponent(p.slug)}">${C.imageMarkup(p)}</a>
-                    <div class="card-content">
-                      <h4 class="card-title">${esc(C.nameOf(p))}</h4>
-                      <div class="card-meta" style="border-bottom: none; padding-bottom: 0;"><div class="card-price">${esc(C.priceLabel(p))}</div></div>
-                      <a href="product.html?id=${encodeURIComponent(p.slug)}" class="btn btn-primary btn-full" style="margin-top: 12px;">${esc(t('common.viewDetails'))}</a>
-                    </div>
-                  </article>`).join('')}
+              <div class="${isBundle ? 'bundle-grid' : 'shop-grid related-grid'}">
+                ${related.map((p, i) => (isBundle ? UI.bundleCard(p, i) : UI.productCard(p, i))).join('')}
               </div>
             </div>
           </section>`;
@@ -181,7 +197,10 @@
         const C = window.MemoraCatalog;
         const name = C.nameOf(item);
         const isCustom = item.type === 'custom';
-        const orderHref = isCustom ? 'custom-order.html' : `order-form.html?product=${encodeURIComponent(item.slug)}`;
+        const bundleOnly = !!item.bundleOnly;
+        // A bundle-only product can't be ordered alone: its CTA points at the bundles that include it.
+        const orderHref = isCustom ? 'custom-order.html' : bundleOnly ? '#available-in' : `order-form.html?product=${encodeURIComponent(item.slug)}`;
+        const orderLabel = isCustom ? t('common.requestQuote') : bundleOnly ? t('product.viewBundles') : t('common.orderNow');
         const features = C.featuresOf(item);
         document.title = `${name} - Memora`;
 
@@ -197,13 +216,13 @@
                   <div class="product-price-box">
                     <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
                       <span class="product-price">${esc(C.priceLabel(item))}</span>
-                      ${item.kind === 'bundle' && item.compareTotal > item.price ? `<s style="color: var(--text-light);">${esc(money(item.compareTotal))}</s><span class="price-pill free">${esc(t('common.youSave'))} ${esc(money(item.savings))}</span>` : `<span style="font-size: 14px; color: var(--text-light);">${esc(isCustom ? '' : t('product.oneTimePurchase'))}</span>`}
+                      ${item.kind === 'bundle' && item.compareTotal > item.price ? `<s style="color: var(--text-light);">${esc(money(item.compareTotal))}</s><span class="price-pill free">${esc(t('common.youSave'))} ${esc(money(item.savings))}</span>` : `<span style="font-size: 14px; color: var(--text-light);">${esc(isCustom || bundleOnly ? '' : t('product.oneTimePurchase'))}</span>`}
                     </div>
-                    <p style="color: var(--text-secondary); font-size: 14px;">${esc(isCustom ? t('product.customPricingNote') : t('product.perks'))}</p>
+                    <p style="color: var(--text-secondary); font-size: 14px;">${esc(isCustom ? t('product.customPricingNote') : bundleOnly ? t('product.bundleOnlyNote') : t('product.perks'))}</p>
                   </div>
                   <div class="product-cta">
                     ${item.demo && item.designs.length < 2 ? `<a href="${esc(item.demo)}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-lg">${esc(t('common.liveDemo'))}</a>` : ''}
-                    <a href="${orderHref}" class="btn btn-primary btn-lg">${esc(isCustom ? t('common.requestQuote') : t('common.orderNow'))}</a>
+                    <a href="${orderHref}" class="btn btn-primary btn-lg">${esc(orderLabel)}</a>
                     <button type="button" class="btn btn-secondary btn-lg" data-ask-whatsapp="${esc(item.name.en)}">${esc(t('common.askWhatsApp'))}</button>
                   </div>
                   ${features.length ? `<ul class="product-features">${features.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` : ''}
@@ -224,6 +243,7 @@
             </div>
           </section>
 
+          ${availableInSection(item)}
           ${addonsSection(item)}
           ${relatedSection(item)}
 
@@ -233,12 +253,13 @@
                 <h2 style="margin-bottom: 16px;">${esc(t('product.readyTitle'))}</h2>
                 <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;">${esc(t('product.readySub'))}</p>
                 <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                  <a href="${orderHref}" class="btn btn-primary btn-lg">${esc(isCustom ? t('common.requestQuote') : t('common.orderNow'))}</a>
+                  <a href="${orderHref}" class="btn btn-primary btn-lg">${esc(orderLabel)}</a>
                   <a href="index.html" class="btn btn-secondary btn-lg">${esc(t('product.browseMore'))}</a>
                 </div>
               </div>
             </div>
           </section>`;
+        Animations.initScrollAnimations();
         if (!rendered) window.scrollTo({ top: 0 });
         rendered = true;
       }

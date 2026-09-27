@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Youssef &amp; Salma — Our Date, 14 February 2027</title>
+  <meta name="description" content="A timeless invitation to an unforgettable evening — inspired by the grandeur of Ancient Egypt.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sand: '#E8D8B5',
+            gold: '#D4AF37',
+            'gold-light': '#F0D060',
+            'gold-dark': '#B8960C',
+            pharaoh: '#111111',
+            'deep-brown': '#4A3520',
+            papyrus: '#F5EBDA',
+            'papyrus-dark': '#E0CCAA',
+          },
+          fontFamily: {
+            cinzel: ['Cinzel', 'serif'],
+            cormorant: ['Cormorant Garamond', 'serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Luxon -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"></script>
+
+  <style>
+    /* ===== GLOBAL ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: #D4AF37 #111111;
+      overflow-x: hidden;
+      width: 100vw;
+    }
+    html::-webkit-scrollbar { width: 6px; }
+    html::-webkit-scrollbar-track { background: #111111; }
+    html::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 3px; }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background-color: #111111;
+      color: #E8D8B5;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      position: relative;
+    }
+
+    ::selection {
+      background: rgba(212,175,55,0.35);
+      color: #F5EBDA;
+    }
+
+    /* ===== LOADING SCREEN ===== */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #111111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .eye-of-horus-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
+
+    .eye-of-horus {
+      font-size: 72px;
+      color: #D4AF37;
+      filter: drop-shadow(0 0 20px rgba(212,175,55,0.6));
+      animation: eyePulse 2s ease-in-out infinite;
+    }
+
+    .eye-ring {
+      position: absolute;
+      inset: -20px;
+      border: 2px solid rgba(212,175,55,0.3);
+      border-radius: 50%;
+      animation: ringRotate 3s linear infinite;
+    }
+    .eye-ring::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background: #D4AF37;
+      border-radius: 50%;
+    }
+    .eye-ring-2 {
+      position: absolute;
+      inset: -35px;
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 50%;
+      animation: ringRotate 5s linear infinite reverse;
+    }
+    .eye-ring-2::before {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: rgba(212,175,55,0.5);
+      border-radius: 50%;
+    }
+
+    @keyframes eyePulse {
+      0%, 100% { filter: drop-shadow(0 0 20px rgba(212,175,55,0.4)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 40px rgba(212,175,55,0.8)); transform: scale(1.05); }
+    }
+    @keyframes ringRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-family: 'Cinzel', serif;
+      color: #D4AF37;
+      font-size: 14px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-top: 40px;
+      animation: textFade 1.5s ease-in-out infinite;
+    }
+    @keyframes textFade {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== PARTICLES CANVAS ===== */
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ===== PAPYRUS BACKGROUND SECTIONS ===== */
+    .section-papyrus {
+      position: relative;
+      background-color: #111111;
+    }
+    .section-papyrus::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('papyrus.png') center/cover;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    /* ===== HIEROGLYPHIC BORDERS ===== */
+    .hieroglyph-border {
+      position: relative;
+      overflow: hidden;
+    }
+    .hieroglyph-border::before,
+    .hieroglyph-border::after {
+      font-size: 14px;
+      letter-spacing: 8px;
+      color: rgba(212,175,55,0.15);
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      pointer-events: none;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .hieroglyph-border::before {
+      content: '𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏 𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏';
+      top: 0;
+    }
+    .hieroglyph-border::after {
+      content: '𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹 𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹';
+      bottom: 0;
+    }
+
+    /* ===== GOLD GRADIENT TEXT ===== */
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #D4AF37 0%, #F0D060 40%, #D4AF37 60%, #B8960C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ===== COUNTER STYLING ===== */
+    .counter-box {
+      background: rgba(17,17,17,0.6);
+      border: 1px solid rgba(212,175,55,0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 16px 12px;
+      min-width: 80px;
+      text-align: center;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .counter-box:hover {
+      border-color: rgba(212,175,55,0.5);
+      box-shadow: 0 0 20px rgba(212,175,55,0.15);
+    }
+    .counter-value {
+      font-family: 'Cinzel', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #D4AF37;
+      line-height: 1;
+    }
+    .counter-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(232,216,181,0.6);
+      margin-top: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .counter-value { font-size: 24px; }
+      .counter-box { min-width: 60px; padding: 12px 8px; }
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, rgba(212,175,55,0.4) 10%, rgba(212,175,55,0.4) 90%, transparent);
+      transform: translateX(-50%);
+    }
+
+    @media (max-width: 768px) {
+      .timeline-line {
+        left: 24px;
+      }
+    }
+
+    .timeline-card {
+      background: rgba(17,17,17,0.7);
+      border: 1px solid rgba(212,175,55,0.2);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+    }
+    .timeline-card:hover {
+      border-color: rgba(212,175,55,0.45);
+      box-shadow: 0 8px 40px rgba(212,175,55,0.1);
+      transform: translateY(-4px);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: #D4AF37;
+      border: 3px solid #111111;
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(212,175,55,0.5);
+      z-index: 2;
+    }
+
+    /* Desktop dot positioning */
+    @media (min-width: 769px) {
+      .timeline-item-left .timeline-dot {
+        right: -40px;
+        top: 36px;
+      }
+      .timeline-item-right .timeline-dot {
+        left: -40px;
+        top: 36px;
+      }
+    }
+    @media (max-width: 768px) {
+      .timeline-dot {
+        left: -36px;
+        top: 32px;
+      }
+    }
+
+    /* ===== LOCATION CARDS ===== */
+    .locked-card {
+      background: rgba(17,17,17,0.6);
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 20px;
+      padding: 48px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .locked-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(212,175,55,0.02) 20px,
+        rgba(212,175,55,0.02) 40px
+      );
+      pointer-events: none;
+    }
+
+    .map-reveal {
+      animation: mapReveal 1.5s ease-out forwards;
+    }
+    @keyframes mapReveal {
+      from { filter: blur(20px); opacity: 0; transform: scale(0.95); }
+      to { filter: blur(0); opacity: 1; transform: scale(1); }
+    }
+
+    /* ===== DRESS CODE CARDS ===== */
+    .dress-card {
+      background: rgba(17,17,17,0.65);
+      border: 1px solid rgba(212,175,55,0.2);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+    }
+    .dress-card:hover {
+      border-color: rgba(212,175,55,0.45);
+      box-shadow: 0 8px 40px rgba(212,175,55,0.12);
+      transform: translateY(-4px);
+    }
+    .dress-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+    }
+
+    /* ===== GLOW BUTTON ===== */
+    .glow-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #D4AF37, #B8960C);
+      color: #111111;
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(212,175,55,0.3);
+    }
+    .glow-btn:hover {
+      box-shadow: 0 4px 30px rgba(212,175,55,0.5), 0 0 60px rgba(212,175,55,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ===== DIVIDER ===== */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3) 20%, rgba(212,175,55,0.3) 80%, transparent);
+      margin: 0 auto;
+      max-width: 600px;
+    }
+    .section-divider-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: rgba(212,175,55,0.4);
+      font-size: 18px;
+    }
+    .section-divider-ornament::before,
+    .section-divider-ornament::after {
+      content: '';
+      flex: 1;
+      max-width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3));
+    }
+    .section-divider-ornament::after {
+      background: linear-gradient(270deg, transparent, rgba(212,175,55,0.3));
+    }
+
+    /* ===== AMBIENT GLOW ===== */
+    .ambient-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== HIEROGLYPH FADE ===== */
+    .hieroglyph-float {
+      position: absolute;
+      font-size: 28px;
+      color: rgba(212,175,55,0.06);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== SMOOTH SECTION TRANSITIONS ===== */
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    /* ===== SECRET SEAL ===== */
+    #secret-seal-section {
+      position: relative;
+      padding: 40px 16px 30px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    #ancient-seal {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 10;
+    }
+    #ancient-seal:hover { transform: scale(1.1); }
+    #ancient-seal:active { transform: scale(0.98); }
+
+    #ancient-seal .seal-icon {
+      font-size: 52px;
+      color: #D4AF37;
+      filter: drop-shadow(0 0 15px rgba(212,175,55,0.5));
+      animation: sealPulse 2.5s ease-in-out infinite;
+      z-index: 2;
+      position: relative;
+    }
+
+    @keyframes sealPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 12px rgba(212,175,55,0.3));
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 30px rgba(212,175,55,0.8)) drop-shadow(0 0 60px rgba(212,175,55,0.3));
+        transform: scale(1.06);
+      }
+    }
+
+    .seal-ring {
+      position: absolute;
+      inset: -12px;
+      border: 2px solid rgba(212,175,55,0.2);
+      border-radius: 50%;
+      animation: ringRotate 4s linear infinite;
+    }
+    .seal-ring::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: rgba(212,175,55,0.5);
+      border-radius: 50%;
+    }
+
+    .seal-ring-outer {
+      position: absolute;
+      inset: -28px;
+      border: 1px solid rgba(212,175,55,0.1);
+      border-radius: 50%;
+      animation: ringRotate 7s linear infinite reverse;
+    }
+    .seal-ring-outer::before {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: rgba(212,175,55,0.3);
+      border-radius: 50%;
+    }
+
+    .seal-hint {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      color: rgba(212,175,55,0.3);
+      letter-spacing: 3px;
+      margin-top: 24px;
+      font-style: italic;
+      animation: textFade 2.5s ease-in-out infinite;
+    }
+
+    /* ===== STONE FRAGMENTS ===== */
+    .stone-fragment {
+      position: fixed;
+      border-radius: 2px;
+      opacity: 0;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    .stone-fragment.gold {
+      background: linear-gradient(135deg, #D4AF37, #F0D060);
+      box-shadow: 0 0 6px rgba(212,175,55,0.5);
+    }
+    .stone-fragment.stone {
+      background: linear-gradient(135deg, #8B7355, #6B5B3E);
+    }
+    .stone-fragment.dark {
+      background: linear-gradient(135deg, #4A3520, #2A1F10);
+    }
+
+    /* ===== PAPYRUS SCROLL CONTAINER ===== */
+    #papyrus-scroll-container {
+      position: relative;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      padding: 0 16px;
+      z-index: 2;
+    }
+
+    .papyrus-golden-backlight {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 130%;
+      height: 130%;
+      background: radial-gradient(ellipse at center,
+        rgba(212,175,55,0.1) 0%,
+        rgba(212,175,55,0.04) 35%,
+        transparent 65%
+      );
+      pointer-events: none;
+      opacity: 0;
+      z-index: 0;
+    }
+
+    #dust-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 7;
+      overflow: hidden;
+    }
+
+    .dust-particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    /* ===== PAPYRUS SCROLL ===== */
+    .papyrus-scroll {
+      position: relative;
+      max-width: 660px;
+      margin: 30px auto 60px;
+      padding: 55px 48px 45px;
+      background: url('papyrus.png') center/cover no-repeat;
+      border-radius: 6px;
+      z-index: 2;
+      box-shadow:
+        0 0 80px rgba(0,0,0,0.6),
+        0 20px 60px rgba(0,0,0,0.4),
+        inset 0 0 60px rgba(74,53,32,0.35),
+        inset 0 0 20px rgba(0,0,0,0.2);
+      border: 2px solid rgba(74,53,32,0.5);
+    }
+
+    /* Vignette overlay */
+    .papyrus-scroll::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(74,53,32,0.3) 0%, transparent 6%, transparent 94%, rgba(74,53,32,0.3) 100%),
+        linear-gradient(to bottom, rgba(74,53,32,0.25) 0%, transparent 10%, transparent 90%, rgba(74,53,32,0.25) 100%);
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Sandstone grain noise */
+    .papyrus-scroll::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.6;
+    }
+
+    /* Burnt edges */
+    .papyrus-burnt-edge-top,
+    .papyrus-burnt-edge-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 25px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .papyrus-burnt-edge-top {
+      top: -1px;
+      background: linear-gradient(to bottom,
+        rgba(17,17,17,0.85) 0%,
+        rgba(40,28,15,0.55) 35%,
+        rgba(74,53,32,0.2) 65%,
+        transparent 100%
+      );
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L400,0 L400,16 Q385,22 370,15 Q355,24 340,13 Q325,20 310,16 Q295,23 280,14 Q265,21 250,17 Q235,24 220,13 Q205,19 190,16 Q175,23 160,14 Q145,20 130,17 Q115,24 100,13 Q85,19 70,16 Q55,22 40,14 Q25,20 10,17 Q5,19 0,16 Z' fill='white'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 L400,0 L400,16 Q385,22 370,15 Q355,24 340,13 Q325,20 310,16 Q295,23 280,14 Q265,21 250,17 Q235,24 220,13 Q205,19 190,16 Q175,23 160,14 Q145,20 130,17 Q115,24 100,13 Q85,19 70,16 Q55,22 40,14 Q25,20 10,17 Q5,19 0,16 Z' fill='white'/%3E%3C/svg%3E");
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    .papyrus-burnt-edge-bottom {
+      bottom: -1px;
+      background: linear-gradient(to top,
+        rgba(17,17,17,0.85) 0%,
+        rgba(40,28,15,0.55) 35%,
+        rgba(74,53,32,0.2) 65%,
+        transparent 100%
+      );
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,25 L400,25 L400,9 Q385,3 370,10 Q355,1 340,12 Q325,5 310,9 Q295,2 280,11 Q265,4 250,8 Q235,1 220,12 Q205,6 190,9 Q175,2 160,11 Q145,5 130,8 Q115,1 100,12 Q85,6 70,9 Q55,3 40,11 Q25,5 10,8 Q5,6 0,9 Z' fill='white'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,25 L400,25 L400,9 Q385,3 370,10 Q355,1 340,12 Q325,5 310,9 Q295,2 280,11 Q265,4 250,8 Q235,1 220,12 Q205,6 190,9 Q175,2 160,11 Q145,5 130,8 Q115,1 100,12 Q85,6 70,9 Q55,3 40,11 Q25,5 10,8 Q5,6 0,9 Z' fill='white'/%3E%3C/svg%3E");
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    /* Side hieroglyphs */
+    .papyrus-side-glyphs {
+      position: absolute;
+      top: 45px;
+      bottom: 45px;
+      width: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      font-size: 14px;
+      color: rgba(74,53,32,0.2);
+      pointer-events: none;
+      z-index: 5;
+      overflow: hidden;
+    }
+    .papyrus-side-glyphs.left { left: 10px; }
+    .papyrus-side-glyphs.right { right: 10px; }
+    .papyrus-side-glyphs span { display: block; }
+
+    /* Decorative band */
+    .papyrus-decor-band {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-size: 17px;
+      color: rgba(74,53,32,0.28);
+      position: relative;
+      z-index: 5;
+      padding: 0 30px;
+    }
+    .papyrus-decor-band::before,
+    .papyrus-decor-band::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(74,53,32,0.2), transparent);
+    }
+
+    /* Gold accent lines */
+    .papyrus-gold-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(180,140,40,0.15) 20%, rgba(180,140,40,0.15) 80%, transparent);
+      margin: 8px 30px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Scratch marks */
+    .papyrus-scratches {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+    .scratch-mark {
+      position: absolute;
+      background: rgba(74,53,32,0.06);
+      transform-origin: center;
+    }
+
+    /* Secret letter */
+    .secret-letter {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 24px 16px;
+    }
+    .secret-letter p {
+      font-family: 'Dancing Script', cursive;
+      font-size: 24px;
+      color: #2A1F10;
+      line-height: 2.1;
+      opacity: 0;
+      letter-spacing: 0.3px;
+      text-shadow: 0.5px 0.5px 1px rgba(42,31,16,0.25);
+      mix-blend-mode: multiply;
+    }
+    .secret-letter .signature {
+      font-size: 28px;
+      color: #5A2525;
+      margin-top: 12px;
+      font-weight: 700;
+    }
+
+    /* Responsive - secret section */
+    @media (max-width: 640px) {
+      .papyrus-scroll {
+        padding: 40px 28px 35px;
+        margin: 20px 4px 40px;
+      }
+      .secret-letter p {
+        font-size: 19px;
+        line-height: 2;
+      }
+      .secret-letter .signature { font-size: 22px; }
+      .papyrus-side-glyphs { font-size: 11px; width: 16px; }
+      .papyrus-side-glyphs.left { left: 5px; }
+      .papyrus-side-glyphs.right { right: 5px; }
+      .papyrus-decor-band { gap: 8px; font-size: 14px; padding: 0 16px; }
+      #ancient-seal .seal-icon { font-size: 42px; }
+      #ancient-seal { width: 80px; height: 80px; }
+      .seal-ring { inset: -8px; }
+      .seal-ring-outer { inset: -20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div id="loading-screen">
+    <div class="eye-of-horus-container">
+      <div class="eye-ring"></div>
+      <div class="eye-ring-2"></div>
+      <div class="eye-of-horus flex items-center justify-center w-full h-full">𓂀</div>
+    </div>
+    <div class="loading-text">Unveiling</div>
+  </div>
+
+  <!-- ===== PARTICLES ===== -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content" style="opacity:0; position:relative; z-index:2;">
+
+    <!-- ========== HERO SECTION ========== -->
+    <section id="hero" class="section-papyrus hieroglyph-border relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
+      <!-- Ambient glows -->
+      <div class="ambient-glow" style="width:500px;height:500px;background:rgba(212,175,55,0.07);top:-100px;right:-100px;"></div>
+      <div class="ambient-glow" style="width:400px;height:400px;background:rgba(212,175,55,0.05);bottom:-50px;left:-100px;"></div>
+
+      <!-- Floating hieroglyphs -->
+      <span class="hieroglyph-float" style="top:15%;left:8%;">𓁹</span>
+      <span class="hieroglyph-float" style="top:25%;right:12%;">𓅃</span>
+      <span class="hieroglyph-float" style="top:60%;left:5%;">𓆣</span>
+      <span class="hieroglyph-float" style="top:70%;right:8%;">𓃭</span>
+      <span class="hieroglyph-float" style="top:45%;left:15%;">𓊝</span>
+      <span class="hieroglyph-float" style="top:80%;left:20%;">𓋴</span>
+      <span class="hieroglyph-float" style="top:10%;left:50%;">𓉐</span>
+
+      <div class="relative z-10 text-center max-w-4xl mx-auto">
+        <!-- Title -->
+        <h1 id="hero-title" class="font-cinzel text-gold-gradient text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider mb-4" style="opacity:0;">
+          Our Date
+        </h1>
+
+        <!-- Subtitle -->
+        <p id="hero-subtitle" class="font-cinzel text-sand text-xl sm:text-2xl md:text-3xl tracking-[0.3em] mb-6 font-light" style="opacity:0;">
+          14 February 2027
+        </p>
+
+        <!-- Since badge -->
+        <div id="hero-since" class="inline-block mb-14" style="opacity:0;">
+          <div class="flex items-center gap-3 px-6 py-3 rounded-full border border-gold/20 bg-pharaoh/40 backdrop-blur-md">
+            <span class="text-gold text-lg">✨</span>
+            <span class="font-cormorant text-sand text-lg tracking-widest">Youssef &amp; Salma ✦ Since 14 February 2025</span>
+            <span class="text-gold text-lg">✨</span>
+          </div>
+        </div>
+
+        <!-- Together counter -->
+        <div id="hero-together" class="mb-16" style="opacity:0;">
+          <p class="font-cinzel text-gold/70 text-xs sm:text-sm tracking-[0.4em] uppercase mb-6">Together For</p>
+          <div class="flex flex-wrap justify-center gap-3 sm:gap-4" id="together-counter">
+            <div class="counter-box">
+              <div class="counter-value" id="t-years">0</div>
+              <div class="counter-label">Years</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="t-months">0</div>
+              <div class="counter-label">Months</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="t-days">0</div>
+              <div class="counter-label">Days</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="t-hours">0</div>
+              <div class="counter-label">Hours</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="t-minutes">0</div>
+              <div class="counter-label">Minutes</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="t-seconds">0</div>
+              <div class="counter-label">Seconds</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Countdown -->
+        <div id="hero-countdown" class="mb-4" style="opacity:0;">
+          <p class="font-cinzel text-gold/70 text-xs sm:text-sm tracking-[0.4em] uppercase mb-6">Countdown Until Our Date</p>
+          <div class="flex flex-wrap justify-center gap-3 sm:gap-4" id="countdown-counter">
+            <div class="counter-box">
+              <div class="counter-value" id="c-days">0</div>
+              <div class="counter-label">Days</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="c-hours">0</div>
+              <div class="counter-label">Hours</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="c-minutes">0</div>
+              <div class="counter-label">Minutes</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-value" id="c-seconds">0</div>
+              <div class="counter-label">Seconds</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div id="scroll-indicator" class="absolute bottom-8 left-1/2 -translate-x-1/2" style="opacity:0;">
+        <div class="flex flex-col items-center gap-2 text-gold/40">
+          <span class="font-cormorant text-xs tracking-[0.3em] uppercase">Scroll</span>
+          <div class="w-5 h-8 rounded-full border border-gold/30 flex justify-center pt-1">
+            <div class="w-1 h-2 bg-gold/50 rounded-full" style="animation: scrollBounce 1.5s ease-in-out infinite;"></div>
+          </div>
+        </div>
+      </div>
+      <style>
+        @keyframes scrollBounce {
+          0%, 100% { transform: translateY(0); opacity: 1; }
+          50% { transform: translateY(6px); opacity: 0.3; }
+        }
+      </style>
+    </section>
+
+    <!-- Divider -->
+    <div class="py-8">
+      <div class="section-divider-ornament"><span>𓁹</span></div>
+    </div>
+
+    <!-- ========== PORTRAIT ========== -->
+    <section id="portrait" class="section-papyrus relative py-12 px-4 reveal-section">
+      <div class="ambient-glow" style="width:500px;height:500px;background:rgba(212,175,55,0.06);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+      
+      <div class="relative z-10 max-w-2xl mx-auto text-center">
+        <!-- Pharaonic Frame -->
+        <div class="relative inline-block p-4 rounded-t-full border border-gold/30 bg-pharaoh/60 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-sm">
+          <div class="absolute inset-0 border border-gold/10 rounded-t-full m-2"></div>
+          
+          <!-- Image -->
+          <img src="https://images.unsplash.com/photo-1578660692094-da697dfc1c78?auto=format&fit=crop&w=900&q=80" alt="Our silhouettes at sunset" class="relative z-10 rounded-t-full w-full max-w-md mx-auto object-cover border border-gold/40" style="aspect-ratio: 3/4;">
+          
+          <!-- Subtle corner accents inside frame -->
+          <span class="absolute bottom-4 left-4 text-gold/30 text-xl z-20">𓆣</span>
+          <span class="absolute bottom-4 right-4 text-gold/30 text-xl z-20">𓆣</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="py-8">
+      <div class="section-divider-ornament"><span>𓂀</span></div>
+    </div>
+
+    <!-- ========== HIDDEN MAIN LOCATION ========== -->
+    <section id="main-location" class="section-papyrus hieroglyph-border relative py-20 px-4 reveal-section">
+      <div class="ambient-glow" style="width:400px;height:400px;background:rgba(212,175,55,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+      <div class="relative z-10 max-w-3xl mx-auto text-center">
+        <p class="font-cinzel text-gold/60 text-xs tracking-[0.4em] uppercase mb-4">Our Destination</p>
+        <h2 class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold mb-10 tracking-wider">The Grand Reveal</h2>
+
+        <!-- Locked state -->
+        <div id="main-location-locked" class="locked-card">
+          <div class="text-5xl mb-6">🔒</div>
+          <p class="font-cormorant text-sand/80 text-xl sm:text-2xl italic leading-relaxed">
+            The destination will reveal itself…<br>Time — Not Decided Yet
+          </p>
+          <p class="font-cinzel text-gold/40 text-xs tracking-[0.3em] uppercase mt-6" id="main-location-countdown"></p>
+        </div>
+
+        <!-- Revealed state -->
+        <div id="main-location-revealed" class="hidden">
+          <div class="mb-6 rounded-2xl overflow-hidden border border-gold/20 shadow-2xl map-reveal">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3455.5208077585194!2d31.12186597517353!3d29.99319857494945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14584534984a8ad1%3A0x45764c5bc4ec261a!2sThe%20Grand%20Egyptian%20Museum!5e0!3m2!1sen!2seg!4v1784188635292!5m2!1sen!2seg"
+              width="100%" height="450" style="border:0;border-radius:18px;" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+          <a href="https://maps.app.goo.gl/aQj2s788QpxRjtnS8" target="_blank" rel="noopener" class="glow-btn mt-4">
+            <span>📍</span> Open in Maps
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="py-8">
+      <div class="section-divider-ornament"><span>𓅃</span></div>
+    </div>
+
+    <!-- ========== TIMELINE ========== -->
+    <section id="timeline" class="section-papyrus relative py-20 px-4">
+      <div class="ambient-glow" style="width:600px;height:300px;background:rgba(212,175,55,0.04);top:10%;left:-200px;"></div>
+      <div class="ambient-glow" style="width:500px;height:300px;background:rgba(212,175,55,0.04);bottom:10%;right:-200px;"></div>
+
+      <div class="relative z-10 max-w-5xl mx-auto">
+        <div class="text-center mb-16 reveal-section">
+          <p class="font-cinzel text-gold/60 text-xs tracking-[0.4em] uppercase mb-4">The Journey</p>
+          <h2 class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider">Timeline</h2>
+        </div>
+
+        <!-- Timeline container -->
+        <div class="relative">
+          <div class="timeline-line hidden md:block"></div>
+
+          <!-- Timeline Item 1: Pickup -->
+          <div class="relative flex flex-col md:flex-row items-start mb-16 reveal-section">
+            <div class="md:w-1/2 md:pr-12 timeline-item-left relative ml-12 md:ml-0">
+              <div class="timeline-dot md:hidden"></div>
+              <div class="timeline-card">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">🚗</span>
+                  <h3 class="font-cinzel text-gold text-xl font-semibold tracking-wider">Pickup</h3>
+                </div>
+                <p class="font-cormorant text-sand/70 text-lg flex items-center gap-2">
+                  <span>🕑</span> Not Decided Yet
+                </p>
+                <p class="font-cormorant text-sand/40 text-sm mt-3 italic">Location to be revealed…</p>
+              </div>
+              <div class="timeline-dot hidden md:block"></div>
+            </div>
+            <div class="md:w-1/2"></div>
+          </div>
+
+          <!-- Timeline Item 2: Date Begins -->
+          <div class="relative flex flex-col md:flex-row items-start mb-16 reveal-section">
+            <div class="md:w-1/2"></div>
+            <div class="md:w-1/2 md:pl-12 timeline-item-right relative ml-12 md:ml-0">
+              <div class="timeline-dot"></div>
+              <div class="timeline-card">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">✨</span>
+                  <h3 class="font-cinzel text-gold text-xl font-semibold tracking-wider">Date Begins</h3>
+                </div>
+                <p class="font-cormorant text-sand/70 text-lg flex items-center gap-2">
+                  <span>🕒</span> Not Decided Yet
+                </p>
+                <p class="font-cormorant text-sand/40 text-sm mt-3 italic">The adventure unfolds…</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Item 3: Golden Hour -->
+          <div class="relative flex flex-col md:flex-row items-start mb-16 reveal-section">
+            <div class="md:w-1/2 md:pr-12 timeline-item-left relative ml-12 md:ml-0">
+              <div class="timeline-dot md:hidden"></div>
+              <div class="timeline-card">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">🌅</span>
+                  <h3 class="font-cinzel text-gold text-xl font-semibold tracking-wider">Golden Hour</h3>
+                </div>
+                <p class="font-cormorant text-sand/70 text-lg flex items-center gap-2">
+                  <span>🕔</span> Not Decided Yet
+                </p>
+                <!-- Locked -->
+                <div id="golden-hour-locked" class="mt-4">
+                  <div class="flex items-center gap-2 text-sand/40 text-sm">
+                    <span>🔒</span>
+                    <span class="font-cormorant italic">Location reveals at golden hour…</span>
+                  </div>
+                </div>
+                <!-- Revealed -->
+                <div id="golden-hour-revealed" class="hidden mt-4">
+                  <div class="rounded-xl overflow-hidden border border-gold/20 map-reveal">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3456.0394310922466!2d31.12110287517297!3d29.978296774956867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14584f4f1866201b%3A0x236f20404ca47520!2sBreadfast!5e0!3m2!1sen!2seg!4v1784188807770!5m2!1sen!2seg"
+                      width="100%" height="300" style="border:0;border-radius:12px;" allowfullscreen="" loading="lazy"></iframe>
+                  </div>
+                </div>
+              </div>
+              <div class="timeline-dot hidden md:block"></div>
+            </div>
+            <div class="md:w-1/2"></div>
+          </div>
+
+          <!-- Timeline Item 4: Evening Destination -->
+          <div class="relative flex flex-col md:flex-row items-start reveal-section">
+            <div class="md:w-1/2"></div>
+            <div class="md:w-1/2 md:pl-12 timeline-item-right relative ml-12 md:ml-0">
+              <div class="timeline-dot"></div>
+              <div class="timeline-card">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="text-2xl">🌙</span>
+                  <h3 class="font-cinzel text-gold text-xl font-semibold tracking-wider">Evening Destination</h3>
+                </div>
+                <p class="font-cormorant text-sand/70 text-lg flex items-center gap-2">
+                  <span>🕕</span> Not Decided Yet
+                </p>
+                <!-- Locked -->
+                <div id="evening-locked" class="mt-4">
+                  <div class="flex items-center gap-2 text-sand/40 text-sm">
+                    <span>🔒</span>
+                    <span class="font-cormorant italic">A special place awaits…</span>
+                  </div>
+                </div>
+                <!-- Revealed -->
+                <div id="evening-revealed" class="hidden mt-4">
+                  <a href="https://maps.app.goo.gl/p1MER7wPgXxjCdEM7" target="_blank" rel="noopener"
+                     class="group block rounded-xl border border-gold/20 bg-pharaoh/40 p-6 text-center transition-all hover:border-gold/40 hover:bg-pharaoh/60 map-reveal">
+                    <span class="text-3xl mb-3 block">📍</span>
+                    <p class="font-cinzel text-gold text-lg tracking-wider mb-2">Reveal Location</p>
+                    <p class="font-cormorant text-sand/50 text-sm group-hover:text-sand/70 transition-colors">Tap to open in Google Maps</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="py-8">
+      <div class="section-divider-ornament"><span>𓆣</span></div>
+    </div>
+
+    <!-- ========== DRESS CODE ========== -->
+    <section id="dress-code" class="section-papyrus hieroglyph-border relative py-20 px-4">
+      <div class="ambient-glow" style="width:500px;height:500px;background:rgba(212,175,55,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <div class="text-center mb-16 reveal-section">
+          <p class="font-cinzel text-gold/60 text-xs tracking-[0.4em] uppercase mb-4">Attire</p>
+          <h2 class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider mb-3">Dress Code</h2>
+          <p class="font-cormorant text-sand/60 text-xl italic">Luxury Date Night</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- For Him -->
+          <div class="dress-card">
+            <div class="text-center mb-8">
+              <p class="font-cinzel text-gold text-sm tracking-[0.3em] uppercase">For Him</p>
+            </div>
+            <ul class="space-y-5">
+              <li class="flex items-center gap-4">
+                <span class="text-xl flex-shrink-0">🤍</span>
+                <span class="font-cormorant text-sand/80 text-lg">White linen shirt</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="text-xl flex-shrink-0">🖤</span>
+                <span class="font-cormorant text-sand/80 text-lg">Black tailored trousers</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="text-xl flex-shrink-0">👞</span>
+                <span class="font-cormorant text-sand/80 text-lg">Black loafers</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="text-xl flex-shrink-0">⌚</span>
+                <span class="font-cormorant text-sand/80 text-lg">Elegant watch</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- For Her -->
+          <div class="dress-card">
+            <div class="text-center mb-8">
+              <p class="font-cinzel text-gold text-sm tracking-[0.3em] uppercase">For Her</p>
+            </div>
+            <ul class="space-y-5">
+              <li class="flex items-center gap-4">
+                <span class="text-xl flex-shrink-0">✨</span>
+                <span class="font-cormorant text-sand/80 text-lg">Elegant black or champagne dress</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="text-xl flex-shrink-0">✨</span>
+                <span class="font-cormorant text-sand/80 text-lg">Gold accessories</span>
+              </li>
+              <li class="flex items-center gap-4">
+                <span class="text-xl flex-shrink-0">✨</span>
+                <span class="font-cormorant text-sand/80 text-lg">Nude or black heels</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Divider -->
+    <div class="py-8">
+      <div class="section-divider-ornament"><span>𓃭</span></div>
+    </div>
+
+    <!-- ========== PAPYRUS MESSAGE ========== -->
+    <section id="papyrus-message" class="relative py-20 px-4">
+      <div class="relative z-10 w-full max-w-2xl mx-auto reveal-section">
+        
+        <!-- Papyrus Canvas -->
+        <div class="relative w-full p-10 md:p-16 rounded-md shadow-[0_30px_60px_rgba(0,0,0,0.8)] border-2 border-pharaoh/80">
+          
+          <!-- Papyrus Background Image (User's texture) -->
+          <div class="absolute inset-0 bg-[url('papyrus.png')] bg-cover bg-center bg-no-repeat rounded-md"></div>
+          
+          <!-- Inner Shadow / Vignette for realism -->
+          <div class="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] rounded-md pointer-events-none"></div>
+
+          <!-- Content wrapped to apply ink blend mode -->
+          <div class="relative z-10 flex flex-col items-center justify-center text-center mix-blend-multiply opacity-90">
+            
+            <!-- Hieroglyphics text -->
+            <p id="hiero-text" class="text-pharaoh text-2xl md:text-3xl leading-relaxed tracking-widest break-words transition-opacity duration-700 font-bold">
+              𓇋 𓃭𓅱𓆯𓅂 𓇌𓅱𓅲 𓋴𓄿𓃭𓅓𓄿𓄼<br>𓉔𓄿𓊪𓊪𓇌 𓃊𓈖𓂧 𓄿𓈖𓈖𓇋𓆯𓅂𓂋𓋴𓄿𓂋𓇌<br>𓃊 𓇌𓅂𓄿𓂋𓋴 𓏏𓅱𓎼𓅂𓏏𓉔𓅂𓂋<br>𓄿𓈖𓂧 𓋴𓏏𓇋𓃭𓃭 𓃭𓅱𓄿𓂧𓇋𓈖𓎼<br>𓅲𓈖𓏏𓇋𓃭 𓃏𓂂𓂂𓂂 𓃭𓇋𓈎𓅂 𓊪𓉔𓄿𓂋𓄿𓅱𓉔𓋴.
+            </p>
+
+            <!-- Translated text (hidden by default) -->
+            <p id="translated-text" class="hidden text-pharaoh font-cormorant text-2xl md:text-3xl font-bold italic leading-loose break-words transition-opacity duration-700">
+              I love you Salma,<br>Happy 2nd Anniversary<br>2 years together<br>and still loading until 7000 like Pharaohs.
+            </p>
+
+          </div>
+
+          <!-- Translate Button (placed outside multiply blend to remain bright) -->
+          <div class="relative z-20 mt-12 text-center">
+            <button onclick="toggleTranslation()" class="px-8 py-3 bg-[#111111] text-gold font-cinzel text-sm uppercase tracking-[0.2em] rounded-full hover:bg-[#222222] transition-colors border-2 border-gold/40 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+              Translate Inscription
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <script>
+        function toggleTranslation() {
+          const hiero = document.getElementById('hiero-text');
+          const trans = document.getElementById('translated-text');
+          
+          if (hiero.classList.contains('hidden')) {
+            hiero.classList.remove('hidden');
+            trans.classList.add('hidden');
+          } else {
+            hiero.classList.add('hidden');
+            trans.classList.remove('hidden');
+          }
+        }
+      </script>
+    </section>
+
+    <!-- Divider -->
+    <div class="py-8">
+      <div class="section-divider-ornament"><span>𓋴</span></div>
+    </div>
+
+    <!-- ========== SPOTIFY ========== -->
+    <section id="spotify" class="section-papyrus relative py-20 px-4">
+      <div class="ambient-glow" style="width:400px;height:400px;background:rgba(212,175,55,0.05);top:50%;right:-100px;"></div>
+
+      <div class="relative z-10 max-w-2xl mx-auto text-center">
+        <div class="mb-12 reveal-section">
+          <p class="font-cinzel text-gold/60 text-xs tracking-[0.4em] uppercase mb-4">Listen</p>
+          <h2 class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider mb-3">Our Song</h2>
+          <p class="font-cormorant text-sand/50 text-lg italic">Press play and feel the moment.</p>
+        </div>
+
+        <div class="reveal-section rounded-2xl overflow-hidden border border-gold/20 shadow-2xl bg-pharaoh/50 p-2">
+          <iframe style="border-radius:12px; background:transparent;"
+            src="https://open.spotify.com/embed/track/1Akkoe3WoftwimUnAMSvFR?utm_source=generator&theme=0"
+            width="100%" height="152" frameborder="0"
+            allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="py-8">
+      <div class="section-divider-ornament"><span>𓂀</span></div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer id="footer" class="section-papyrus hieroglyph-border relative py-24 px-4">
+      <div class="ambient-glow" style="width:600px;height:200px;background:rgba(212,175,55,0.04);bottom:0;left:50%;transform:translateX(-50%);"></div>
+
+      <div class="relative z-10 max-w-3xl mx-auto text-center reveal-section">
+        <p class="font-cormorant text-sand/60 text-xl sm:text-2xl italic leading-relaxed mb-12">
+          "Every great story deserves a timeless chapter."
+        </p>
+
+        <div class="flex flex-col items-center gap-4">
+          <span class="text-3xl text-gold">✨</span>
+          <p class="font-cinzel text-gold text-sm tracking-[0.3em]">Youssef &amp; Salma — Since 14.02.2025</p>
+          <p class="font-cormorant text-sand/40 text-sm italic tracking-widest mb-2">Forever loading…</p>
+
+        </div>
+
+        <!-- Decorative hieroglyphs -->
+        <div class="mt-16 flex items-center justify-center gap-4 text-gold/10 text-lg">
+          <span>𓁹</span>
+          <span>𓂀</span>
+          <span>𓃭</span>
+          <span>𓅃</span>
+          <span>𓆣</span>
+          <span>𓇋</span>
+          <span>𓈖</span>
+          <span>𓉐</span>
+          <span>𓊝</span>
+          <span>𓋴</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ========== SECRET SEAL ========== -->
+    <section id="secret-seal-section">
+      <div class="section-divider-ornament" style="margin-bottom: 32px;">
+        <span style="color:rgba(212,175,55,0.15);">𓊝</span>
+      </div>
+
+      <div id="ancient-seal" onclick="activateSeal()" role="button" aria-label="Reveal secret message" tabindex="0">
+        <div class="seal-ring"></div>
+        <div class="seal-ring-outer"></div>
+        <span class="seal-icon">𓆣</span>
+      </div>
+
+      <p class="seal-hint">tap the ancient seal</p>
+    </section>
+
+    <!-- ========== SECRET PAPYRUS SCROLL ========== -->
+    <div id="papyrus-scroll-container">
+      <div class="papyrus-golden-backlight" id="papyrus-backlight"></div>
+      <div id="dust-layer"></div>
+
+      <div class="papyrus-scroll" id="the-papyrus-scroll">
+        <div class="papyrus-burnt-edge-top"></div>
+        <div class="papyrus-burnt-edge-bottom"></div>
+        <div class="papyrus-scratches" id="papyrus-scratches"></div>
+
+        <!-- Side hieroglyphs -->
+        <div class="papyrus-side-glyphs left">
+          <span>𓁹</span><span>𓂀</span><span>𓆣</span><span>☥</span><span>𓅃</span>
+          <span>𓇋</span><span>𓊝</span><span>𓋴</span><span>𓏏</span><span>𓆸</span>
+        </div>
+        <div class="papyrus-side-glyphs right">
+          <span>𓆸</span><span>𓏏</span><span>𓋴</span><span>𓊝</span><span>𓇋</span>
+          <span>𓅃</span><span>☥</span><span>𓆣</span><span>𓂀</span><span>𓁹</span>
+        </div>
+
+        <!-- Top decoration -->
+        <div class="papyrus-decor-band">
+          <span>☥</span><span>𓂀</span><span>𓆸</span><span>𓆣</span><span>𓇋</span><span>☥</span>
+        </div>
+        <div class="papyrus-gold-line"></div>
+
+        <!-- Secret Letter -->
+        <div class="secret-letter" id="secret-letter">
+          <p>To my Salma,</p>
+          <p>Two years ago you said yes to a first date.</p>
+          <p>Tonight, let me take you back to where our story began.</p>
+          <p class="signature">Forever yours, Youssef ❤️</p>
+        </div>
+
+        <!-- Bottom decoration -->
+        <div class="papyrus-gold-line"></div>
+        <div class="papyrus-decor-band">
+          <span>☥</span><span>𓆣</span><span>𓆸</span><span>𓂀</span><span>𓇋</span><span>☥</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // ==========================================
+    // LUXON SETUP
+    // ==========================================
+    const { DateTime, Duration, Interval } = luxon;
+
+    // Key dates
+    const ANNIVERSARY = DateTime.local(2025, 2, 14, 0, 0, 0);
+    const DATE_DAY     = DateTime.local(2027, 2, 14, 0, 0, 0);
+
+    // Reveal thresholds (local time)
+    const REVEAL_MAIN    = DateTime.local(2027, 2, 14, 11, 0, 0); // 11:00 AM
+    const REVEAL_GOLDEN  = DateTime.local(2027, 2, 14, 17, 0, 0); // 5:00 PM
+    const REVEAL_EVENING = DateTime.local(2027, 2, 14, 18, 0, 0); // 6:00 PM
+
+    // ==========================================
+    // COUNTERS
+    // ==========================================
+    function updateCounters() {
+      const now = DateTime.local();
+
+      // Together counter
+      const diff = now.diff(ANNIVERSARY, ['years', 'months', 'days', 'hours', 'minutes', 'seconds']).toObject();
+      document.getElementById('t-years').textContent   = Math.floor(diff.years   || 0);
+      document.getElementById('t-months').textContent  = Math.floor(diff.months  || 0);
+      document.getElementById('t-days').textContent    = Math.floor(diff.days    || 0);
+      document.getElementById('t-hours').textContent   = Math.floor(diff.hours   || 0);
+      document.getElementById('t-minutes').textContent = Math.floor(diff.minutes || 0);
+      document.getElementById('t-seconds').textContent = Math.floor(diff.seconds || 0);
+
+      // Countdown
+      if (now < DATE_DAY) {
+        const cd = DATE_DAY.diff(now, ['days', 'hours', 'minutes', 'seconds']).toObject();
+        document.getElementById('c-days').textContent    = Math.floor(cd.days    || 0);
+        document.getElementById('c-hours').textContent   = Math.floor(cd.hours   || 0);
+        document.getElementById('c-minutes').textContent = Math.floor(cd.minutes || 0);
+        document.getElementById('c-seconds').textContent = Math.floor(cd.seconds || 0);
+      } else {
+        document.getElementById('c-days').textContent    = '0';
+        document.getElementById('c-hours').textContent   = '0';
+        document.getElementById('c-minutes').textContent = '0';
+        document.getElementById('c-seconds').textContent = '0';
+
+        // Replace countdown label
+        const label = document.querySelector('#hero-countdown .font-cinzel');
+        if (label) label.textContent = '✨ The Day Has Arrived ✨';
+      }
+    }
+
+    setInterval(updateCounters, 1000);
+    updateCounters();
+
+    // ==========================================
+    // LOCATION REVEALS
+    // ==========================================
+    function checkReveals() {
+      const now = DateTime.local();
+
+      // Main Location (2:00 PM)
+      if (now >= REVEAL_MAIN) {
+        document.getElementById('main-location-locked').classList.add('hidden');
+        document.getElementById('main-location-revealed').classList.remove('hidden');
+      } else {
+        const until = REVEAL_MAIN.diff(now, ['days', 'hours', 'minutes', 'seconds']).toObject();
+        const el = document.getElementById('main-location-countdown');
+        if (el) {
+          el.textContent = `Reveals in ${Math.floor(until.days || 0)}d ${Math.floor(until.hours || 0)}h ${Math.floor(until.minutes || 0)}m ${Math.floor(until.seconds || 0)}s`;
+        }
+      }
+
+      // Golden Hour (5:00 PM)
+      if (now >= REVEAL_GOLDEN) {
+        document.getElementById('golden-hour-locked').classList.add('hidden');
+        document.getElementById('golden-hour-revealed').classList.remove('hidden');
+      }
+
+      // Evening (6:00 PM)
+      if (now >= REVEAL_EVENING) {
+        document.getElementById('evening-locked').classList.add('hidden');
+        document.getElementById('evening-revealed').classList.remove('hidden');
+      }
+    }
+
+    setInterval(checkReveals, 1000);
+    checkReveals();
+
+    // ==========================================
+    // GOLDEN PARTICLES
+    // ==========================================
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animFrameId;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = document.documentElement.scrollHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = -(Math.random() * 0.4 + 0.1);
+        this.opacity = Math.random() * 0.5 + 0.1;
+        this.fadeDirection = Math.random() > 0.5 ? 1 : -1;
+        this.life = 0;
+        this.maxLife = Math.random() * 600 + 200;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life++;
+
+        // Gentle fade
+        this.opacity += this.fadeDirection * 0.002;
+        if (this.opacity > 0.6) this.fadeDirection = -1;
+        if (this.opacity < 0.05) this.fadeDirection = 1;
+
+        // Reset if out of bounds or expired
+        if (this.y < -10 || this.x < -10 || this.x > canvas.width + 10 || this.life > this.maxLife) {
+          this.reset();
+          this.y = canvas.height + 10;
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+        ctx.fill();
+
+        // Small glow
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity * 0.15})`;
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      resizeCanvas();
+      const count = Math.min(Math.floor(window.innerWidth / 12), 120);
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      animFrameId = requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+    });
+
+    // Resize canvas on scroll to cover full page
+    const resizeObserver = new ResizeObserver(() => {
+      resizeCanvas();
+    });
+    resizeObserver.observe(document.body);
+
+    initParticles();
+    animateParticles();
+
+    // ==========================================
+    // GSAP ANIMATIONS
+    // ==========================================
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Loading screen
+    window.addEventListener('load', () => {
+      const tl = gsap.timeline();
+
+      tl.to('#loading-screen', {
+        delay: 2.2,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          document.getElementById('loading-screen').classList.add('hidden');
+        }
+      });
+
+      tl.to('#main-content', {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power2.out',
+      }, '-=0.3');
+
+      // Hero animations
+      tl.to('#hero-title', {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+      }, '-=0.2');
+
+      tl.from('#hero-title', {
+        y: 40,
+        duration: 1.2,
+        ease: 'power3.out',
+      }, '<');
+
+      tl.to('#hero-subtitle', {
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.6');
+
+      tl.from('#hero-subtitle', {
+        y: 20,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '<');
+
+      tl.to('#hero-since', {
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+      }, '-=0.4');
+
+      tl.from('#hero-since', {
+        scale: 0.9,
+        duration: 0.6,
+        ease: 'back.out(1.7)',
+      }, '<');
+
+      tl.to('#hero-together', {
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.3');
+
+      tl.from('#hero-together', {
+        y: 30,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '<');
+
+      tl.to('#hero-countdown', {
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.4');
+
+      tl.from('#hero-countdown', {
+        y: 30,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '<');
+
+      tl.to('#scroll-indicator', {
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+      }, '-=0.2');
+
+      // Floating hieroglyphs
+      gsap.utils.toArray('.hieroglyph-float').forEach((el, i) => {
+        gsap.to(el, {
+          opacity: 0.08,
+          duration: 2,
+          delay: i * 0.3,
+          ease: 'power2.inOut',
+        });
+        gsap.to(el, {
+          y: `+=${20 + Math.random() * 30}`,
+          x: `+=${(Math.random() - 0.5) * 20}`,
+          duration: 4 + Math.random() * 3,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          delay: i * 0.5,
+        });
+      });
+    });
+
+    // Scroll-triggered reveals
+    gsap.utils.toArray('.reveal-section').forEach((section) => {
+      gsap.to(section, {
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+          once: true,
+        },
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+      });
+    });
+
+    // Counter box stagger animation
+    ScrollTrigger.batch('.counter-box', {
+      onEnter: (elements) => {
+        gsap.from(elements, {
+          scale: 0.8,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'back.out(1.7)',
+        });
+      },
+      once: true,
+    });
+
+    // Timeline cards
+    ScrollTrigger.batch('.timeline-card', {
+      onEnter: (elements) => {
+        gsap.from(elements, {
+          x: (index, el) => {
+            return el.closest('.timeline-item-left') ? -60 :
+                   el.closest('.timeline-item-right') ? 60 : 0;
+          },
+          opacity: 0,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'power3.out',
+        });
+      },
+      once: true,
+    });
+
+    // Dress code cards
+    ScrollTrigger.batch('.dress-card', {
+      onEnter: (elements) => {
+        gsap.from(elements, {
+          y: 50,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: 'power3.out',
+        });
+      },
+      once: true,
+    });
+
+    // Hide scroll indicator on scroll
+    ScrollTrigger.create({
+      trigger: '#hero',
+      start: 'bottom 90%',
+      onEnter: () => {
+        gsap.to('#scroll-indicator', { opacity: 0, duration: 0.4 });
+      },
+    });
+
+    // ==========================================
+    // SECRET PAPYRUS SCROLL
+    // ==========================================
+    let sealActivated = false;
+
+    function activateSeal() {
+      if (sealActivated) return;
+      sealActivated = true;
+
+      const seal = document.getElementById('ancient-seal');
+      const hint = document.querySelector('.seal-hint');
+      const scrollContainer = document.getElementById('papyrus-scroll-container');
+      const backlight = document.getElementById('papyrus-backlight');
+      const letterLines = document.querySelectorAll('#secret-letter p');
+
+      generateScratchMarks();
+      generateDustParticles();
+
+      const tl = gsap.timeline();
+
+      // 1. Seal glows intensely
+      tl.to(seal.querySelector('.seal-icon'), {
+        filter: 'drop-shadow(0 0 50px rgba(212,175,55,1)) drop-shadow(0 0 90px rgba(212,175,55,0.6))',
+        scale: 1.25,
+        duration: 1,
+        ease: 'power2.in',
+      });
+
+      // 2. Crack shake
+      tl.to(seal, {
+        x: '+=3',
+        duration: 0.05,
+        yoyo: true,
+        repeat: 10,
+        ease: 'none',
+      });
+
+      // 3. Stone fragments burst
+      tl.add(() => { createStoneFragments(seal); });
+
+      // 4. Seal shatters
+      tl.to(seal.querySelector('.seal-icon'), {
+        scale: 1.8,
+        opacity: 0,
+        filter: 'drop-shadow(0 0 120px rgba(212,175,55,1))',
+        duration: 0.6,
+        ease: 'power2.out',
+      }, '+=0.15');
+
+      tl.to([seal.querySelector('.seal-ring'), seal.querySelector('.seal-ring-outer')], {
+        scale: 2.5,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+      }, '<');
+
+      tl.to(hint, { opacity: 0, duration: 0.3 }, '<');
+
+      // 5. Papyrus reveal
+      tl.set(seal, { pointerEvents: 'none' });
+      tl.to(scrollContainer, {
+        maxHeight: 2000,
+        opacity: 1,
+        duration: 2,
+        ease: 'power2.inOut',
+        onUpdate: () => { resizeCanvas(); },
+      });
+
+      // 6. Golden backlight
+      tl.to(backlight, {
+        opacity: 1,
+        duration: 1.4,
+        ease: 'power2.out',
+      }, '-=1.5');
+
+      // 7. Dust particles drift in
+      tl.add(() => {
+        document.querySelectorAll('.dust-particle').forEach((p, i) => {
+          gsap.to(p, { opacity: parseFloat(p.dataset.maxOpacity || 0.4), duration: 1, delay: i * 0.04 });
+          gsap.to(p, {
+            x: '+=' + p.dataset.dx,
+            y: '+=' + p.dataset.dy,
+            duration: parseFloat(p.dataset.dur || 4),
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+            delay: i * 0.08,
+          });
+        });
+      }, '-=1');
+
+      // 8. Letter lines fade in with handwriting feel
+      letterLines.forEach((line, i) => {
+        tl.to(line, {
+          opacity: 0.92,
+          duration: 1.1,
+          ease: 'power2.out',
+        }, i === 0 ? '-=0.4' : '-=0.55');
+
+        tl.from(line, {
+          y: 10,
+          x: (Math.random() - 0.5) * 5,
+          rotation: (Math.random() - 0.5) * 1,
+          duration: 1.1,
+          ease: 'power2.out',
+        }, '<');
+      });
+
+      // Scroll into view
+      tl.add(() => {
+        scrollContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, '-=0.3');
+
+      // Refresh layout
+      tl.add(() => {
+        resizeCanvas();
+        ScrollTrigger.refresh();
+      }, '+=0.5');
+    }
+
+    function createStoneFragments(sealEl) {
+      const rect = sealEl.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const types = ['gold', 'stone', 'dark'];
+
+      for (let i = 0; i < 18; i++) {
+        const frag = document.createElement('div');
+        frag.className = 'stone-fragment ' + types[i % 3];
+        const sz = 3 + Math.random() * 9;
+        Object.assign(frag.style, {
+          width: sz + 'px',
+          height: sz + 'px',
+          left: cx + 'px',
+          top: cy + 'px',
+          borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+        });
+        document.body.appendChild(frag);
+
+        const angle = (i / 18) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+        const dist = 50 + Math.random() * 130;
+
+        gsap.set(frag, { opacity: 0.9 });
+        gsap.to(frag, {
+          x: Math.cos(angle) * dist,
+          y: Math.sin(angle) * dist + 150 + Math.random() * 80,
+          rotation: Math.random() * 720 - 360,
+          duration: 1.0 + Math.random() * 0.5,
+          ease: 'power2.out',
+          onComplete: () => frag.remove(),
+        });
+        gsap.to(frag, { opacity: 0, duration: 0.4, delay: 0.7 + Math.random() * 0.3 });
+      }
+    }
+
+    function generateScratchMarks() {
+      const el = document.getElementById('papyrus-scratches');
+      for (let i = 0; i < 15; i++) {
+        const s = document.createElement('div');
+        s.className = 'scratch-mark';
+        Object.assign(s.style, {
+          left: (8 + Math.random() * 84) + '%',
+          top: (5 + Math.random() * 90) + '%',
+          width: (15 + Math.random() * 55) + 'px',
+          height: (0.5 + Math.random() * 1.5) + 'px',
+          transform: 'rotate(' + (Math.random() * 50 - 25) + 'deg)',
+        });
+        el.appendChild(s);
+      }
+    }
+
+    function generateDustParticles() {
+      const el = document.getElementById('dust-layer');
+      for (let i = 0; i < 22; i++) {
+        const d = document.createElement('div');
+        d.className = 'dust-particle';
+        const sz = 2 + Math.random() * 5;
+        const alpha = 0.25 + Math.random() * 0.35;
+        Object.assign(d.style, {
+          width: sz + 'px',
+          height: sz + 'px',
+          left: (3 + Math.random() * 94) + '%',
+          top: (5 + Math.random() * 90) + '%',
+          background: 'radial-gradient(circle, rgba(212,175,55,' + alpha + ') 0%, transparent 70%)',
+        });
+        d.dataset.dx = ((Math.random() - 0.5) * 45).toFixed(1);
+        d.dataset.dy = ((Math.random() - 0.5) * 35).toFixed(1);
+        d.dataset.dur = (3 + Math.random() * 5).toFixed(1);
+        d.dataset.maxOpacity = (0.25 + Math.random() * 0.45).toFixed(2);
+        el.appendChild(d);
+      }
+    }
+
+    // Keyboard accessibility for seal
+    const sealEl = document.getElementById('ancient-seal');
+    if (sealEl) {
+      sealEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateSeal(); }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -2,226 +2,361 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Memora — Premium digital invitation websites for weddings, engagements, henna nights, birthdays and more. Professional designs crafted for your special day.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Memora — premium digital invitations for weddings, engagements, henna nights, birthdays, gender reveals, bachelorettes and dates. See every design live, personalise it and share one link with your guests.">
+  <meta name="theme-color" content="#faf8f6">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Memora">
+  <meta property="og:title" content="Memora — Premium Digital Invitations">
+  <meta property="og:description" content="Where Your Story, Forever Remembered. Digital invitations for weddings, engagements, henna nights, birthdays and more — see them live, then make them yours.">
+  <meta property="og:image" content="https://memora-store.vercel.app/images/logo.jpeg">
   <title>Memora — Premium Digital Invitations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://dwsltglmmatbqtgliygd.supabase.co" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap">
   <link rel="stylesheet" href="assets/css/premium.css">
+  <link rel="preload" as="image" href="images/hero/authentic.webp" type="image/webp" fetchpriority="high">
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
   <script src="assets/js/i18n.js"></script>
 </head>
-<body>
+<body class="home">
+  <a class="skip-link" href="#main" data-i18n="common.skip">Skip to content</a>
+
   <!-- Navigation -->
-  <nav class="navbar" id="navbar">
+  <header class="navbar" id="navbar">
     <div class="container">
       <a class="nav-brand" href="index.html">
-        <img src="images/logo.jpeg" alt="Memora Logo">
+        <img src="images/logo.jpeg" alt="Memora" width="40" height="40">
         <span>Memora</span>
       </a>
 
-      <div class="nav-links" id="nav-links">
-        <a href="#wedding" data-i18n="nav.wedding">Wedding</a>
-        <a href="#moments" data-i18n="nav.moments">More Moments</a>
-        <a href="#bundles" data-i18n="nav.bundles">Bundles</a>
-        <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
-        <a href="#faq" data-i18n="nav.faq">FAQ</a>
-        <a href="order-form.html" class="btn btn-primary btn-sm" data-i18n="nav.startOrder">Start Order</a>
+      <nav class="nav-links" id="nav-links" aria-label="Main" data-i18n-aria="nav.main">
+        <a href="#top" data-nav="home" data-i18n="nav.home">Home</a>
+        <a href="#wedding" data-nav="wedding" data-i18n="nav.wedding">Wedding</a>
+        <a href="#moments" data-nav="occasions" data-i18n="nav.occasions">Occasions</a>
+        <a href="#bundles" data-nav="bundles" data-i18n="nav.bundles">Bundles</a>
+        <a href="#addons" data-nav="addons" data-i18n="nav.addons">Add-ons</a>
+        <a href="#faq" data-nav="faq" data-i18n="nav.faq">FAQ</a>
+        <a href="order-form.html" class="btn btn-primary nav-menu-cta" data-i18n="nav.startOrder">Start Order</a>
+      </nav>
+
+      <div class="nav-right">
+        <span class="lang-switch" data-lang-switch></span>
+        <a href="order-form.html" class="btn btn-primary btn-sm nav-cta" data-i18n="nav.startOrder">Start Order</a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" data-i18n-aria="nav.menu" aria-controls="nav-links" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
-
-      <div class="nav-right"><span class="lang-switch" data-lang-switch></span><button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button></div>
     </div>
-  </nav>
+  </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-particles" id="hero-particles"></div>
-    <div class="container">
-      <div class="hero-content">
-        <img src="images/logo.jpeg" alt="Memora Logo" class="hero-logo">
-        <span class="hero-badge" data-i18n="hero.badge">✨ Premium Digital Invitations</span>
-        <h1 class="hero-title">
-          <span data-i18n="hero.title1">Your Love Story,</span><br>
-          <span class="highlight" data-i18n="hero.title2">Beautifully Digital</span>
-        </h1>
-        <p class="hero-description" data-i18n="hero.description">
-          Premium invitation websites for weddings, engagements, henna nights and every moment in between. Handcrafted designs, instant delivery, lifetime access.
-        </p>
-        <div class="hero-cta">
-          <a href="#wedding" class="btn btn-primary btn-lg">
-            <span class="btn-icon" data-icon="wedding"></span>
-            <span data-i18n="hero.explore">Explore Designs</span>
-          </a>
-          <a href="order-form.html" class="btn btn-secondary btn-lg" data-i18n="hero.start">Start Your Order</a>
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top" data-spy="home" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="hero-slogan"><span class="hero-slogan-line" aria-hidden="true"></span><span data-i18n="brand.slogan">Where Your Story, Forever Remembered</span></p>
+          <h1 class="hero-title" id="hero-title">
+            <span data-i18n="hero.titleA">Digital invitations</span>
+            <span class="highlight" data-i18n="hero.titleB">for every moment you celebrate</span>
+          </h1>
+          <p class="hero-description" data-i18n="hero.lead">Personalised invitation websites your guests open on any phone — with your names, date, venue and a live countdown. Add music, photos or RSVP whenever you like.</p>
+
+          <div class="hero-occasions">
+            <span class="hero-occasions-label" data-i18n="hero.occasionsLabel">Invitations for</span>
+            <ul>
+              <li data-occasion="wedding"><a href="#demos" data-demo-filter="wedding"><span data-icon="wedding"></span><span data-i18n="occasions.wedding">Wedding</span></a></li>
+              <li data-occasion="engagement"><a href="#demos" data-demo-filter="engagement"><span data-icon="engagement"></span><span data-i18n="occasions.engagement">Engagement</span></a></li>
+              <li data-occasion="henna"><a href="#demos" data-demo-filter="henna"><span data-icon="henna"></span><span data-i18n="occasions.henna">Henna</span></a></li>
+              <li data-occasion="birthday"><a href="#demos" data-demo-filter="birthday"><span data-icon="birthday"></span><span data-i18n="occasions.birthday">Birthday</span></a></li>
+              <li data-occasion="gender-reveal"><a href="#demos" data-demo-filter="gender-reveal"><span data-icon="gender-reveal"></span><span data-i18n="occasions.gender-reveal">Gender Reveal</span></a></li>
+              <li data-occasion="bachelorette"><a href="#demos" data-demo-filter="bachelorette"><span data-icon="bachelorette"></span><span data-i18n="occasions.bachelorette">Bachelorette</span></a></li>
+              <li data-occasion="date"><a href="#demos" data-demo-filter="date"><span data-icon="date"></span><span data-i18n="occasions.date">Date</span></a></li>
+              <li data-occasion="custom"><a href="#custom"><span data-icon="custom"></span><span data-i18n="occasions.custom">Custom</span></a></li>
+            </ul>
+          </div>
+
+          <div class="hero-cta">
+            <a href="#wedding" class="btn btn-primary btn-lg"><span data-i18n="hero.ctaExplore">Explore Invitations</span><span class="btn-glyph flip-rtl" data-icon="arrow"></span></a>
+            <a href="#demos" class="btn btn-secondary btn-lg"><span class="btn-glyph" data-icon="play"></span><span data-i18n="hero.ctaDemos">View Live Demos</span></a>
+          </div>
+
+          <ul class="hero-proof">
+            <li><span data-icon="globe"></span><span data-i18n="hero.proof1">English &amp; Arabic</span></li>
+            <li><span data-icon="device"></span><span data-i18n="hero.proof2">Designed for phones</span></li>
+            <li><span data-icon="share"></span><span data-i18n="hero.proof3">One link to share</span></li>
+            <li class="hero-from" id="hero-from" hidden><span data-icon="tag"></span><span><span data-i18n="hero.from">Invitations from</span> <strong id="hero-from-price"></strong></span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual" role="img" aria-label="Examples of Memora invitations on a phone" data-i18n-aria="hero.visualLabel">
+          <div class="hero-glow" aria-hidden="true"></div>
+          <figure class="phone phone--side phone--start" aria-hidden="true">
+            <picture><source srcset="images/hero/engagement.webp" type="image/webp"><img src="images/hero/engagement.jpg" alt="" width="540" height="1169" loading="lazy" decoding="async"></picture>
+          </figure>
+          <figure class="phone phone--main" aria-hidden="true">
+            <picture><source srcset="images/hero/authentic.webp" type="image/webp"><img src="images/hero/authentic.jpg" alt="" width="540" height="1169" fetchpriority="high" decoding="async"></picture>
+          </figure>
+          <figure class="phone phone--side phone--end" aria-hidden="true">
+            <picture><source srcset="images/hero/bachelorette.webp" type="image/webp"><img src="images/hero/bachelorette.jpg" alt="" width="540" height="1169" loading="lazy" decoding="async"></picture>
+          </figure>
+          <span class="hero-tag hero-tag--a" aria-hidden="true"><span data-icon="countdown"></span><span data-i18n="hero.tagCountdown">Live countdown</span></span>
+          <span class="hero-tag hero-tag--b" aria-hidden="true"><span data-icon="location"></span><span data-i18n="hero.tagLocation">Venue &amp; map</span></span>
+          <span class="hero-tag hero-tag--c" aria-hidden="true"><span data-icon="rsvp"></span><span data-i18n="hero.tagRsvp">RSVP replies</span></span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Category navigation -->
-  <nav class="category-nav" id="category-nav" aria-label="Browse by occasion">
-    <div class="container">
-      <div class="category-nav-scroll">
-        <a href="#wedding" class="cat-link active" data-cat="wedding"><span class="cat-icon" data-icon="wedding"></span><span data-i18n="nav.wedding">Wedding</span></a>
-        <a href="#moments" class="cat-link" data-cat="moments"><span class="cat-icon" data-icon="date"></span><span data-i18n="nav.moments">Other Occasions</span></a>
-        <a href="#bundles" class="cat-link" data-cat="bundles"><span class="cat-icon" data-icon="bundle"></span><span data-i18n="nav.bundles">Bundles</span></a>
-        <a href="#custom" class="cat-link" data-cat="custom"><span class="cat-icon" data-icon="custom"></span><span data-i18n="common.badge.custom">Custom</span></a>
-        <a href="#pricing" class="cat-link" data-cat="pricing"><span class="cat-icon" data-icon="tag"></span><span data-i18n="nav.pricing">Pricing</span></a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Wedding (flagship) -->
-  <section class="section section-bg-white section-wedding" id="wedding">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow" data-i18n="sections.weddingEyebrow">Our signature collection</span>
-        <h2 data-i18n="sections.weddingTitle">Wedding Invitations</h2>
-        <p data-i18n="sections.weddingSub">Our flagship invitation websites. Choose Standard or Premium, then the design you love.</p>
-      </div>
-      <div class="wedding-grid" id="wedding-grid">
-        <p class="catalog-loading" data-i18n="common.loading">Loading…</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Other Occasions -->
-  <section class="section section-bg-light" id="moments">
-    <div class="container">
-      <div class="section-header">
-        <h2 data-i18n="sections.momentsTitle">Other Occasions</h2>
-        <p data-i18n="sections.momentsSub">Elegant digital invitations for engagements, henna nights, birthdays and more.</p>
-      </div>
-      <div class="occasion-grid" id="moments-grid">
-        <p class="catalog-loading" data-i18n="common.loading">Loading…</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bundles -->
-  <section class="section section-bg-white" id="bundles">
-    <div class="container">
-      <div class="section-header">
-        <h2 data-i18n="sections.bundlesTitle">Bundles</h2>
-        <p data-i18n="sections.bundlesSub">Combine invitations and get a better price on the total.</p>
-      </div>
-      <div class="bundle-grid" id="bundles-grid">
-        <p class="catalog-loading" data-i18n="common.loading">Loading…</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Price List -->
-  <section class="section section-bg-gray" id="pricing">
-    <div class="container">
-      <div class="section-header">
-        <h2 data-i18n="sections.pricingTitle">Price List</h2>
-        <p data-i18n="sections.pricingSub">Simple, transparent pricing. Pick a base invitation, then add only the extras you want.</p>
-      </div>
-      <div class="price-panels">
-        <div class="price-panel animate-on-scroll">
-          <span class="price-tag" data-i18n="sections.baseTitle">Base Invitations</span>
-          <h3 data-i18n="sections.baseTitle">Base Invitations</h3>
-          <p data-i18n="sections.baseSub">The price of the invitation itself. Location and countdown are always included.</p>
-          <div id="price-list-base"></div>
+    <!-- Live demo showcase -->
+    <section class="section section-demos" id="demos" data-spy="home" aria-labelledby="demos-title">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <span class="section-eyebrow" data-i18n="demos.eyebrow">See them live</span>
+            <h2 id="demos-title" data-i18n="demos.title">Live Invitation Demos</h2>
+            <p data-i18n="demos.sub">Open any invitation exactly as your guests will see it — then choose your favourite.</p>
+          </div>
+          <ol class="flow-steps" aria-label="How ordering works" data-i18n-aria="demos.flowLabel">
+            <li><span class="flow-icon" data-icon="eye"></span><span data-i18n="demos.flow1">See the invitation</span></li>
+            <li><span class="flow-icon" data-icon="heart"></span><span data-i18n="demos.flow2">Choose the design</span></li>
+            <li><span class="flow-icon" data-icon="palette"></span><span data-i18n="demos.flow3">Customize</span></li>
+            <li><span class="flow-icon" data-icon="check"></span><span data-i18n="demos.flow4">Order</span></li>
+          </ol>
         </div>
-        <div class="price-panel animate-on-scroll">
-          <span class="price-tag alt" data-i18n="sections.addonsTitle">Optional Add-ons</span>
-          <h3 data-i18n="sections.addonsTitle">Optional Add-ons</h3>
-          <p data-i18n="sections.addonsSub">Add any of these to any invitation. Free items are included at no cost.</p>
-          <div id="price-list-addons"></div>
-          <div class="price-note" data-i18n="product.addonsNote">Add-ons are selected in the order form. Prices are added to the base price.</div>
+
+        <div class="demo-filters" id="demo-filters" role="group" aria-label="Filter demos by occasion" data-i18n-aria="demos.filterLabel"></div>
+
+        <div class="rail">
+          <button class="rail-btn rail-btn--prev" type="button" data-rail="prev" aria-controls="demo-rail" aria-label="Previous" data-i18n-aria="common.previous"><span data-icon="chevron-left"></span></button>
+          <div class="demo-rail" id="demo-rail" aria-busy="true">
+            <div class="skeleton skeleton-tile" aria-hidden="true"></div>
+            <div class="skeleton skeleton-tile" aria-hidden="true"></div>
+            <div class="skeleton skeleton-tile" aria-hidden="true"></div>
+            <p class="sr-only" data-i18n="common.loading">Loading…</p>
+          </div>
+          <button class="rail-btn rail-btn--next" type="button" data-rail="next" aria-controls="demo-rail" aria-label="Next" data-i18n-aria="common.next"><span data-icon="chevron-right"></span></button>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Custom Invitation -->
-  <section class="section section-bg-white" id="custom">
-    <div class="container">
-      <div class="custom-banner animate-on-scroll">
-        <div class="custom-banner-icon" data-icon="custom" aria-hidden="true"></div>
-        <div>
-          <span class="section-eyebrow" data-i18n="sections.customEyebrow">Bespoke service</span>
-          <h2 data-i18n="sections.customTitle">Custom Invitation</h2>
-          <p class="custom-lead" data-i18n="sections.customSub">Tell us what you imagine. We’ll build it around your story.</p>
-          <p style="margin-top: 12px; font-size: 14px;" data-i18n="sections.customNote">800 EGP is the starting price. The final price depends on the sections, animations and complexity you request.</p>
+    <!-- Wedding (flagship) -->
+    <section class="section section-wedding" id="wedding" data-spy="wedding" aria-labelledby="wedding-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow" data-i18n="sections.weddingEyebrow">Our signature collection</span>
+          <h2 id="wedding-title" data-i18n="sections.weddingTitle">Wedding Invitations</h2>
+          <p data-i18n="home.weddingSub">Choose Standard or Premium, then pick the design you love. Every design has a live demo.</p>
         </div>
-        <div class="custom-banner-aside">
-          <div class="custom-price"><small data-i18n="common.from">Starting from</small><span id="custom-price-value">EGP 800</span></div>
-          <a href="custom-order.html" class="btn btn-primary btn-lg" data-i18n="common.requestQuote">Create Your Custom Invitation</a>
+        <div class="tier-board" id="wedding-board" aria-busy="true">
+          <div class="skeleton skeleton-tier" aria-hidden="true"></div>
+          <div class="skeleton skeleton-tier" aria-hidden="true"></div>
+          <p class="sr-only" data-i18n="common.loading">Loading…</p>
         </div>
+        <p class="section-note"><span data-icon="check"></span><span data-i18n="home.weddingNote">Every wedding invitation includes your event details, venue location and a live countdown.</span> <a href="#addons"><span data-i18n="home.weddingNoteLink">See optional add-ons</span><span class="flip-rtl" data-icon="arrow"></span></a></p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FAQ Section -->
-  <section class="section section-bg-light" id="faq">
-    <div class="container">
-      <div class="section-header">
-        <h2 data-i18n="sections.faqTitle">Frequently Asked Questions</h2>
-        <p data-i18n="sections.faqSub">Find answers to common questions about our invitations and services</p>
-      </div>
-
-      <div style="max-width: 800px; margin: 0 auto;">
-        <details class="faq-item">
-          <summary><span data-i18n="faq.q1">How do I customise my invitation?</span><span style="font-size: 20px;">+</span></summary>
-          <p data-i18n="faq.a1">After you order, we personalise names, dates, colours, location and any add-ons you selected. You review it before it goes live — no coding needed.</p>
-        </details>
-        <details class="faq-item">
-          <summary><span data-i18n="faq.q2">What is included in the base price?</span><span style="font-size: 20px;">+</span></summary>
-          <p data-i18n="faq.a2">The invitation design, your event details, the location and a live countdown. Music, gallery, our story, RSVP and animations are optional add-ons with clear prices.</p>
-        </details>
-        <details class="faq-item">
-          <summary><span data-i18n="faq.q3">How long will I have access?</span><span style="font-size: 20px;">+</span></summary>
-          <p data-i18n="faq.a3">You get lifetime access to your invitation website. Updates and fixes are included at no extra cost.</p>
-        </details>
-        <details class="faq-item">
-          <summary><span data-i18n="faq.q4">What payment methods do you accept?</span><span style="font-size: 20px;">+</span></summary>
-          <p data-i18n="faq.a4">We currently accept InstaPay. After payment, send your payment screenshot via WhatsApp and our team will activate your order.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="section section-bg-white">
-    <div class="container">
-      <div style="text-align: center; background: linear-gradient(135deg, rgba(201, 164, 106, 0.1) 0%, rgba(212, 107, 120, 0.1) 100%); padding: 64px 24px; border-radius: 24px;">
-        <h2 style="margin-bottom: 16px;" data-i18n="sections.ctaTitle">Ready to Create Your Invitation?</h2>
-        <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto;" data-i18n="sections.ctaSub">
-          Choose an invitation, customise it with add-ons, and we will bring it to life.
-        </p>
-        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-          <a href="order-form.html" class="btn btn-primary btn-lg">
-            <span class="btn-icon" data-icon="arrow"></span>
-            <span data-i18n="hero.start">Start Your Order</span>
-          </a>
-          <a href="#wedding" class="btn btn-secondary btn-lg" data-i18n="sections.ctaExplore">Explore More</a>
+    <!-- Other occasions -->
+    <section class="section section-occasions" id="moments" data-spy="occasions" aria-labelledby="moments-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow" data-i18n="home.momentsEyebrow">Every celebration</span>
+          <h2 id="moments-title" data-i18n="home.momentsTitle">Invitations for Every Occasion</h2>
+          <p data-i18n="home.momentsSub">Elegant invitations for every celebration along the way — preview them live, then make them yours.</p>
+        </div>
+        <div class="shop-grid" id="moments-grid" aria-busy="true">
+          <div class="skeleton skeleton-card" aria-hidden="true"></div>
+          <div class="skeleton skeleton-card" aria-hidden="true"></div>
+          <div class="skeleton skeleton-card" aria-hidden="true"></div>
+          <div class="skeleton skeleton-card" aria-hidden="true"></div>
+          <p class="sr-only" data-i18n="common.loading">Loading…</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- Bundles -->
+    <section class="section section-bundles" id="bundles" data-spy="bundles" aria-labelledby="bundles-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow" data-i18n="home.bundlesEyebrow">Bundles</span>
+          <h2 id="bundles-title" data-i18n="home.bundlesTitle">Planning More Than One Moment?</h2>
+          <p data-i18n="home.bundlesSub">Build your celebration bundle — combine invitations in one order and see exactly what’s included.</p>
+        </div>
+        <div class="bundle-grid" id="bundles-grid" aria-busy="true">
+          <div class="skeleton skeleton-bundle" aria-hidden="true"></div>
+          <div class="skeleton skeleton-bundle" aria-hidden="true"></div>
+          <p class="sr-only" data-i18n="common.loading">Loading…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing: base + add-ons = total -->
+    <section class="section section-pricing" id="pricing" data-spy="addons" aria-labelledby="pricing-title">
+      <div class="container">
+        <span class="anchor-offset" id="addons" aria-hidden="true"></span>
+        <div class="section-head">
+          <span class="section-eyebrow" data-i18n="pricing.eyebrow">Transparent pricing</span>
+          <h2 id="pricing-title" data-i18n="pricing.title">Simple Pricing, No Surprises</h2>
+          <p data-i18n="pricing.sub">Your final price is the base invitation plus only the add-ons you choose.</p>
+        </div>
+        <ol class="price-formula" aria-hidden="true">
+          <li><span data-icon="wedding"></span><span data-i18n="pricing.eqBase">Base invitation</span></li>
+          <li class="op"><span data-icon="plus"></span></li>
+          <li><span data-icon="sparkle"></span><span data-i18n="pricing.eqAddons">Optional add-ons</span></li>
+          <li class="op"><span data-icon="equals"></span></li>
+          <li class="is-total"><span data-icon="tag"></span><span data-i18n="pricing.eqTotal">Your final price</span></li>
+        </ol>
+        <div class="price-builder" id="price-builder" aria-busy="true">
+          <div class="skeleton skeleton-panel" aria-hidden="true"></div>
+          <p class="sr-only" data-i18n="common.loading">Loading…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom invitation -->
+    <section class="section section-custom" id="custom" aria-labelledby="custom-title">
+      <div class="container">
+        <div class="custom-banner animate-on-scroll">
+          <div class="custom-banner-icon" data-icon="custom" aria-hidden="true"></div>
+          <div>
+            <span class="section-eyebrow" data-i18n="sections.customEyebrow">Bespoke service</span>
+            <h2 id="custom-title" data-i18n="sections.customTitle">Custom Invitation</h2>
+            <p class="custom-lead" data-i18n="sections.customSub">Tell us what you imagine. We’ll build it around your story.</p>
+            <p class="custom-note" data-i18n="home.customNote">The final price depends on the sections, animations and complexity you request.</p>
+          </div>
+          <div class="custom-banner-aside">
+            <div class="custom-price"><small data-i18n="common.from">Starting from</small><span id="custom-price-value"></span></div>
+            <a href="custom-order.html" class="btn btn-primary btn-lg" data-i18n="common.requestQuote">Create Your Custom Invitation</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section section-how" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow" data-i18n="how.eyebrow">How it works</span>
+          <h2 id="how-title" data-i18n="how.title">Your Invitation in Three Simple Steps</h2>
+          <p data-i18n="how.sub">No apps and no design skills needed — we take care of the details.</p>
+        </div>
+        <ol class="steps">
+          <li class="step animate-on-scroll">
+            <span class="step-num">01</span>
+            <span class="step-icon" data-icon="eye"></span>
+            <h3 data-i18n="how.s1Title">Choose</h3>
+            <p data-i18n="how.s1Text">Browse the live demos and pick your invitation or bundle.</p>
+          </li>
+          <li class="step animate-on-scroll" style="--d: 90ms">
+            <span class="step-num">02</span>
+            <span class="step-icon" data-icon="palette"></span>
+            <h3 data-i18n="how.s2Title">Customize</h3>
+            <p data-i18n="how.s2Text">Pick your colours and add-ons, then send us your details, photos and preferences.</p>
+          </li>
+          <li class="step animate-on-scroll" style="--d: 180ms">
+            <span class="step-num">03</span>
+            <span class="step-icon" data-icon="share"></span>
+            <h3 data-i18n="how.s3Title">Receive &amp; Share</h3>
+            <p data-i18n="how.s3Text">We prepare your invitation and send you a preview. Once you approve it, share one link with all your guests.</p>
+          </li>
+        </ol>
+        <p class="steps-note"><span data-icon="card"></span><span data-i18n="how.note">Pay with InstaPay · Confirm your order on WhatsApp</span></p>
+      </div>
+    </section>
+
+    <!-- Why Memora -->
+    <section class="section section-why" id="why" aria-labelledby="why-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow" data-i18n="why.eyebrow">Why Memora</span>
+          <h2 id="why-title" data-i18n="why.title">Made to Be Remembered</h2>
+          <p data-i18n="why.sub">Everything you need for an invitation your guests will love.</p>
+        </div>
+        <ul class="why-grid animate-on-scroll">
+          <li class="why-item"><span class="why-icon" data-icon="palette"></span><h3 data-i18n="why.w1Title">Fully Personalised</h3><p data-i18n="why.w1Text">Your names, details and colours — plus your photos, music and story with add-ons.</p></li>
+          <li class="why-item"><span class="why-icon" data-icon="device"></span><h3 data-i18n="why.w2Title">Mobile &amp; Desktop</h3><p data-i18n="why.w2Text">Designed mobile-first to look beautiful on phones, tablets and desktops.</p></li>
+          <li class="why-item"><span class="why-icon" data-icon="sparkle"></span><h3 data-i18n="why.w3Title">Effortless Setup</h3><p data-i18n="why.w3Text">No complicated setup — send your details and we build and publish it for you.</p></li>
+          <li class="why-item"><span class="why-icon" data-icon="infinity"></span><h3 data-i18n="why.w4Title">Lifetime Access</h3><p data-i18n="why.w4Text">Your invitation stays online after the event, as a keepsake of your day.</p></li>
+          <li class="why-item"><span class="why-icon" data-icon="share"></span><h3 data-i18n="why.w5Title">Easy Sharing</h3><p data-i18n="why.w5Text">One link to share on WhatsApp, Instagram or anywhere — guests open it instantly.</p></li>
+          <li class="why-item"><span class="why-icon" data-icon="chat"></span><h3 data-i18n="why.w6Title">Real Support</h3><p data-i18n="why.w6Text">Talk to a real person on WhatsApp, before and after delivery.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-faq" id="faq" data-spy="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow" data-i18n="home.faqEyebrow">Good to know</span>
+          <h2 id="faq-title" data-i18n="sections.faqTitle">Frequently Asked Questions</h2>
+          <p data-i18n="sections.faqSub">Find answers to common questions about our invitations and services</p>
+        </div>
+
+        <div class="faq-groups">
+          <div class="faq-group">
+            <h3 class="faq-group-title" data-i18n="faq.groupInvitation">The invitation</h3>
+            <details class="faq-item"><summary><span data-i18n="faq.q2">What is included with the invitation?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.a2">Every invitation includes your chosen design, your event details, the venue location with a map link and a live countdown — personalised for you and ready for every phone. Music, gallery, our story, RSVP and animations are optional add-ons with clear prices.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.q1">How do I customise my invitation?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.a1">After you order, we personalise names, dates, colours, location and any add-ons you selected. You review it before it goes live — no coding needed.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qPhotos">Can I use my own photos?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n-html="faq.aPhotos">Yes. After you order, send us your photos on WhatsApp. To show them in a dedicated photo gallery section, add the Gallery add-on.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qColours">Can I change the colours?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.aColours">Yes. Choose a colour palette in the order form, or pick “Custom / Not sure” and tell us the colours you have in mind.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qPhones">Does it work on phones?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.aPhones">Yes. Every invitation is designed mobile-first and works on phones, tablets and desktops. Guests just tap the link — there’s no app to download.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qLanguage">Can my invitation be in Arabic?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.aLanguage">Yes. Choose English, Arabic or both in the order form.</p></details>
+          </div>
+          <div class="faq-group">
+            <h3 class="faq-group-title" data-i18n="faq.groupAddons">Add-ons</h3>
+            <details class="faq-item"><summary><span data-i18n="faq.qMusic">Can I add music?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n-html="faq.aMusic">Yes. Add Music and share the link to your song in the order form — it plays on your invitation.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qRsvp">Can I add RSVP?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n-html="faq.aRsvp">Yes. With the RSVP add-on, guests confirm their attendance online and you can track the replies.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qGallery">Can I add a gallery?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n-html="faq.aGallery">Yes. The Gallery add-on adds a photo gallery section for your favourite moments.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qStory">Can I add our own story?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n-html="faq.aStory">Yes. The Our Story add-on adds a dedicated section that tells your story.</p></details>
+          </div>
+          <div class="faq-group">
+            <h3 class="faq-group-title" data-i18n="faq.groupOrdering">Ordering &amp; delivery</h3>
+            <details class="faq-item"><summary><span data-i18n="faq.qChanges">Can I request changes?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.aChanges">Yes. You review a preview before your invitation goes live and can ask us to adjust your details. Updates and fixes are included at no extra cost.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qSpeed">How fast will I receive my invitation?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.aSpeed">We start as soon as your order is confirmed on WhatsApp and agree the delivery time with you there — it depends on the design and add-ons you choose. You always see a preview before it goes live.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.qShare">Can I share it on WhatsApp?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.aShare">Of course. Your invitation is a website link — share it on WhatsApp, Instagram, by text message or anywhere else, and guests open it instantly.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.q3">Do I keep access after the event?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.a3">Yes. You get lifetime access — your invitation stays online after the event as a keepsake of your day. Updates and fixes are included at no extra cost.</p></details>
+            <details class="faq-item"><summary><span data-i18n="faq.q4">What payment methods do you accept?</span><span class="faq-toggle" aria-hidden="true"></span></summary><p data-i18n="faq.a4">We currently accept InstaPay. After payment, send your payment screenshot via WhatsApp and our team will activate your order.</p></details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="section section-final" id="start" aria-labelledby="final-title" data-hide-mobile-cta>
+      <div class="container">
+        <div class="final-cta animate-on-scroll">
+          <img class="final-logo" src="images/logo.jpeg" alt="" width="72" height="72" loading="lazy" decoding="async">
+          <p class="final-slogan" data-i18n="brand.slogan">Where Your Story, Forever Remembered</p>
+          <h2 id="final-title" data-i18n="home.ctaTitle">Your Story Deserves More Than a Message.</h2>
+          <p class="final-sub" data-i18n="home.ctaSub">Create your invitation and make every detail part of the memory.</p>
+          <div class="final-actions">
+            <a href="#wedding" class="btn btn-primary btn-lg"><span data-i18n="hero.ctaExplore">Explore Invitations</span><span class="btn-glyph flip-rtl" data-icon="arrow"></span></a>
+            <a href="#demos" class="btn btn-light btn-lg"><span class="btn-glyph" data-icon="play"></span><span data-i18n="hero.ctaDemos">View Live Demos</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="site-footer">
+  <footer class="site-footer" data-hide-mobile-cta>
     <div class="container">
-      <div class="grid grid-4">
-        <div>
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-            <span style="font-size: 24px;">💍</span>
-            <span style="font-size: 20px; font-weight: 700;">Memora</span>
-          </div>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="footer-logo" href="index.html"><img src="images/logo.jpeg" alt="" width="44" height="44" loading="lazy" decoding="async"><span>Memora</span></a>
+          <p class="footer-slogan" data-i18n="brand.slogan">Where Your Story, Forever Remembered</p>
           <p class="footer-text" data-i18n="footer.tagline">Premium digital invitations for weddings and every moment worth celebrating.</p>
         </div>
         <div>
-          <h6 data-i18n="footer.products">Products</h6>
+          <h6 data-i18n="home.footerExplore">Explore</h6>
           <ul class="footer-links">
             <li><a href="#wedding" data-i18n="nav.wedding">Wedding</a></li>
-            <li><a href="#moments" data-i18n="nav.moments">More Moments</a></li>
+            <li><a href="#moments" data-i18n="nav.occasions">Occasions</a></li>
             <li><a href="#bundles" data-i18n="nav.bundles">Bundles</a></li>
+            <li><a href="#addons" data-i18n="nav.addons">Add-ons</a></li>
             <li><a href="custom-order.html" data-i18n="sections.customTitle">Custom Invitation</a></li>
           </ul>
         </div>
@@ -229,13 +364,14 @@
           <h6 data-i18n="footer.support">Support</h6>
           <ul class="footer-links">
             <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
-            <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
+            <li><a href="#how" data-i18n="how.eyebrow">How it works</a></li>
+            <li><a href="order-form.html" data-i18n="nav.startOrder">Start Order</a></li>
             <li><a href="https://wa.me/201099885633" target="_blank" rel="noopener noreferrer" data-i18n="footer.whatsapp">WhatsApp</a></li>
           </ul>
         </div>
         <div>
           <h6 data-i18n="footer.connect">Connect</h6>
-          <ul class="footer-links" style="flex-direction: row; gap: 12px;">
+          <ul class="footer-links">
             <li><a href="https://tiktok.com/@memora471" target="_blank" rel="noopener noreferrer">TikTok</a></li>
             <li><a href="https://www.instagram.com/memora.egy?igsh=dm5ocmhuYmdmZzhs" target="_blank" rel="noopener noreferrer">Instagram</a></li>
             <li><a href="https://facebook.com/share/1HBhQS62LC/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">Facebook</a></li>
@@ -248,20 +384,11 @@
     </div>
   </footer>
 
-  <style>
-    .faq-item { margin-bottom: 16px; border: 1px solid var(--border-light); border-radius: 12px; overflow: hidden; background: var(--bg-white); }
-    .faq-item summary { padding: 20px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 12px; list-style: none; }
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item p { padding: 0 20px 20px 20px; border-top: 1px solid var(--border-light); padding-top: 16px; color: var(--text-secondary); }
-    .site-footer { background: var(--primary-dark); color: var(--primary-light); padding: 64px 24px 24px; }
-    .site-footer h6 { color: white; margin-bottom: 16px; }
-    .footer-text { color: var(--text-light); font-size: 14px; }
-    .footer-links { display: flex; flex-direction: column; gap: 8px; }
-    .footer-links a { color: var(--text-light); font-size: 14px; transition: color 0.3s; }
-    .footer-links a:hover { color: var(--accent-gold); }
-    .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 40px; padding-top: 24px; text-align: center; color: var(--text-light); font-size: 14px; }
-    .footer-bottom p { color: var(--text-light); }
-  </style>
+  <!-- Mobile: primary actions stay one tap away -->
+  <div class="mobile-cta" id="mobile-cta">
+    <a href="#demos" class="btn btn-secondary"><span class="btn-glyph" data-icon="play"></span><span data-i18n="common.viewDemos">View Demos</span></a>
+    <a href="order-form.html" class="btn btn-primary" data-i18n="nav.startOrder">Start Order</a>
+  </div>
 
   <script src="admin/assets/supabase-config.js"></script>
   <script src="assets/js/icons.js"></script>
@@ -269,44 +396,128 @@
   <script src="assets/js/premium.js"></script>
   <script>
     (() => {
+      const I = window.MemoraI18n;
+      const $ = (id) => document.getElementById(id);
       let catalog = null;
+      let demoFilter = 'all';
+
+      const occasionProducts = () => catalog.categories
+        .filter((cat) => !['wedding', 'bundles', 'custom'].includes(cat.slug))
+        .flatMap((cat) => catalog.productsIn(cat.slug));
+
+      /* ── Live demo rail ── */
+      const rail = $('demo-rail');
+      function updateRail() {
+        const overflow = rail.scrollWidth > rail.clientWidth + 4;
+        const start = Math.abs(rail.scrollLeft) < 4;
+        const end = Math.abs(rail.scrollLeft) + rail.clientWidth >= rail.scrollWidth - 4;
+        rail.classList.toggle('is-static', !overflow);
+        document.querySelectorAll('[data-rail]').forEach((btn) => {
+          btn.hidden = !overflow;
+          btn.disabled = btn.dataset.rail === 'prev' ? start : end;
+        });
+      }
+      document.querySelectorAll('[data-rail]').forEach((btn) => btn.addEventListener('click', () => {
+        const dir = (btn.dataset.rail === 'next' ? 1 : -1) * (I.isRTL() ? -1 : 1);
+        rail.scrollBy({ left: dir * rail.clientWidth * 0.85, behavior: Animations.reducedMotion() ? 'auto' : 'smooth' });
+      }));
+      rail.addEventListener('scroll', () => window.requestAnimationFrame(updateRail), { passive: true });
+      window.addEventListener('resize', updateRail, { passive: true });
+
+      function applyDemoFilter() {
+        rail.querySelectorAll('.demo-tile').forEach((tile) => { tile.hidden = demoFilter !== 'all' && tile.dataset.filter !== demoFilter; });
+        document.querySelectorAll('#demo-filters [data-demo-filter]').forEach((chip) => {
+          const on = chip.dataset.demoFilter === demoFilter;
+          chip.classList.toggle('is-active', on);
+          chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        rail.scrollTo({ left: 0 });
+        updateRail();
+      }
+
+      function renderDemos() {
+        const entries = UI.demoEntries(catalog);
+        if (demoFilter !== 'all' && !entries.some((e) => e.key === demoFilter)) demoFilter = 'all';
+        $('demo-filters').innerHTML = UI.demoFilters(entries, demoFilter);
+        rail.innerHTML = entries.length ? entries.map(UI.demoTile).join('') : `<p class="empty-state">${UI.esc(I.t('demos.empty'))}</p>`;
+        rail.removeAttribute('aria-busy');
+        applyDemoFilter();
+        return entries;
+      }
+
+      // Hero: occasion shortcuts only for occasions that exist in the catalog; demo filter when a demo exists.
+      function renderHero(entries) {
+        const withDemo = new Set(entries.map((e) => e.key));
+        const available = new Set(catalog.products.filter((p) => !p.bundleOnly).map(UI.occasionKey));
+        document.querySelectorAll('.hero-occasions [data-occasion]').forEach((li) => {
+          const key = li.dataset.occasion;
+          li.hidden = !available.has(key);
+          const link = li.querySelector('a');
+          if (key === 'custom') return;
+          if (withDemo.has(key)) { link.setAttribute('href', '#demos'); link.dataset.demoFilter = key; }
+          else { link.setAttribute('href', key === 'wedding' ? '#wedding' : '#moments'); delete link.dataset.demoFilter; }
+        });
+        const prices = catalog.sellable().filter((p) => p.kind !== 'bundle' && p.pricingType === 'fixed' && p.price > 0).map((p) => p.price);
+        $('hero-from').hidden = !prices.length;
+        if (prices.length) $('hero-from-price').textContent = I.money(Math.min(...prices));
+      }
 
       function renderHome() {
         if (!catalog) return;
-        const I = window.MemoraI18n;
-        UI.renderCards(catalog.productsIn('wedding'), document.getElementById('wedding-grid'), UI.weddingCard);
-        UI.renderCards(catalog.productsIn('moments'), document.getElementById('moments-grid'), UI.productCard);
-        UI.renderCards(catalog.bundles, document.getElementById('bundles-grid'), UI.bundleCard);
-        UI.renderPriceList(catalog, document.getElementById('price-list-base'), document.getElementById('price-list-addons'));
+        const entries = renderDemos();
+        renderHero(entries);
+        UI.renderWeddingBoard(catalog.productsIn('wedding'), $('wedding-board'));
+        UI.renderCards(occasionProducts(), $('moments-grid'), UI.productCard);
+        UI.renderCards(catalog.bundles, $('bundles-grid'), UI.bundleCard);
+        UI.priceBuilder(catalog, $('price-builder'));
         const custom = catalog.customProduct();
-        const customPrice = document.getElementById('custom-price-value');
-        if (customPrice) customPrice.textContent = I.money(custom ? custom.price : 800);
-        const customSection = document.getElementById('custom');
-        if (customSection) customSection.style.display = custom ? '' : 'none';
+        $('custom').hidden = !custom;
+        if (custom) $('custom-price-value').textContent = I.money(custom.price);
+        UI.fillAddonPrices(catalog);
+        ['wedding-board', 'moments-grid', 'bundles-grid', 'price-builder'].forEach((id) => $(id).removeAttribute('aria-busy'));
+        $('bundles').hidden = !catalog.bundles.length;
+        Animations.initScrollAnimations();
       }
 
       function showLoadError() {
-        ['wedding-grid', 'moments-grid', 'bundles-grid'].forEach((id) => {
-          const el = document.getElementById(id);
-          if (el) el.innerHTML = `<p class="empty-state">${UI.esc(window.MemoraI18n.t('common.loadError'))}</p>`;
+        ['demo-rail', 'wedding-board', 'moments-grid', 'bundles-grid', 'price-builder'].forEach((id) => {
+          const el = $(id);
+          if (el) { el.innerHTML = `<p class="empty-state">${UI.esc(I.t('common.loadError'))}</p>`; el.removeAttribute('aria-busy'); }
         });
+        document.querySelector('#custom .custom-price').hidden = true;
       }
 
-      function initCategoryNav() {
-        document.querySelectorAll('[data-icon]').forEach((el) => { el.innerHTML = UI.icon(el.getAttribute('data-icon')); });
-        const links = [...document.querySelectorAll('.cat-link')];
-        const sections = links.map((l) => document.querySelector(l.getAttribute('href'))).filter(Boolean);
-        if (!('IntersectionObserver' in window) || !sections.length) return;
-        const setActive = (id) => links.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
-        const observer = new IntersectionObserver((entries) => {
-          const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-          if (visible) setActive(visible.target.id);
-        }, { rootMargin: '-35% 0px -55% 0px', threshold: [0, 0.1, 0.5] });
-        sections.forEach((sec) => observer.observe(sec));
+      function injectIcons(root = document) {
+        root.querySelectorAll('[data-icon]').forEach((el) => { if (!el.firstElementChild) el.innerHTML = UI.icon(el.getAttribute('data-icon')); });
       }
+
+      /* ── Mobile action bar: visible after the hero, hidden near the pricing builder, final CTA and footer ── */
+      function initMobileCta() {
+        const bar = $('mobile-cta');
+        if (!bar || !('IntersectionObserver' in window)) return;
+        const hiders = new Set();
+        let pastHero = false;
+        const sync = () => bar.classList.toggle('is-visible', pastHero && hiders.size === 0 && !document.body.classList.contains('nav-open'));
+        new IntersectionObserver(([entry]) => { pastHero = !entry.isIntersecting; sync(); }, { threshold: 0 }).observe($('top'));
+        const hideObserver = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) hiders.add(e.target); else hiders.delete(e.target); });
+          sync();
+        }, { threshold: 0 });
+        document.querySelectorAll('[data-hide-mobile-cta], #price-builder').forEach((el) => hideObserver.observe(el));
+        new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      }
+
+      // Occasion shortcuts (hero) and filter chips share one handler.
+      document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-demo-filter]');
+        if (!trigger) return;
+        demoFilter = trigger.dataset.demoFilter;
+        if (catalog) applyDemoFilter();
+      });
 
       document.addEventListener('DOMContentLoaded', async () => {
-        initCategoryNav();
+        injectIcons();
+        initMobileCta();
         try {
           catalog = await window.MemoraCatalog.load();
           renderHome();
@@ -316,7 +527,7 @@
         }
       });
 
-      window.MemoraI18n.onChange(renderHome);
+      I.onChange(() => { injectIcons(); renderHome(); });
     })();
   </script>
 </body>
