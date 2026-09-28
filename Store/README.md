@@ -12,8 +12,8 @@ The storefront reads its catalog from Supabase (`categories`, `products`, `bundl
 
 | Product | Price |
 | --- | ---: |
+| Date Invitation | 400 EGP |
 | Birthday Invitation | 400 EGP |
-| Date Invitation | 500 EGP |
 | Gender Reveal Invitation | 500 EGP |
 | Engagement Invitation | 500 EGP |
 | Henna Invitation | 500 EGP |
@@ -120,7 +120,7 @@ Run in the Supabase SQL editor, in order (all scripts are idempotent):
 4. `admin/STORAGE_SETUP.sql` – creates the `memora-assets` storage bucket + policies used by the Admin image uploads (required, otherwise "Upload Thumbnail" fails).
 5. `admin/MIGRATION_NFC_BUNDLES_DEMOS.sql` – **Love NFC Card + bundles + demos**: allows `product_type = 'bundle-only'`, adds the Love NFC Card (existing artwork), the three Engagement/Wedding NFC bundles, points the occasion products at their `Demos/` demo URLs and sets their preview images (only where the Admin hasn't set one). Until it is run the store keeps the current catalog (with the media fallback above); `?catalog=seed` previews the result.
 
-6. `admin/MIGRATION_DEMOS_V2.sql` – new prices (Date Invitation 250 → **500 EGP**, Birthday 350 → **400 EGP**, Gender Reveal 400 → **500 EGP**), plus the new Henna / Gender Reveal / Date product descriptions and features (only where the original seed text is unchanged).
+6. `admin/MIGRATION_DEMOS_V2.sql` – new prices (Date Invitation 250 → **400 EGP**, Birthday 350 → **400 EGP**, Gender Reveal 400 → **500 EGP**), plus the new Henna / Gender Reveal / Date product descriptions and features (only where the original seed text is unchanged).
 
 Until step 3 is run the store shows the built-in seed catalog and checkout falls back to the legacy `orders` columns automatically.
 

@@ -6,7 +6,7 @@
 -- What it does:
 --   1. Prices (only where the price is still one of the previous values,
 --      so a price set from the Admin since then is left alone):
---        date           250 / 400 → 500 EGP
+--        date           250 / 500 → 400 EGP
 --        birthday       350       → 400 EGP
 --        gender-reveal  400       → 500 EGP
 --      No bundle includes these products, so no bundle price depends on them.
@@ -27,7 +27,7 @@
 update public.products p
    set price = c.new_price
   from (values
-    ('date',          array[250, 400]::numeric[], 500),
+    ('date',          array[250, 500]::numeric[], 400),
     ('birthday',      array[350]::numeric[],      400),
     ('gender-reveal', array[400]::numeric[],      500)
   ) as c(slug, old_prices, new_price)

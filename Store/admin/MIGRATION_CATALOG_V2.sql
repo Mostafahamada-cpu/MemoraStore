@@ -221,7 +221,7 @@ values
   ('date', 'Date Invitation', 'دعوة موعد رومانسي',
    'Your date. Your theme. Your story — an invitation designed around the day you choose.',
    'موعدكم، طابعكم، قصتكم — دعوة مصممة حول اليوم الذي تختارونه.',
-   500, 'fixed', 'product', 'moments', null, 'date',
+   400, 'fixed', 'product', 'moments', null, 'date',
    array['Designed around your chosen date', 'Romantic, anniversary, birthday, proposal, celebration or seasonal theme', 'Countdown & timed location reveals', 'Lifetime access'],
    array['مصممة حول التاريخ الذي تختارونه', 'طابع رومانسي أو ذكرى سنوية أو عيد ميلاد أو طلب زواج أو احتفال أو موسمي', 'عد تنازلي وكشف الأماكن في وقتها', 'وصول مدى الحياة'],
    '[]'::jsonb, null, null, '🌹', null, false, true, 5),
