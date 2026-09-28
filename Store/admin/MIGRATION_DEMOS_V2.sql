@@ -1,11 +1,15 @@
 -- ============================================================
--- Memora — Date price + Henna / Gender Reveal / Date demo refresh
+-- Memora — Date / Birthday / Gender Reveal prices + Henna / Gender Reveal / Date demo refresh
 -- Run this in the Supabase SQL editor AFTER MIGRATION_NFC_BUNDLES_DEMOS.sql.
 -- Safe to run multiple times (idempotent).
 --
 -- What it does:
---   1. Date Invitation price: 250 EGP → 400 EGP (only if it is still 250).
---      No bundle includes the Date Invitation, so no bundle price depends on it.
+--   1. Prices (only where the price is still one of the previous values,
+--      so a price set from the Admin since then is left alone):
+--        date           250 / 400 → 500 EGP
+--        birthday       350       → 400 EGP
+--        gender-reveal  400       → 500 EGP
+--      No bundle includes these products, so no bundle price depends on them.
 --   2. Product copy for the three refreshed demos (Store/Demos/henna, gender-reveal, date):
 --        henna          Three Egyptian concepts: Shaabi Night, Sa'idi, Nubian
 --        gender-reveal  Guest vote (boy / girl) + sealed reveal
@@ -18,12 +22,17 @@
 -- ============================================================
 
 -- ------------------------------------------------------------
--- 1. Date Invitation price
+-- 1. Prices
 -- ------------------------------------------------------------
-update public.products
-   set price = 400
- where slug = 'date'
-   and price = 250;
+update public.products p
+   set price = c.new_price
+  from (values
+    ('date',          array[250, 400]::numeric[], 500),
+    ('birthday',      array[350]::numeric[],      400),
+    ('gender-reveal', array[400]::numeric[],      500)
+  ) as c(slug, old_prices, new_price)
+ where p.slug = c.slug
+   and p.price = any(c.old_prices);
 
 -- ------------------------------------------------------------
 -- 2. Product copy (only where the original seed text is unchanged)
