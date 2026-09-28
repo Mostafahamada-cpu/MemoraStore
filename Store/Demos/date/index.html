@@ -18,11 +18,11 @@
       theme: {
         extend: {
           colors: {
-            sand: '#E8D8B5',
-            gold: '#D4AF37',
-            'gold-light': '#F0D060',
-            'gold-dark': '#B8960C',
-            pharaoh: '#111111',
+            sand: 'rgb(var(--sand) / <alpha-value>)',
+            gold: 'rgb(var(--accent) / <alpha-value>)',
+            'gold-light': 'rgb(var(--accent-light) / <alpha-value>)',
+            'gold-dark': 'rgb(var(--accent-dark) / <alpha-value>)',
+            pharaoh: 'rgb(var(--bg) / <alpha-value>)',
             'deep-brown': '#4A3520',
             papyrus: '#F5EBDA',
             'papyrus-dark': '#E0CCAA',
@@ -45,23 +45,34 @@
 
   <style>
     /* ===== GLOBAL ===== */
+    /* Theme palette (space-separated RGB) — rewritten by the Date Studio when the theme changes. */
+    :root {
+      --accent: 212 175 55;
+      --accent-light: 240 208 96;
+      --accent-dark: 184 150 12;
+      --bg: 17 17 17;
+      --sand: 232 216 181;
+      --glyph-band-top: '𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏 𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏';
+      --glyph-band-bottom: '𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹 𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹';
+    }
+    body { transition: background-color 0.6s ease, color 0.6s ease; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html {
       scroll-behavior: smooth;
       scrollbar-width: thin;
-      scrollbar-color: #D4AF37 #111111;
+      scrollbar-color: rgb(var(--accent)) rgb(var(--bg));
       overflow-x: hidden;
       width: 100vw;
     }
     html::-webkit-scrollbar { width: 6px; }
-    html::-webkit-scrollbar-track { background: #111111; }
-    html::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 3px; }
+    html::-webkit-scrollbar-track { background: rgb(var(--bg)); }
+    html::-webkit-scrollbar-thumb { background: rgb(var(--accent)); border-radius: 3px; }
 
     body {
       font-family: 'Cormorant Garamond', serif;
-      background-color: #111111;
-      color: #E8D8B5;
+      background-color: rgb(var(--bg));
+      color: rgb(var(--sand));
       overflow-x: hidden;
       width: 100%;
       max-width: 100vw;
@@ -69,7 +80,7 @@
     }
 
     ::selection {
-      background: rgba(212,175,55,0.35);
+      background: rgb(var(--accent) / 0.35);
       color: #F5EBDA;
     }
 
@@ -78,7 +89,7 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: #111111;
+      background: rgb(var(--bg));
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -99,15 +110,15 @@
 
     .eye-of-horus {
       font-size: 72px;
-      color: #D4AF37;
-      filter: drop-shadow(0 0 20px rgba(212,175,55,0.6));
+      color: rgb(var(--accent));
+      filter: drop-shadow(0 0 20px rgb(var(--accent) / 0.6));
       animation: eyePulse 2s ease-in-out infinite;
     }
 
     .eye-ring {
       position: absolute;
       inset: -20px;
-      border: 2px solid rgba(212,175,55,0.3);
+      border: 2px solid rgb(var(--accent) / 0.3);
       border-radius: 50%;
       animation: ringRotate 3s linear infinite;
     }
@@ -119,13 +130,13 @@
       transform: translateX(-50%);
       width: 8px;
       height: 8px;
-      background: #D4AF37;
+      background: rgb(var(--accent));
       border-radius: 50%;
     }
     .eye-ring-2 {
       position: absolute;
       inset: -35px;
-      border: 1px solid rgba(212,175,55,0.15);
+      border: 1px solid rgb(var(--accent) / 0.15);
       border-radius: 50%;
       animation: ringRotate 5s linear infinite reverse;
     }
@@ -137,13 +148,13 @@
       transform: translateX(-50%);
       width: 6px;
       height: 6px;
-      background: rgba(212,175,55,0.5);
+      background: rgb(var(--accent) / 0.5);
       border-radius: 50%;
     }
 
     @keyframes eyePulse {
-      0%, 100% { filter: drop-shadow(0 0 20px rgba(212,175,55,0.4)); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 40px rgba(212,175,55,0.8)); transform: scale(1.05); }
+      0%, 100% { filter: drop-shadow(0 0 20px rgb(var(--accent) / 0.4)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 40px rgb(var(--accent) / 0.8)); transform: scale(1.05); }
     }
     @keyframes ringRotate {
       from { transform: rotate(0deg); }
@@ -152,7 +163,7 @@
 
     .loading-text {
       font-family: 'Cinzel', serif;
-      color: #D4AF37;
+      color: rgb(var(--accent));
       font-size: 14px;
       letter-spacing: 6px;
       text-transform: uppercase;
@@ -175,7 +186,7 @@
     /* ===== PAPYRUS BACKGROUND SECTIONS ===== */
     .section-papyrus {
       position: relative;
-      background-color: #111111;
+      background-color: rgb(var(--bg));
     }
     .section-papyrus::before {
       content: '';
@@ -195,7 +206,7 @@
     .hieroglyph-border::after {
       font-size: 14px;
       letter-spacing: 8px;
-      color: rgba(212,175,55,0.15);
+      color: rgb(var(--accent) / 0.15);
       position: absolute;
       left: 0;
       right: 0;
@@ -206,17 +217,17 @@
       overflow: hidden;
     }
     .hieroglyph-border::before {
-      content: '𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏 𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏';
+      content: var(--glyph-band-top);
       top: 0;
     }
     .hieroglyph-border::after {
-      content: '𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹 𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹';
+      content: var(--glyph-band-bottom);
       bottom: 0;
     }
 
     /* ===== GOLD GRADIENT TEXT ===== */
     .text-gold-gradient {
-      background: linear-gradient(135deg, #D4AF37 0%, #F0D060 40%, #D4AF37 60%, #B8960C 100%);
+      background: linear-gradient(135deg, rgb(var(--accent)) 0%, rgb(var(--accent-light)) 40%, rgb(var(--accent)) 60%, rgb(var(--accent-dark)) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -224,8 +235,8 @@
 
     /* ===== COUNTER STYLING ===== */
     .counter-box {
-      background: rgba(17,17,17,0.6);
-      border: 1px solid rgba(212,175,55,0.25);
+      background: rgb(var(--bg) / 0.6);
+      border: 1px solid rgb(var(--accent) / 0.25);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 12px;
@@ -235,14 +246,14 @@
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .counter-box:hover {
-      border-color: rgba(212,175,55,0.5);
-      box-shadow: 0 0 20px rgba(212,175,55,0.15);
+      border-color: rgb(var(--accent) / 0.5);
+      box-shadow: 0 0 20px rgb(var(--accent) / 0.15);
     }
     .counter-value {
       font-family: 'Cinzel', serif;
       font-size: 32px;
       font-weight: 700;
-      color: #D4AF37;
+      color: rgb(var(--accent));
       line-height: 1;
     }
     .counter-label {
@@ -250,7 +261,7 @@
       font-size: 12px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(232,216,181,0.6);
+      color: rgb(var(--sand) / 0.6);
       margin-top: 6px;
     }
 
@@ -266,7 +277,7 @@
       top: 0;
       bottom: 0;
       width: 2px;
-      background: linear-gradient(to bottom, transparent, rgba(212,175,55,0.4) 10%, rgba(212,175,55,0.4) 90%, transparent);
+      background: linear-gradient(to bottom, transparent, rgb(var(--accent) / 0.4) 10%, rgb(var(--accent) / 0.4) 90%, transparent);
       transform: translateX(-50%);
     }
 
@@ -277,8 +288,8 @@
     }
 
     .timeline-card {
-      background: rgba(17,17,17,0.7);
-      border: 1px solid rgba(212,175,55,0.2);
+      background: rgb(var(--bg) / 0.7);
+      border: 1px solid rgb(var(--accent) / 0.2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 20px;
@@ -287,8 +298,8 @@
       transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
     }
     .timeline-card:hover {
-      border-color: rgba(212,175,55,0.45);
-      box-shadow: 0 8px 40px rgba(212,175,55,0.1);
+      border-color: rgb(var(--accent) / 0.45);
+      box-shadow: 0 8px 40px rgb(var(--accent) / 0.1);
       transform: translateY(-4px);
     }
 
@@ -296,10 +307,10 @@
       position: absolute;
       width: 16px;
       height: 16px;
-      background: #D4AF37;
-      border: 3px solid #111111;
+      background: rgb(var(--accent));
+      border: 3px solid rgb(var(--bg));
       border-radius: 50%;
-      box-shadow: 0 0 12px rgba(212,175,55,0.5);
+      box-shadow: 0 0 12px rgb(var(--accent) / 0.5);
       z-index: 2;
     }
 
@@ -323,8 +334,8 @@
 
     /* ===== LOCATION CARDS ===== */
     .locked-card {
-      background: rgba(17,17,17,0.6);
-      border: 1px solid rgba(212,175,55,0.15);
+      background: rgb(var(--bg) / 0.6);
+      border: 1px solid rgb(var(--accent) / 0.15);
       border-radius: 20px;
       padding: 48px 32px;
       text-align: center;
@@ -339,8 +350,8 @@
         45deg,
         transparent,
         transparent 20px,
-        rgba(212,175,55,0.02) 20px,
-        rgba(212,175,55,0.02) 40px
+        rgb(var(--accent) / 0.02) 20px,
+        rgb(var(--accent) / 0.02) 40px
       );
       pointer-events: none;
     }
@@ -355,8 +366,8 @@
 
     /* ===== DRESS CODE CARDS ===== */
     .dress-card {
-      background: rgba(17,17,17,0.65);
-      border: 1px solid rgba(212,175,55,0.2);
+      background: rgb(var(--bg) / 0.65);
+      border: 1px solid rgb(var(--accent) / 0.2);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 20px;
@@ -366,8 +377,8 @@
       transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
     }
     .dress-card:hover {
-      border-color: rgba(212,175,55,0.45);
-      box-shadow: 0 8px 40px rgba(212,175,55,0.12);
+      border-color: rgb(var(--accent) / 0.45);
+      box-shadow: 0 8px 40px rgb(var(--accent) / 0.12);
       transform: translateY(-4px);
     }
     .dress-card::before {
@@ -377,7 +388,7 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+      background: linear-gradient(90deg, transparent, rgb(var(--accent)), transparent);
     }
 
     /* ===== GLOW BUTTON ===== */
@@ -386,8 +397,8 @@
       align-items: center;
       gap: 8px;
       padding: 14px 32px;
-      background: linear-gradient(135deg, #D4AF37, #B8960C);
-      color: #111111;
+      background: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--accent-dark)));
+      color: rgb(var(--bg));
       font-family: 'Cinzel', serif;
       font-weight: 600;
       font-size: 14px;
@@ -398,17 +409,17 @@
       cursor: pointer;
       text-decoration: none;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(212,175,55,0.3);
+      box-shadow: 0 4px 20px rgb(var(--accent) / 0.3);
     }
     .glow-btn:hover {
-      box-shadow: 0 4px 30px rgba(212,175,55,0.5), 0 0 60px rgba(212,175,55,0.2);
+      box-shadow: 0 4px 30px rgb(var(--accent) / 0.5), 0 0 60px rgb(var(--accent) / 0.2);
       transform: translateY(-2px);
     }
 
     /* ===== DIVIDER ===== */
     .section-divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3) 20%, rgba(212,175,55,0.3) 80%, transparent);
+      background: linear-gradient(90deg, transparent, rgb(var(--accent) / 0.3) 20%, rgb(var(--accent) / 0.3) 80%, transparent);
       margin: 0 auto;
       max-width: 600px;
     }
@@ -417,7 +428,7 @@
       align-items: center;
       justify-content: center;
       gap: 16px;
-      color: rgba(212,175,55,0.4);
+      color: rgb(var(--accent) / 0.4);
       font-size: 18px;
     }
     .section-divider-ornament::before,
@@ -426,10 +437,10 @@
       flex: 1;
       max-width: 200px;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3));
+      background: linear-gradient(90deg, transparent, rgb(var(--accent) / 0.3));
     }
     .section-divider-ornament::after {
-      background: linear-gradient(270deg, transparent, rgba(212,175,55,0.3));
+      background: linear-gradient(270deg, transparent, rgb(var(--accent) / 0.3));
     }
 
     /* ===== AMBIENT GLOW ===== */
@@ -445,7 +456,7 @@
     .hieroglyph-float {
       position: absolute;
       font-size: 28px;
-      color: rgba(212,175,55,0.06);
+      color: rgb(var(--accent) / 0.06);
       pointer-events: none;
       z-index: 0;
     }
@@ -480,8 +491,8 @@
 
     #ancient-seal .seal-icon {
       font-size: 52px;
-      color: #D4AF37;
-      filter: drop-shadow(0 0 15px rgba(212,175,55,0.5));
+      color: rgb(var(--accent));
+      filter: drop-shadow(0 0 15px rgb(var(--accent) / 0.5));
       animation: sealPulse 2.5s ease-in-out infinite;
       z-index: 2;
       position: relative;
@@ -489,11 +500,11 @@
 
     @keyframes sealPulse {
       0%, 100% {
-        filter: drop-shadow(0 0 12px rgba(212,175,55,0.3));
+        filter: drop-shadow(0 0 12px rgb(var(--accent) / 0.3));
         transform: scale(1);
       }
       50% {
-        filter: drop-shadow(0 0 30px rgba(212,175,55,0.8)) drop-shadow(0 0 60px rgba(212,175,55,0.3));
+        filter: drop-shadow(0 0 30px rgb(var(--accent) / 0.8)) drop-shadow(0 0 60px rgb(var(--accent) / 0.3));
         transform: scale(1.06);
       }
     }
@@ -501,7 +512,7 @@
     .seal-ring {
       position: absolute;
       inset: -12px;
-      border: 2px solid rgba(212,175,55,0.2);
+      border: 2px solid rgb(var(--accent) / 0.2);
       border-radius: 50%;
       animation: ringRotate 4s linear infinite;
     }
@@ -513,14 +524,14 @@
       transform: translateX(-50%);
       width: 6px;
       height: 6px;
-      background: rgba(212,175,55,0.5);
+      background: rgb(var(--accent) / 0.5);
       border-radius: 50%;
     }
 
     .seal-ring-outer {
       position: absolute;
       inset: -28px;
-      border: 1px solid rgba(212,175,55,0.1);
+      border: 1px solid rgb(var(--accent) / 0.1);
       border-radius: 50%;
       animation: ringRotate 7s linear infinite reverse;
     }
@@ -532,14 +543,14 @@
       transform: translateX(-50%);
       width: 4px;
       height: 4px;
-      background: rgba(212,175,55,0.3);
+      background: rgb(var(--accent) / 0.3);
       border-radius: 50%;
     }
 
     .seal-hint {
       font-family: 'Cormorant Garamond', serif;
       font-size: 13px;
-      color: rgba(212,175,55,0.3);
+      color: rgb(var(--accent) / 0.3);
       letter-spacing: 3px;
       margin-top: 24px;
       font-style: italic;
@@ -555,8 +566,8 @@
       pointer-events: none;
     }
     .stone-fragment.gold {
-      background: linear-gradient(135deg, #D4AF37, #F0D060);
-      box-shadow: 0 0 6px rgba(212,175,55,0.5);
+      background: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--accent-light)));
+      box-shadow: 0 0 6px rgb(var(--accent) / 0.5);
     }
     .stone-fragment.stone {
       background: linear-gradient(135deg, #8B7355, #6B5B3E);
@@ -583,8 +594,8 @@
       width: 130%;
       height: 130%;
       background: radial-gradient(ellipse at center,
-        rgba(212,175,55,0.1) 0%,
-        rgba(212,175,55,0.04) 35%,
+        rgb(var(--accent) / 0.1) 0%,
+        rgb(var(--accent) / 0.04) 35%,
         transparent 65%
       );
       pointer-events: none;
@@ -663,7 +674,7 @@
     .papyrus-burnt-edge-top {
       top: -1px;
       background: linear-gradient(to bottom,
-        rgba(17,17,17,0.85) 0%,
+        rgb(var(--bg) / 0.85) 0%,
         rgba(40,28,15,0.55) 35%,
         rgba(74,53,32,0.2) 65%,
         transparent 100%
@@ -677,7 +688,7 @@
     .papyrus-burnt-edge-bottom {
       bottom: -1px;
       background: linear-gradient(to top,
-        rgba(17,17,17,0.85) 0%,
+        rgb(var(--bg) / 0.85) 0%,
         rgba(40,28,15,0.55) 35%,
         rgba(74,53,32,0.2) 65%,
         transparent 100%
@@ -795,6 +806,181 @@
       .seal-ring { inset: -8px; }
       .seal-ring-outer { inset: -20px; }
     }
+
+    /* ===== THE DATE, CENTRE STAGE ===== */
+    .date-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .date-weekday {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 0.6em;
+      text-transform: uppercase;
+      color: rgb(var(--sand) / 0.7);
+      padding-left: 0.6em;
+    }
+    .date-main {
+      display: flex;
+      align-items: center;
+      gap: clamp(14px, 3vw, 28px);
+    }
+    .date-day {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: clamp(6.5rem, 22vw, 12rem);
+      line-height: 0.9;
+      filter: drop-shadow(0 0 30px rgb(var(--accent) / 0.25));
+    }
+    .date-monthyear {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding-left: clamp(14px, 3vw, 28px);
+      border-left: 1px solid rgb(var(--accent) / 0.4);
+      text-align: left;
+    }
+    .date-month {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 4.6vw, 2.6rem);
+      letter-spacing: 0.08em;
+      color: rgb(var(--sand));
+      line-height: 1;
+    }
+    .date-year {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      letter-spacing: 0.35em;
+      color: rgb(var(--accent));
+    }
+    .date-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: rgb(var(--sand) / 0.75);
+      min-height: 1.5em;
+    }
+    .date-flip { animation: dateFlip 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes dateFlip {
+      0% { opacity: 0; transform: translateY(-18px) rotateX(70deg); }
+      100% { opacity: 1; transform: none; }
+    }
+
+    /* ===== DATE STUDIO ===== */
+    .studio-card {
+      text-align: left;
+      padding: clamp(22px, 4vw, 40px);
+      border-radius: 24px;
+      background: rgb(var(--bg) / 0.72);
+      border: 1px solid rgb(var(--accent) / 0.22);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.45), inset 0 1px 0 rgb(var(--accent) / 0.08);
+      backdrop-filter: blur(8px);
+    }
+    .studio-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: clamp(22px, 4vw, 44px);
+    }
+    .studio-label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgb(var(--accent) / 0.8);
+      margin-bottom: 14px;
+    }
+    .studio-date {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgb(var(--accent) / 0.35);
+      background: rgb(var(--bg) / 0.8);
+      color: rgb(var(--sand));
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      color-scheme: dark;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .studio-date:focus { outline: none; border-color: rgb(var(--accent)); box-shadow: 0 0 0 4px rgb(var(--accent) / 0.15); }
+    .studio-readout {
+      margin-top: 14px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      line-height: 1.5;
+      color: rgb(var(--sand) / 0.75);
+    }
+    .theme-chips {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .theme-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgb(var(--accent) / 0.18);
+      background: rgb(var(--bg) / 0.6);
+      color: rgb(var(--sand) / 0.85);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
+    }
+    .theme-chip:hover { border-color: rgb(var(--accent) / 0.5); transform: translateY(-2px); }
+    .theme-chip:focus-visible { outline: 2px solid rgb(var(--accent)); outline-offset: 2px; }
+    .theme-chip[aria-checked="true"] {
+      border-color: rgb(var(--accent));
+      background: rgb(var(--accent) / 0.12);
+      box-shadow: 0 0 24px rgb(var(--accent) / 0.18);
+    }
+    .theme-chip-top { display: flex; align-items: center; gap: 8px; }
+    .theme-swatch {
+      width: 14px; height: 14px; border-radius: 50%; flex: none;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.12);
+    }
+    .theme-chip-name { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.08em; color: rgb(var(--sand)); }
+    .theme-chip-note { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-style: italic; color: rgb(var(--sand) / 0.55); line-height: 1.2; }
+    .studio-foot {
+      margin-top: 26px;
+      padding-top: 20px;
+      border-top: 1px solid rgb(var(--accent) / 0.15);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: rgb(var(--sand) / 0.7);
+    }
+    .studio-foot-num {
+      font-family: 'Cinzel', serif;
+      font-style: normal;
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgb(var(--accent) / 0.8);
+      margin-right: 10px;
+    }
+    @media (max-width: 768px) {
+      .studio-grid { grid-template-columns: 1fr; }
+      .theme-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    /* Non-Pharaonic themes: the inscription becomes a handwritten note, the Pharaonic seal steps aside */
+    body:not([data-theme="anniversary"]) #papyrus-bg {
+      background-image: none;
+      background: linear-gradient(160deg, rgb(var(--sand)) 0%, #FFFFFF 55%, rgb(var(--sand)) 100%);
+    }
+    body:not([data-theme="anniversary"]) #translated-text { font-family: 'Dancing Script', cursive; font-weight: 600; font-style: normal; }
+    body:not([data-theme="anniversary"]) #secret-seal-section,
+    body:not([data-theme="anniversary"]) #papyrus-scroll-container { display: none; }
+    #main-content.theme-swap { animation: themeSwap 0.7s ease; }
+    @keyframes themeSwap { 0% { opacity: 0.35; } 100% { opacity: 1; } }
   </style>
 </head>
 <body>
@@ -818,8 +1004,8 @@
     <!-- ========== HERO SECTION ========== -->
     <section id="hero" class="section-papyrus hieroglyph-border relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
       <!-- Ambient glows -->
-      <div class="ambient-glow" style="width:500px;height:500px;background:rgba(212,175,55,0.07);top:-100px;right:-100px;"></div>
-      <div class="ambient-glow" style="width:400px;height:400px;background:rgba(212,175,55,0.05);bottom:-50px;left:-100px;"></div>
+      <div class="ambient-glow" style="width:500px;height:500px;background:rgb(var(--accent) / 0.07);top:-100px;right:-100px;"></div>
+      <div class="ambient-glow" style="width:400px;height:400px;background:rgb(var(--accent) / 0.05);bottom:-50px;left:-100px;"></div>
 
       <!-- Floating hieroglyphs -->
       <span class="hieroglyph-float" style="top:15%;left:8%;">𓁹</span>
@@ -831,28 +1017,39 @@
       <span class="hieroglyph-float" style="top:10%;left:50%;">𓉐</span>
 
       <div class="relative z-10 text-center max-w-4xl mx-auto">
+        <!-- Who invites whom -->
+        <p id="hero-eyebrow" class="font-cinzel text-gold/70 text-xs sm:text-sm tracking-[0.45em] uppercase mb-5" style="opacity:0;">Youssef invites Salma</p>
+
         <!-- Title -->
-        <h1 id="hero-title" class="font-cinzel text-gold-gradient text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider mb-4" style="opacity:0;">
+        <h1 id="hero-title" class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider mb-8" style="opacity:0;">
           Our Date
         </h1>
 
-        <!-- Subtitle -->
-        <p id="hero-subtitle" class="font-cinzel text-sand text-xl sm:text-2xl md:text-3xl tracking-[0.3em] mb-6 font-light" style="opacity:0;">
-          14 February 2027
-        </p>
+        <!-- The date is the main character -->
+        <div id="hero-subtitle" class="date-stage mb-10" style="opacity:0;">
+          <span class="date-weekday" id="date-weekday">Sunday</span>
+          <div class="date-main">
+            <span class="date-day text-gold-gradient" id="date-day">14</span>
+            <span class="date-monthyear">
+              <span class="date-month" id="date-month">February</span>
+              <span class="date-year" id="date-year">2027</span>
+            </span>
+          </div>
+          <span class="date-note" id="date-note">Valentine's Day</span>
+        </div>
 
         <!-- Since badge -->
         <div id="hero-since" class="inline-block mb-14" style="opacity:0;">
           <div class="flex items-center gap-3 px-6 py-3 rounded-full border border-gold/20 bg-pharaoh/40 backdrop-blur-md">
-            <span class="text-gold text-lg">✨</span>
-            <span class="font-cormorant text-sand text-lg tracking-widest">Youssef &amp; Salma ✦ Since 14 February 2025</span>
-            <span class="text-gold text-lg">✨</span>
+            <span class="text-gold text-lg motif" data-motif="0">✨</span>
+            <span class="font-cormorant text-sand text-lg tracking-widest" id="hero-badge">Youssef &amp; Salma ✦ Since 14 February 2025</span>
+            <span class="text-gold text-lg motif" data-motif="0">✨</span>
           </div>
         </div>
 
         <!-- Together counter -->
         <div id="hero-together" class="mb-16" style="opacity:0;">
-          <p class="font-cinzel text-gold/70 text-xs sm:text-sm tracking-[0.4em] uppercase mb-6">Together For</p>
+          <p class="font-cinzel text-gold/70 text-xs sm:text-sm tracking-[0.4em] uppercase mb-6" id="together-label">Together For</p>
           <div class="flex flex-wrap justify-center gap-3 sm:gap-4" id="together-counter">
             <div class="counter-box">
               <div class="counter-value" id="t-years">0</div>
@@ -883,7 +1080,7 @@
 
         <!-- Countdown -->
         <div id="hero-countdown" class="mb-4" style="opacity:0;">
-          <p class="font-cinzel text-gold/70 text-xs sm:text-sm tracking-[0.4em] uppercase mb-6">Countdown Until Our Date</p>
+          <p class="font-cinzel text-gold/70 text-xs sm:text-sm tracking-[0.4em] uppercase mb-6" id="countdown-label">Countdown Until Our Date</p>
           <div class="flex flex-wrap justify-center gap-3 sm:gap-4" id="countdown-counter">
             <div class="counter-box">
               <div class="counter-value" id="c-days">0</div>
@@ -922,6 +1119,33 @@
       </style>
     </section>
 
+    <!-- ========== DATE STUDIO: your date, your theme, your story ========== -->
+    <section id="date-studio" class="section-papyrus relative py-20 px-4">
+      <div class="ambient-glow" style="width:520px;height:520px;background:rgb(var(--accent) / 0.06);top:10%;left:50%;transform:translateX(-50%);"></div>
+      <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <div class="reveal-section">
+          <p class="font-cinzel text-gold/60 text-xs tracking-[0.4em] uppercase mb-4">Designed around you</p>
+          <h2 class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider mb-5">Your date. Your theme. Your story.</h2>
+          <p class="font-cormorant text-sand/70 text-xl sm:text-2xl italic max-w-2xl mx-auto mb-12">A date worth remembering, designed around you. Choose the day and the occasion — the colours, the wording, the countdown and every timed reveal reshape themselves around it.</p>
+        </div>
+
+        <div class="studio-card reveal-section">
+          <div class="studio-grid">
+            <div class="studio-field">
+              <label class="studio-label" for="studio-date">01 · Your date</label>
+              <input type="date" id="studio-date" class="studio-date" value="2027-02-14">
+              <p class="studio-readout" id="studio-readout"></p>
+            </div>
+            <div class="studio-field">
+              <span class="studio-label" id="studio-theme-label">02 · Your theme</span>
+              <div class="theme-chips" id="theme-chips" role="radiogroup" aria-labelledby="studio-theme-label"></div>
+            </div>
+          </div>
+          <p class="studio-foot"><span class="studio-foot-num">03 · Your story</span> Your photo, your song, your timeline and a message only the two of you understand.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Divider -->
     <div class="py-8">
       <div class="section-divider-ornament"><span>𓁹</span></div>
@@ -929,7 +1153,7 @@
 
     <!-- ========== PORTRAIT ========== -->
     <section id="portrait" class="section-papyrus relative py-12 px-4 reveal-section">
-      <div class="ambient-glow" style="width:500px;height:500px;background:rgba(212,175,55,0.06);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+      <div class="ambient-glow" style="width:500px;height:500px;background:rgb(var(--accent) / 0.06);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
       
       <div class="relative z-10 max-w-2xl mx-auto text-center">
         <!-- Pharaonic Frame -->
@@ -953,7 +1177,7 @@
 
     <!-- ========== HIDDEN MAIN LOCATION ========== -->
     <section id="main-location" class="section-papyrus hieroglyph-border relative py-20 px-4 reveal-section">
-      <div class="ambient-glow" style="width:400px;height:400px;background:rgba(212,175,55,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+      <div class="ambient-glow" style="width:400px;height:400px;background:rgb(var(--accent) / 0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
       <div class="relative z-10 max-w-3xl mx-auto text-center">
         <p class="font-cinzel text-gold/60 text-xs tracking-[0.4em] uppercase mb-4">Our Destination</p>
         <h2 class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold mb-10 tracking-wider">The Grand Reveal</h2>
@@ -987,8 +1211,8 @@
 
     <!-- ========== TIMELINE ========== -->
     <section id="timeline" class="section-papyrus relative py-20 px-4">
-      <div class="ambient-glow" style="width:600px;height:300px;background:rgba(212,175,55,0.04);top:10%;left:-200px;"></div>
-      <div class="ambient-glow" style="width:500px;height:300px;background:rgba(212,175,55,0.04);bottom:10%;right:-200px;"></div>
+      <div class="ambient-glow" style="width:600px;height:300px;background:rgb(var(--accent) / 0.04);top:10%;left:-200px;"></div>
+      <div class="ambient-glow" style="width:500px;height:300px;background:rgb(var(--accent) / 0.04);bottom:10%;right:-200px;"></div>
 
       <div class="relative z-10 max-w-5xl mx-auto">
         <div class="text-center mb-16 reveal-section">
@@ -1112,13 +1336,13 @@
 
     <!-- ========== DRESS CODE ========== -->
     <section id="dress-code" class="section-papyrus hieroglyph-border relative py-20 px-4">
-      <div class="ambient-glow" style="width:500px;height:500px;background:rgba(212,175,55,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+      <div class="ambient-glow" style="width:500px;height:500px;background:rgb(var(--accent) / 0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
 
       <div class="relative z-10 max-w-4xl mx-auto">
         <div class="text-center mb-16 reveal-section">
           <p class="font-cinzel text-gold/60 text-xs tracking-[0.4em] uppercase mb-4">Attire</p>
           <h2 class="font-cinzel text-gold-gradient text-3xl sm:text-4xl md:text-5xl font-bold tracking-wider mb-3">Dress Code</h2>
-          <p class="font-cormorant text-sand/60 text-xl italic">Luxury Date Night</p>
+          <p class="font-cormorant text-sand/60 text-xl italic" id="dress-subtitle">Luxury Date Night</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
@@ -1186,7 +1410,7 @@
         <div class="relative w-full p-10 md:p-16 rounded-md shadow-[0_30px_60px_rgba(0,0,0,0.8)] border-2 border-pharaoh/80">
           
           <!-- Papyrus Background Image (User's texture) -->
-          <div class="absolute inset-0 bg-[url('papyrus.png')] bg-cover bg-center bg-no-repeat rounded-md"></div>
+          <div id="papyrus-bg" class="absolute inset-0 bg-[url('papyrus.png')] bg-cover bg-center bg-no-repeat rounded-md"></div>
           
           <!-- Inner Shadow / Vignette for realism -->
           <div class="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] rounded-md pointer-events-none"></div>
@@ -1208,7 +1432,7 @@
 
           <!-- Translate Button (placed outside multiply blend to remain bright) -->
           <div class="relative z-20 mt-12 text-center">
-            <button onclick="toggleTranslation()" class="px-8 py-3 bg-[#111111] text-gold font-cinzel text-sm uppercase tracking-[0.2em] rounded-full hover:bg-[#222222] transition-colors border-2 border-gold/40 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+            <button id="translate-btn" onclick="toggleTranslation()" class="px-8 py-3 bg-pharaoh text-gold font-cinzel text-sm uppercase tracking-[0.2em] rounded-full hover:bg-[#222222] transition-colors border-2 border-gold/40 shadow-[0_0_20px_rgb(var(--accent)/0.3)]">
               Translate Inscription
             </button>
           </div>
@@ -1239,7 +1463,7 @@
 
     <!-- ========== SPOTIFY ========== -->
     <section id="spotify" class="section-papyrus relative py-20 px-4">
-      <div class="ambient-glow" style="width:400px;height:400px;background:rgba(212,175,55,0.05);top:50%;right:-100px;"></div>
+      <div class="ambient-glow" style="width:400px;height:400px;background:rgb(var(--accent) / 0.05);top:50%;right:-100px;"></div>
 
       <div class="relative z-10 max-w-2xl mx-auto text-center">
         <div class="mb-12 reveal-section">
@@ -1266,11 +1490,11 @@
 
     <!-- ========== FOOTER ========== -->
     <footer id="footer" class="section-papyrus hieroglyph-border relative py-24 px-4">
-      <div class="ambient-glow" style="width:600px;height:200px;background:rgba(212,175,55,0.04);bottom:0;left:50%;transform:translateX(-50%);"></div>
+      <div class="ambient-glow" style="width:600px;height:200px;background:rgb(var(--accent) / 0.04);bottom:0;left:50%;transform:translateX(-50%);"></div>
 
       <div class="relative z-10 max-w-3xl mx-auto text-center reveal-section">
         <p class="font-cormorant text-sand/60 text-xl sm:text-2xl italic leading-relaxed mb-12">
-          "Every great story deserves a timeless chapter."
+          <span id="footer-quote">"Every great story deserves a timeless chapter."</span>
         </p>
 
         <div class="flex flex-col items-center gap-4">
@@ -1299,7 +1523,7 @@
     <!-- ========== SECRET SEAL ========== -->
     <section id="secret-seal-section">
       <div class="section-divider-ornament" style="margin-bottom: 32px;">
-        <span style="color:rgba(212,175,55,0.15);">𓊝</span>
+        <span style="color:rgb(var(--accent) / 0.15);">𓊝</span>
       </div>
 
       <div id="ancient-seal" onclick="activateSeal()" role="button" aria-label="Reveal secret message" tabindex="0">
@@ -1364,12 +1588,278 @@
 
     // Key dates
     const ANNIVERSARY = DateTime.local(2025, 2, 14, 0, 0, 0);
-    const DATE_DAY     = DateTime.local(2027, 2, 14, 0, 0, 0);
+    let DATE_DAY       = DateTime.local(2027, 2, 14, 0, 0, 0);
 
-    // Reveal thresholds (local time)
-    const REVEAL_MAIN    = DateTime.local(2027, 2, 14, 11, 0, 0); // 11:00 AM
-    const REVEAL_GOLDEN  = DateTime.local(2027, 2, 14, 17, 0, 0); // 5:00 PM
-    const REVEAL_EVENING = DateTime.local(2027, 2, 14, 18, 0, 0); // 6:00 PM
+    // Reveal thresholds (local time) — follow the chosen date (see setDateDay)
+    let REVEAL_MAIN    = DATE_DAY.set({ hour: 11 }); // 11:00 AM
+    let REVEAL_GOLDEN  = DATE_DAY.set({ hour: 17 }); // 5:00 PM
+    let REVEAL_EVENING = DATE_DAY.set({ hour: 18 }); // 6:00 PM
+
+    // ==========================================
+    // DATE STUDIO — the chosen date + theme drive the whole invitation
+    // ==========================================
+    const WORDS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+    const ordinal = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+    const yearsTogether = (d) => Math.max(0, Math.floor(d.diff(ANNIVERSARY, 'years').years + 1e-9));
+
+    const SPECIAL_DAYS = {
+      '02-14': "Valentine's Day",
+      '12-31': "New Year's Eve",
+      '01-01': "New Year's Day",
+      '03-21': "Mother's Day",
+      '12-25': 'Christmas Day',
+    };
+    const SEASONS = {
+      winter: { name: 'Winter', title: 'A Winter Evening', motifs: ['❄', '❅', '❆', '✧', '❄', '✦', '❅'], rgb: ['150 200 240', '205 230 250', '95 150 200', '10 16 30', '220 232 245'], dress: 'Warm layers, cool tones', message: 'Coats on, hands warm,<br>city lights and hot drinks —<br>a winter night<br>just for us.', countdown: 'Until our winter date' },
+      spring: { name: 'Spring', title: 'A Spring Afternoon', motifs: ['❀', '✿', '❁', '✾', '❀', '✿', '❃'], rgb: ['245 160 195', '255 210 225', '200 110 150', '20 14 22', '248 228 236'], dress: 'Light fabrics, soft florals', message: 'Windows down, flowers out,<br>a long lunch and a slow walk —<br>a spring day<br>just for us.', countdown: 'Until our spring date' },
+      summer: { name: 'Summer', title: 'A Summer Night', motifs: ['☀', '✺', '✹', '✦', '☀', '✸', '✷'], rgb: ['255 158 107', '255 205 160', '220 110 60', '26 14 10', '250 228 210'], dress: 'Linen, sandals, sunset colours', message: 'Sea air, warm sand,<br>a sunset we won\'t forget —<br>a summer night<br>just for us.', countdown: 'Until our summer date' },
+      autumn: { name: 'Autumn', title: 'An Autumn Evening', motifs: ['❦', '✾', '❧', '✦', '❦', '❧', '✿'], rgb: ['227 155 75', '245 200 130', '180 110 40', '22 14 8', '240 225 200'], dress: 'Knits, suede, warm browns', message: 'Golden light, a slow evening,<br>somewhere cosy and quiet —<br>an autumn date<br>just for us.', countdown: 'Until our autumn date' },
+    };
+    const seasonOf = (d) => ({ 12: 'winter', 1: 'winter', 2: 'winter', 3: 'spring', 4: 'spring', 5: 'spring', 6: 'summer', 7: 'summer', 8: 'summer' })[d.month] || 'autumn';
+    const seasonPhrase = (d) => {
+      const phase = { 12: 'early', 3: 'early', 6: 'early', 9: 'early', 1: 'mid', 4: 'mid', 7: 'mid', 10: 'mid' }[d.month] || 'late';
+      const name = SEASONS[seasonOf(d)].name.toLowerCase();
+      return phase === 'mid' ? (name === 'autumn' ? 'mid-autumn' : 'mid' + name) : `${phase} ${name}`;
+    };
+
+    const THEMES = {
+      anniversary: {
+        name: 'Anniversary', note: 'Pharaonic gold',
+        rgb: ['212 175 55', '240 208 96', '184 150 12', '17 17 17', '232 216 181'],
+        motifs: null, // keeps the original hieroglyphs
+        eyebrow: () => 'Youssef invites Salma',
+        title: (d) => { const y = yearsTogether(d); return y >= 1 ? `${y <= 10 ? WORDS[y] : y} Year${y === 1 ? '' : 's'} of Us` : 'Our First Date'; },
+        badge: () => 'Youssef & Salma ✦ Since 14 February 2025',
+        together: 'Together For',
+        countdownLabel: 'Countdown Until Our Date',
+        dress: 'Luxury Date Night',
+        quote: '"Every great story deserves a timeless chapter."',
+        message: null, // hieroglyphs + translation
+      },
+      romantic: {
+        name: 'Romantic', note: 'Candlelit rose',
+        rgb: ['226 120 140', '246 180 190', '180 70 95', '22 10 14', '245 222 226'],
+        motifs: ['♥', '✦', '❦', '♡', '✧', '❥', '✦'],
+        eyebrow: () => 'Youssef invites Salma',
+        title: () => 'Our Date',
+        badge: () => 'Just the two of us ✦ one unforgettable evening',
+        together: 'Since We Met',
+        countdownLabel: 'Countdown Until Our Date',
+        dress: 'Candlelit dinner',
+        quote: '"Some evenings are planned. The best ones are planned for you."',
+        message: 'Salma,<br>clear your evening.<br>I\'ve planned every minute,<br>and every one of them is for you.',
+      },
+      birthday: {
+        name: 'Birthday', note: 'Lilac & starlight',
+        rgb: ['190 160 255', '225 205 255', '140 105 220', '16 13 28', '236 230 250'],
+        motifs: ['✦', '✺', '❋', '✧', '✶', '❉', '✸'],
+        eyebrow: () => 'A birthday date, planned by Youssef',
+        title: () => 'Happy Birthday, Salma',
+        badge: () => 'One day, all yours ✦ every stop chosen for you',
+        together: null,
+        countdownLabel: 'Countdown To Your Birthday',
+        dress: 'Birthday best',
+        quote: '"Another year of you — the best reason to celebrate."',
+        message: 'Happy birthday, Salma.<br>One whole day, all yours —<br>every stop chosen<br>with you in mind.',
+      },
+      proposal: {
+        name: 'Proposal', note: 'Pearl & champagne',
+        rgb: ['236 214 190', '255 240 225', '196 164 132', '18 15 14', '240 232 224'],
+        motifs: ['◇', '✦', '❖', '✧', '◈', '✦', '◇'],
+        eyebrow: () => 'Salma, keep this evening free',
+        title: () => 'One Question',
+        badge: () => 'Just the two of us ✦ dress to be photographed',
+        together: 'Together For',
+        countdownLabel: 'Until The Question',
+        dress: 'Dress to be photographed',
+        quote: '"Some questions deserve the perfect evening."',
+        message: 'Salma,<br>wear something you love.<br>There\'s something I\'ve been<br>meaning to ask you.',
+      },
+      celebration: {
+        name: 'Celebration', note: 'Emerald & champagne',
+        rgb: ['110 210 170', '180 240 210', '60 160 120', '8 20 16', '222 240 230'],
+        motifs: ['✶', '✦', '✸', '✧', '❋', '✺', '✷'],
+        eyebrow: () => 'Youssef & Salma invite you',
+        title: () => "Let's Celebrate",
+        badge: () => 'A night to raise a glass ✦ good news deserves a date',
+        together: null,
+        countdownLabel: 'Until We Celebrate',
+        dress: 'Black tie, gold details',
+        quote: '"Here\'s to the moments worth dressing up for."',
+        message: 'Here\'s to us,<br>to everything we\'ve built,<br>and to one more night<br>worth remembering.',
+      },
+      seasonal: {
+        name: 'Seasonal', note: 'Follows your date',
+        seasonal: true,
+        eyebrow: () => 'Youssef invites Salma',
+        title: (d) => SEASONS[seasonOf(d)].title,
+        badge: (d) => `A date for ${seasonPhrase(d)} ✦ planned around the season`,
+        together: null,
+        quote: '"Every season has a perfect day. This one is ours."',
+      },
+    };
+    const THEME_ORDER = ['anniversary', 'romantic', 'birthday', 'proposal', 'celebration', 'seasonal'];
+
+    let themeKey = 'anniversary';
+    let particleRGB = '212, 175, 55';
+    const currentTheme = () => {
+      const t = THEMES[themeKey];
+      if (!t.seasonal) return t;
+      const s = SEASONS[seasonOf(DATE_DAY)];
+      return { ...t, rgb: s.rgb, motifs: s.motifs, dress: s.dress, message: s.message, countdownLabel: s.countdown };
+    };
+
+    // Remember the original Pharaonic glyphs and texts so the anniversary theme can restore them.
+    const motifEls = [...document.querySelectorAll('.hieroglyph-float, .section-divider-ornament span, #footer .mt-16 span, #portrait span.absolute')];
+    motifEls.forEach((el) => { el.dataset.original = el.textContent; });
+    const translatedEl = document.getElementById('translated-text');
+    const secretFirstLine = document.querySelector('#secret-letter p:nth-child(2)');
+
+    function setDateDay(d) {
+      DATE_DAY = d.startOf('day');
+      REVEAL_MAIN = DATE_DAY.set({ hour: 11 });
+      REVEAL_GOLDEN = DATE_DAY.set({ hour: 17 });
+      REVEAL_EVENING = DATE_DAY.set({ hour: 18 });
+    }
+
+    function renderDate(animate) {
+      const d = DATE_DAY;
+      const t = currentTheme();
+      const special = SPECIAL_DAYS[d.toFormat('MM-dd')] || (d.toFormat('MM-dd') === ANNIVERSARY.toFormat('MM-dd') ? 'Our anniversary' : '');
+      const calendarDays = Math.round(d.diff(DateTime.local().startOf('day'), 'days').days);
+      const fullDays = Math.floor(d.diff(DateTime.local(), 'days').days); // matches the countdown
+      const away = calendarDays > 1 ? `${fullDays} day${fullDays === 1 ? '' : 's'} to go` : calendarDays === 1 ? 'Tomorrow' : calendarDays === 0 ? 'Today' : 'A day to remember';
+
+      document.getElementById('date-weekday').textContent = d.toFormat('cccc');
+      document.getElementById('date-day').textContent = d.toFormat('d');
+      document.getElementById('date-month').textContent = d.toFormat('LLLL');
+      document.getElementById('date-year').textContent = d.toFormat('yyyy');
+      document.getElementById('date-note').textContent = [special, away].filter(Boolean).join(' · ');
+      document.getElementById('studio-readout').textContent =
+        `${d.toFormat('cccc, d LLLL yyyy')}${special ? ` — ${special}` : ''}, in ${seasonPhrase(d)}. ${away}.`;
+
+      document.getElementById('hero-eyebrow').textContent = t.eyebrow(d);
+      document.getElementById('hero-title').textContent = t.title(d);
+      document.getElementById('hero-badge').textContent = t.badge(d);
+      document.title = `Youssef & Salma — ${t.title(d)}, ${d.toFormat('d LLLL yyyy')}`;
+
+      // Anniversary wording follows the date too
+      const y = yearsTogether(d);
+      if (y >= 1) {
+        translatedEl.dataset.anniversary = `I love you Salma,<br>Happy ${ordinal(y)} Anniversary<br>${y} year${y === 1 ? '' : 's'} together<br>and still loading until 7000 like Pharaohs.`;
+        if (secretFirstLine) secretFirstLine.textContent = `${y <= 10 ? WORDS[y] : y} year${y === 1 ? '' : 's'} ago you said yes to a first date.`;
+      }
+      if (!t.message && translatedEl.dataset.anniversary) translatedEl.innerHTML = translatedEl.dataset.anniversary;
+
+      if (animate) {
+        const stage = document.getElementById('hero-subtitle');
+        stage.classList.remove('date-flip');
+        void stage.offsetWidth;
+        stage.classList.add('date-flip');
+      }
+    }
+
+    function applyTheme(key, animate) {
+      if (!THEMES[key]) key = 'anniversary';
+      themeKey = key;
+      const t = currentTheme();
+      const root = document.documentElement.style;
+      ['--accent', '--accent-light', '--accent-dark', '--bg', '--sand'].forEach((v, i) => root.setProperty(v, t.rgb[i]));
+      particleRGB = t.rgb[0].split(' ').join(', ');
+      document.body.dataset.theme = key;
+
+      // Motifs: hieroglyphs for the Pharaonic anniversary, theme symbols otherwise
+      motifEls.forEach((el, i) => { el.textContent = t.motifs ? t.motifs[i % t.motifs.length] : el.dataset.original; });
+      document.querySelectorAll('.motif').forEach((el) => { el.textContent = t.motifs ? t.motifs[1] : '✨'; });
+      const band = t.motifs ? Array.from({ length: 28 }, (_, i) => t.motifs[i % t.motifs.length]).join(' ') : null;
+      root.setProperty('--glyph-band-top', band ? `'${band}'` : "'𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏 𓁹 𓂀 𓃭 𓅃 𓆣 𓇋 𓈖 𓉐 𓊝 𓋴 𓌙 𓍯 𓎡 𓏏'");
+      root.setProperty('--glyph-band-bottom', band ? `'${band}'` : "'𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹 𓏏 𓎡 𓍯 𓌙 𓋴 𓊝 𓉐 𓈖 𓇋 𓆣 𓅃 𓃭 𓂀 𓁹'");
+      const eye = document.querySelector('.eye-of-horus');
+      if (eye) eye.textContent = t.motifs ? t.motifs[0] : '𓂀';
+
+      // Copy
+      const together = document.getElementById('hero-together');
+      together.style.display = t.together ? '' : 'none';
+      if (t.together) document.getElementById('together-label').textContent = t.together;
+      document.getElementById('countdown-label').textContent = t.countdownLabel;
+      document.getElementById('dress-subtitle').textContent = t.dress;
+      document.getElementById('footer-quote').textContent = t.quote;
+
+      // The message: hieroglyphs + "Translate" for the Pharaonic theme, a handwritten note otherwise
+      const hiero = document.getElementById('hiero-text');
+      const translateBtn = document.getElementById('translate-btn');
+      if (t.message) {
+        hiero.classList.add('hidden');
+        translatedEl.classList.remove('hidden');
+        translatedEl.innerHTML = t.message;
+        translateBtn.parentElement.style.display = 'none';
+      } else {
+        hiero.classList.remove('hidden');
+        translatedEl.classList.add('hidden');
+        translateBtn.parentElement.style.display = '';
+      }
+
+      document.querySelectorAll('.theme-chip').forEach((chip) => chip.setAttribute('aria-checked', String(chip.dataset.theme === key)));
+      renderDate(animate);
+      updateUrl();
+
+      if (animate) {
+        const main = document.getElementById('main-content');
+        main.classList.remove('theme-swap');
+        void main.offsetWidth;
+        main.classList.add('theme-swap');
+      }
+    }
+
+    function updateUrl() {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('theme', themeKey);
+        url.searchParams.set('date', DATE_DAY.toISODate());
+        history.replaceState(null, '', url);
+      } catch (e) { /* sandboxed frame */ }
+    }
+
+    function buildStudio() {
+      const chips = document.getElementById('theme-chips');
+      chips.innerHTML = THEME_ORDER.map((key) => {
+        const t = THEMES[key];
+        const rgb = t.seasonal ? SEASONS[seasonOf(DATE_DAY)].rgb : t.rgb;
+        return `<button type="button" class="theme-chip" role="radio" aria-checked="false" data-theme="${key}">
+          <span class="theme-chip-top"><span class="theme-swatch" style="background: radial-gradient(circle at 35% 35%, rgb(${rgb[1]}), rgb(${rgb[0]}) 55%, rgb(${rgb[3]}))"></span><span class="theme-chip-name">${t.name}</span></span>
+          <span class="theme-chip-note">${t.note}</span>
+        </button>`;
+      }).join('');
+      chips.addEventListener('click', (e) => {
+        const chip = e.target.closest('.theme-chip');
+        if (chip && chip.dataset.theme !== themeKey) applyTheme(chip.dataset.theme, true);
+      });
+
+      const input = document.getElementById('studio-date');
+      input.min = DateTime.local().toISODate();
+      input.value = DATE_DAY.toISODate();
+      input.addEventListener('change', () => {
+        const d = DateTime.fromISO(input.value);
+        if (!d.isValid) return;
+        setDateDay(d);
+        // Seasonal palettes follow the new date
+        if (THEMES[themeKey].seasonal) applyTheme(themeKey, true); else { renderDate(true); updateUrl(); }
+        const seasonal = chips.querySelector('[data-theme="seasonal"] .theme-swatch');
+        const rgb = SEASONS[seasonOf(DATE_DAY)].rgb;
+        seasonal.style.background = `radial-gradient(circle at 35% 35%, rgb(${rgb[1]}), rgb(${rgb[0]}) 55%, rgb(${rgb[3]}))`;
+        updateCounters();
+        checkReveals();
+      });
+    }
+
+    (function initStudio() {
+      const params = new URLSearchParams(window.location.search);
+      const fromDate = params.get('date') ? DateTime.fromISO(params.get('date')) : null;
+      if (fromDate && fromDate.isValid) setDateDay(fromDate);
+      buildStudio();
+      document.getElementById('studio-date').value = DATE_DAY.toISODate();
+      applyTheme(params.get('theme') || 'anniversary', false);
+    })();
 
     // ==========================================
     // COUNTERS
@@ -1387,6 +1877,8 @@
       document.getElementById('t-seconds').textContent = Math.floor(diff.seconds || 0);
 
       // Countdown
+      const label = document.getElementById('countdown-label');
+      if (label) label.textContent = now < DATE_DAY ? currentTheme().countdownLabel : '✨ The Day Has Arrived ✨';
       if (now < DATE_DAY) {
         const cd = DATE_DAY.diff(now, ['days', 'hours', 'minutes', 'seconds']).toObject();
         document.getElementById('c-days').textContent    = Math.floor(cd.days    || 0);
@@ -1398,10 +1890,6 @@
         document.getElementById('c-hours').textContent   = '0';
         document.getElementById('c-minutes').textContent = '0';
         document.getElementById('c-seconds').textContent = '0';
-
-        // Replace countdown label
-        const label = document.querySelector('#hero-countdown .font-cinzel');
-        if (label) label.textContent = '✨ The Day Has Arrived ✨';
       }
     }
 
@@ -1415,10 +1903,10 @@
       const now = DateTime.local();
 
       // Main Location (2:00 PM)
-      if (now >= REVEAL_MAIN) {
-        document.getElementById('main-location-locked').classList.add('hidden');
-        document.getElementById('main-location-revealed').classList.remove('hidden');
-      } else {
+      const mainOpen = now >= REVEAL_MAIN;
+      document.getElementById('main-location-locked').classList.toggle('hidden', mainOpen);
+      document.getElementById('main-location-revealed').classList.toggle('hidden', !mainOpen);
+      if (!mainOpen) {
         const until = REVEAL_MAIN.diff(now, ['days', 'hours', 'minutes', 'seconds']).toObject();
         const el = document.getElementById('main-location-countdown');
         if (el) {
@@ -1427,16 +1915,14 @@
       }
 
       // Golden Hour (5:00 PM)
-      if (now >= REVEAL_GOLDEN) {
-        document.getElementById('golden-hour-locked').classList.add('hidden');
-        document.getElementById('golden-hour-revealed').classList.remove('hidden');
-      }
+      const goldenOpen = now >= REVEAL_GOLDEN;
+      document.getElementById('golden-hour-locked').classList.toggle('hidden', goldenOpen);
+      document.getElementById('golden-hour-revealed').classList.toggle('hidden', !goldenOpen);
 
       // Evening (6:00 PM)
-      if (now >= REVEAL_EVENING) {
-        document.getElementById('evening-locked').classList.add('hidden');
-        document.getElementById('evening-revealed').classList.remove('hidden');
-      }
+      const eveningOpen = now >= REVEAL_EVENING;
+      document.getElementById('evening-locked').classList.toggle('hidden', eveningOpen);
+      document.getElementById('evening-revealed').classList.toggle('hidden', !eveningOpen);
     }
 
     setInterval(checkReveals, 1000);
@@ -1489,13 +1975,13 @@
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+        ctx.fillStyle = `rgba(${particleRGB}, ${this.opacity})`;
         ctx.fill();
 
         // Small glow
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity * 0.15})`;
+        ctx.fillStyle = `rgba(${particleRGB}, ${this.opacity * 0.15})`;
         ctx.fill();
       }
     }
@@ -1557,66 +2043,48 @@
       }, '-=0.3');
 
       // Hero animations
-      tl.to('#hero-title', {
+      tl.to('#hero-eyebrow', {
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.2');
+
+      // fromTo keeps every element ending exactly at its layout position
+      // (the previous to() + from() pairs could leave the title offset over the date).
+      tl.fromTo('#hero-title', { opacity: 0, y: 40 }, {
         opacity: 1,
         y: 0,
         duration: 1.2,
         ease: 'power3.out',
       }, '-=0.2');
 
-      tl.from('#hero-title', {
-        y: 40,
-        duration: 1.2,
-        ease: 'power3.out',
-      }, '<');
-
-      tl.to('#hero-subtitle', {
+      tl.fromTo('#hero-subtitle', { opacity: 0, y: 20 }, {
         opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: 'power2.out',
       }, '-=0.6');
 
-      tl.from('#hero-subtitle', {
-        y: 20,
-        duration: 0.8,
-        ease: 'power2.out',
-      }, '<');
-
-      tl.to('#hero-since', {
+      tl.fromTo('#hero-since', { opacity: 0, scale: 0.9 }, {
         opacity: 1,
-        duration: 0.6,
-        ease: 'power2.out',
-      }, '-=0.4');
-
-      tl.from('#hero-since', {
-        scale: 0.9,
+        scale: 1,
         duration: 0.6,
         ease: 'back.out(1.7)',
-      }, '<');
+      }, '-=0.4');
 
-      tl.to('#hero-together', {
+      tl.fromTo('#hero-together', { opacity: 0, y: 30 }, {
         opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: 'power2.out',
       }, '-=0.3');
 
-      tl.from('#hero-together', {
-        y: 30,
-        duration: 0.8,
-        ease: 'power2.out',
-      }, '<');
-
-      tl.to('#hero-countdown', {
+      tl.fromTo('#hero-countdown', { opacity: 0, y: 30 }, {
         opacity: 1,
+        y: 0,
         duration: 0.8,
         ease: 'power2.out',
       }, '-=0.4');
-
-      tl.from('#hero-countdown', {
-        y: 30,
-        duration: 0.8,
-        ease: 'power2.out',
-      }, '<');
 
       tl.to('#scroll-indicator', {
         opacity: 1,

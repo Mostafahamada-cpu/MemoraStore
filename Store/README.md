@@ -12,7 +12,7 @@ The storefront reads its catalog from Supabase (`categories`, `products`, `bundl
 
 | Product | Price |
 | --- | ---: |
-| Date Invitation | 250 EGP |
+| Date Invitation | 400 EGP |
 | Birthday Invitation | 350 EGP |
 | Gender Reveal Invitation | 400 EGP |
 | Engagement Invitation | 500 EGP |
@@ -58,10 +58,10 @@ The Wedding designs link to their Vercel deployments. The other occasions ship w
 | Product | Demo | Built from |
 | --- | --- | --- |
 | Engagement | `Demos/engagement/` | Modern Minimal template (no RSVP) + rose/gold theme |
-| Henna | `Demos/henna/` | Modern Minimal template (no RSVP) + terracotta/gold theme |
+| Henna | `Demos/henna/` | Modern Minimal template (no RSVP) + three Egyptian henna concepts: **Shaabi Night** (burgundy & gold, string lights), **Sa'idi** (terracotta & woven bands) and **Nubian** (painted walls & woven plates). A switcher at the bottom (demo only) changes concept; `?concept=shaabi|saidi|nubian` opens one directly. Each concept's copy, programme and venue live in `CONFIG.concepts` in `script.js` |
 | Birthday | `Demos/birthday/` | Modern Minimal template (no RSVP) + pastel theme |
-| Gender Reveal | `Demos/gender-reveal/` | Modern Minimal template (no RSVP) + pink/blue theme |
-| Date | `Demos/date/` | The Date Invitation template (venues unchanged, demo names/date/photo) |
+| Gender Reveal | `Demos/gender-reveal/` | Modern Minimal template (no RSVP) + pink/blue theme + **"Who do you think it is?" guest vote** (results appear after voting) and a **sealed reveal** that opens on its own at `CONFIG.reveal.at` (the demo has a preview button once you've voted). Votes are kept in the visitor's browser on top of `CONFIG.voteSeed`; no backend |
+| Date | `Demos/date/` | The Date Invitation template with the date as the hero and a **Date Studio** ("Your date. Your theme. Your story."): pick a date and one of six themes (Anniversary · Pharaonic, Romantic, Birthday, Proposal, Celebration, Seasonal) and the palette, motifs, wording, countdown and timed reveals follow. `?theme=<key>&date=YYYY-MM-DD` opens a combination directly |
 | Bachelorette | `Demos/bachelorette/` | The Bachelorette Trip template (stock photos; wishes & photo proofs are kept in the visitor's browser only — no Firebase/Cloudinary) |
 | Love NFC Card | `Demos/Love card/modern/` | Existing Love Card demo |
 
@@ -119,6 +119,8 @@ Run in the Supabase SQL editor, in order (all scripts are idempotent):
 3. `admin/MIGRATION_CATALOG_V2.sql` – **catalog v2**: categories, add-ons, bilingual product/bundle columns, bundle product relationships, custom-order columns on `orders`, public read policies for the storefront, and a security fix that removes public read access to `orders`.
 4. `admin/STORAGE_SETUP.sql` – creates the `memora-assets` storage bucket + policies used by the Admin image uploads (required, otherwise "Upload Thumbnail" fails).
 5. `admin/MIGRATION_NFC_BUNDLES_DEMOS.sql` – **Love NFC Card + bundles + demos**: allows `product_type = 'bundle-only'`, adds the Love NFC Card (existing artwork), the three Engagement/Wedding NFC bundles, points the occasion products at their `Demos/` demo URLs and sets their preview images (only where the Admin hasn't set one). Until it is run the store keeps the current catalog (with the media fallback above); `?catalog=seed` previews the result.
+
+6. `admin/MIGRATION_DEMOS_V2.sql` – Date Invitation price 250 → **400 EGP**, plus the new Henna / Gender Reveal / Date product descriptions and features (only where the original seed text is unchanged).
 
 Until step 3 is run the store shows the built-in seed catalog and checkout falls back to the legacy `orders` columns automatically.
 

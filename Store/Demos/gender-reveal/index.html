@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#F48FB1" />
     <title>Omar & Nour — Gender Reveal</title>
-    <meta name="description" content="Gender reveal invitation with envelope intro, countdown and venue map." />
+    <meta name="description" content="Gender reveal invitation with a guest vote, a sealed reveal, countdown and venue map." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Great+Vibes&family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
@@ -57,6 +57,51 @@
                 </div>
                 <div class="tagline">Invite you to their baby's gender reveal party</div>
                 <div class="wedding-date" id="wedding-date-display"></div>
+                <a href="#vote-section" class="hero-cta">Cast your guess <span aria-hidden="true">💙 🩷</span></a>
+            </div>
+        </section>
+
+        <!-- Gender vote: guests pick a team; results show once they have voted -->
+        <section id="vote-section" class="section">
+            <div class="section-wrapper">
+                <div class="vote-kicker">Place your guess</div>
+                <h2 class="section-title">Who do you think it is?</h2>
+                <p class="vote-sub">Pick a team before the big day. The answer, and who guessed right, comes out at the party.</p>
+
+                <div class="vote-card" id="vote-card" data-state="open">
+                    <div class="vote-options" role="group" aria-label="Your guess">
+                        <button type="button" class="vote-btn vote-boy" data-choice="boy">
+                            <span class="vote-emoji" aria-hidden="true">💙</span>
+                            <span class="vote-label">Boy</span>
+                            <span class="vote-hint">Team Blue</span>
+                        </button>
+                        <div class="vote-or" aria-hidden="true">or</div>
+                        <button type="button" class="vote-btn vote-girl" data-choice="girl">
+                            <span class="vote-emoji" aria-hidden="true">🩷</span>
+                            <span class="vote-label">Girl</span>
+                            <span class="vote-hint">Team Pink</span>
+                        </button>
+                    </div>
+
+                    <div class="vote-results" aria-live="polite">
+                        <div class="vote-thanks">
+                            <span class="vote-thanks-badge" id="vote-badge" aria-hidden="true"></span>
+                            <div>
+                                <div class="vote-thanks-title">You're on <span id="vote-team"></span></div>
+                                <div class="vote-thanks-text">Your guess is locked in. Here's how everyone is leaning so far:</div>
+                            </div>
+                        </div>
+                        <div class="vote-bar" role="img" id="vote-bar">
+                            <div class="vote-bar-fill vote-bar-boy" id="bar-boy"><span id="pct-boy">50%</span></div>
+                            <div class="vote-bar-fill vote-bar-girl" id="bar-girl"><span id="pct-girl">50%</span></div>
+                        </div>
+                        <div class="vote-legend">
+                            <span><i class="dot dot-boy"></i><b id="count-boy">0</b> guessed boy</span>
+                            <span><b id="count-girl">0</b> guessed girl<i class="dot dot-girl"></i></span>
+                        </div>
+                        <button type="button" class="vote-change" id="vote-change">Change my guess</button>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -102,6 +147,36 @@
                             <div class="countdown-number" id="seconds">00</div>
                         </div>
                         <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The reveal: sealed until the party (a demo-only preview unlocks once you have voted) -->
+        <section id="reveal-section" class="section">
+            <div class="section-wrapper">
+                <h2 class="section-title">The Big Reveal</h2>
+                <div class="ornament-divider small">
+                    <div class="line"></div>
+                    <div class="diamond">✦</div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="reveal-box" id="reveal-box" data-state="locked">
+                    <div class="reveal-confetti" id="reveal-confetti" aria-hidden="true"></div>
+                    <div class="reveal-locked">
+                        <div class="reveal-orb" aria-hidden="true"><span>?</span></div>
+                        <p class="reveal-lock-text">Sealed until <strong id="reveal-at"></strong></p>
+                        <button type="button" class="reveal-preview" id="reveal-preview" disabled>
+                            Preview the reveal
+                            <small id="reveal-preview-hint">Vote first to unlock the demo preview</small>
+                        </button>
+                    </div>
+                    <div class="reveal-result" aria-live="polite">
+                        <div class="reveal-kicker">And the answer is…</div>
+                        <div class="reveal-headline" id="reveal-headline"></div>
+                        <p class="reveal-verdict" id="reveal-verdict"></p>
+                        <button type="button" class="reveal-replay" id="reveal-replay">Seal it again</button>
                     </div>
                 </div>
             </div>
